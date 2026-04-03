@@ -1,0 +1,103 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f0f0f0;
+    color: black;
+    /* create theme for colors */
+
+
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    min-height: 100svh;
+
+}
+
+.container {
+    width: min(1200px, 80%);
+    margin: 0 auto;
+}
+
+/* Tablet/Desktop View: 2 Columns */
+@media (min-width: 600px) {
+    .contact {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
+    }
+
+    .content-header {
+        font-size: 1rem;
+        /* margin: 2rem 0; */
+    }
+
+    .contact__information {
+        flex-direction: row;
+    }
+
+    .menu-container__selection {
+        grid-template-columns: repeat(2, 250px);
+        grid-template-rows: repeat(3, 1fr);
+    }
+
+    .menu-container {
+        flex-direction: row;
+        justify-content: space-evenly;
+        margin-bottom: 1.2rem;
+        align-items: start;
+    }
+
+    .menu-container__options {
+        flex-direction: column;
+    }
+
+    .menu-container__options--section a {
+        text-align: left;
+    }
+
+    #content__hero-text {
+        font-size: 2.5rem;
+    }
+
+    .food-gallery {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    #home-page__hero-text {
+        font-size: 4rem;
+        margin-bottom: 10px;
+    }
+
+    #content__hero-text {
+        font-size: 4rem;
+
+    }
+
+    #home-page__hero-subtext {
+        font-size: 2rem;
+    }
+
+    .content__hero {
+        min-height: 35vh;
+    }
+
+}
+
+/* Standard Laptops */
+@media screen and (min-width: 1270px) and (max-width: 1536px) {
+    #content__hero-text {
+        font-size: 3rem;
+    }
+
+    .content__hero {
+        min-height: 50vh;
+    }
+
+    .food-gallery img {
+        object-fit: cover;
+        height: 320px;
+    }
+}
