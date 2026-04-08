@@ -7,7 +7,7 @@ const __dirname = path.dirname(__filename);
 
 export default {
     entry: {
-        app: './src/index.js',
+        app: './src/script.js',
     },
     plugins: [
         new HtmlWebpackPlugin({
