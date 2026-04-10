@@ -1,6 +1,8 @@
+import todos from '../Models/Todos.js';
+
 export default class Todo {
-    constructor(title, description, project) {
-        this.id = crypto.randomUUID();
+    constructor(title, description, project, id = null) {
+        this.id = id || crypto.randomUUID();
         this.title = title.trim();
         this.description = description.trim();
         this.project = project;
@@ -30,8 +32,13 @@ export default class Todo {
         this.project = newProject.trim();
         this.modifiedAt = new Date().toISOString();
 
-        console.log(this);
-
+        // Update the stored todo
+        let items = todos.findAll();
+        const index = items.findIndex(item => item.id === this.id);
+        if (index !== -1) {
+            items[index] = this.serialize();
+            localStorage.setItem('todos', JSON.stringify(items));
+        }
     }
 
     store() {
@@ -39,7 +46,6 @@ export default class Todo {
 
         items.push(this.serialize());
         localStorage.setItem('todos', JSON.stringify(items));
-        //console.log('Todo stored:', this.id);
     }
 
     serialize() {
@@ -55,14 +61,15 @@ export default class Todo {
     }
 
     static fromSerialized(data) {
-        const todo = new Todo(data.title, data.id);
+        const todo = new Todo(data.title, data.description, data.project, data.id);
         todo.completed = data.completed;
         todo.createdAt = data.createdAt;
+        todo.modifiedAt = data.modifiedAt ?? null;
         return todo;
     }
 
     delete() {
-        let items = JSON.parse(localStorage.getItem('todos') || '[]');
+        let items = todos.findAll();
         items = items.filter(item => item.id !== this.id);
         localStorage.setItem('todos', JSON.stringify(items));
     }

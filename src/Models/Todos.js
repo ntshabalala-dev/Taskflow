@@ -1,9 +1,9 @@
 class Todos {
-    findAll() {
+    static findAll() {
         return JSON.parse(localStorage.getItem('todos')) || [];
     }
 
-    findById(id) {
+    static findById(id) {
         const todos = this.findAll();
         return todos.find(todo => todo.id === id);
     }
