@@ -1,10 +1,15 @@
+
+import Projects from './Models/Projects.js';
 import Project from './Entities/project.js';
 import Todo from './Entities/todo.js';
 
-(new Project('Test'));
-(new Project('Test2'));
+let a = new Project('Test', "This is a test project");
+let b = new Project('Test2', "This is another test project");
 
-console.log(localStorage.getItem('projects'));
+//console.log(localStorage.getItem('projects'));
+
+console.log(Projects.findAll());
+
 
 /* let a = new Todo('Test', 'This is a test todo', 'Test Project');
 let b = new Todo('Test2', 'This is another test todo', 'Test Project');
@@ -24,5 +29,5 @@ b.delete();
 s = localStorage.getItem('todos');
 console.log(JSON.parse(s));
 
-localStorage.clear(); */
-
+ */
+localStorage.clear();

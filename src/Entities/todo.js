@@ -61,7 +61,11 @@ export default class Todo {
     }
 
     static fromSerialized(data) {
-        const todo = new Todo(data.title, data.description, data.project, data.id);
+        const todo = Object.create(Todo.prototype);
+        todo.id = data.id;
+        todo.title = data.title;
+        todo.description = data.description;
+        todo.project = data.project;
         todo.completed = data.completed;
         todo.createdAt = data.createdAt;
         todo.modifiedAt = data.modifiedAt ?? null;
