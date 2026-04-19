@@ -36,9 +36,10 @@ function taskFlowController() {
     const defaultList = document.querySelector('#projects__list');
 
     const createProjectDialogControls = () => {
-        const openCreateProjectDialog = document.querySelector('#create-project-btn');
+        const openCreateProjectDialog = document.querySelector('#open-create-project-dialog-btn');
         const createProjectDialog = document.querySelector('#create-project-dialog');
         const cancelBtn = document.querySelector('#cancel-project-btn');
+        const createProjectBtn = document.querySelector('#create-project-btn');
 
 
         openCreateProjectDialog.addEventListener('click', () => {
@@ -48,6 +49,25 @@ function taskFlowController() {
         cancelBtn.addEventListener('click', () => {
             createProjectDialog.close();
         });
+
+        createProjectBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const nameInput = document.querySelector('#project-name');
+            const descriptionInput = document.querySelector('#project-description');
+
+            try {
+                (new Project(nameInput.value, descriptionInput.value));
+                renderProjects();
+
+                nameInput.value = '';
+                descriptionInput.value = ''
+
+                createProjectDialog.close();
+            } catch (error) {
+                alert(error.message);
+            }
+        });
+
     }
 
     const renderProjects = () => {
@@ -77,21 +97,21 @@ function taskFlowController() {
 
 // console.log(Todos.findAllByProject(p.id));
 
-/* 
- 
+/*
+
 //console.log(localStorage.getItem('todos'));
 let s = localStorage.getItem('todos');
 console.log(JSON.parse(s));
- 
+
 b.edit('Test3 Edited', 'This is an edited test todo', 'Test Project Edited');
- 
+
 s = localStorage.getItem('todos');
 console.error(JSON.parse(s));
- 
+
 b.delete();
- 
+
 s = localStorage.getItem('todos');
 console.log(JSON.parse(s));
- 
+
  */
-localStorage.clear();
+//localStorage.clear();
