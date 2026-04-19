@@ -15,6 +15,14 @@ class Todos {
 
         return Todo.fromSerialized(todo);
     }
+
+    static findAllByProject(projectId) {
+        const todos = this.findAll();
+        //console.log(todos);
+
+        const found = todos.filter(todo => todo.project == projectId);
+        console.log(found);
+    }
 }
 
 export default Todos;

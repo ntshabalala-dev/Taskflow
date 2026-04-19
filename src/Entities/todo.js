@@ -1,11 +1,11 @@
 import todos from '../Models/Todos.js';
 
 export default class Todo {
-    constructor(title, description, project, id = null) {
+    constructor(title, description, projectId, id = null) {
         this.id = id || crypto.randomUUID();
         this.title = title.trim();
         this.description = description.trim();
-        this.project = project;
+        this.projectId = projectId;
         this.completed = false;
         this.createdAt = new Date().toISOString();
         this.modifiedAt = null;
@@ -29,7 +29,7 @@ export default class Todo {
 
         this.title = newTitle.trim();
         this.description = newDescription.trim();
-        this.project = newProject.trim();
+        this.projectId = newProject.trim();
         this.modifiedAt = new Date().toISOString();
 
         // Update the stored todo
@@ -53,7 +53,7 @@ export default class Todo {
             id: this.id,
             title: this.title,
             description: this.description,
-            project: this.project,
+            projectId: this.projectId,
             completed: this.completed,
             createdAt: this.createdAt,
             modifiedAt: this.modifiedAt
@@ -65,7 +65,7 @@ export default class Todo {
         todo.id = data.id;
         todo.title = data.title;
         todo.description = data.description;
-        todo.project = data.project;
+        todo.projectId = data.projectId;
         todo.completed = data.completed;
         todo.createdAt = data.createdAt;
         todo.modifiedAt = data.modifiedAt ?? null;

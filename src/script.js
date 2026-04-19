@@ -1,33 +1,97 @@
 
 import Projects from './Models/Projects.js';
 import Project from './Entities/project.js';
+import Todos from './Models/Todos.js';
 import Todo from './Entities/todo.js';
+import main from '../src/main.css'
 
-let a = new Project('Test', "This is a test project");
-let b = new Project('Test2', "This is another test project");
+// let p = new Project('Test', "This is a test project");
+// let p2 = new Project('Test2', "This is a test project two");
+// let b = new Project('Test2', "This is another test project");
 
 //console.log(localStorage.getItem('projects'));
 
-console.log(Projects.findAll());
+//console.log(Projects.findAll());
 
 
-/* let a = new Todo('Test', 'This is a test todo', 'Test Project');
-let b = new Todo('Test2', 'This is another test todo', 'Test Project');
-let c = new Todo('Test3', 'This is a third test todo', 'Test Project');
+function taskFlowController() {
 
+    const createDefaultData = () => {
+        if (Projects.findAll().length === 0) {
+            const project = new Project('Default Project', 'This is the default project');
+            const todo1 = new Todo('Default Todo 1', 'This is the first default todo', project.id);
+        }
+    }
+
+    return {
+        createDefaultData
+    }
+}
+
+//IIFE for screen controller
+(function () {
+    const appController = taskFlowController();
+    appController.createDefaultData();
+
+    const defaultList = document.querySelector('#projects__list');
+
+    const createProjectDialogControls = () => {
+        const openCreateProjectDialog = document.querySelector('#create-project-btn');
+        const createProjectDialog = document.querySelector('#create-project-dialog');
+        const cancelBtn = document.querySelector('#cancel-project-btn');
+
+
+        openCreateProjectDialog.addEventListener('click', () => {
+            createProjectDialog.showModal();
+        });
+
+        cancelBtn.addEventListener('click', () => {
+            createProjectDialog.close();
+        });
+    }
+
+    const renderProjects = () => {
+        const projects = Projects.findAll();
+        defaultList.innerHTML = '';
+        projects.forEach(project => {
+            const projectElement = document.createElement('button');
+            projectElement.classList.add('project');
+            projectElement.dataset.projectId = project.id;
+            projectElement.textContent = project.name;
+            defaultList.appendChild(projectElement);
+        });
+    }
+
+    createProjectDialogControls();
+    renderProjects();
+})();
+
+
+// let a = new Todo('Test', 'This is a test todo', p.id);
+// let b = new Todo('Test2', 'This is another test todo', p2.id);
+// let c = new Todo('Test3', 'This is a third test todo', p.id);
+
+// console.log(p.id);
+// console.log(a.project);
+
+
+// console.log(Todos.findAllByProject(p.id));
+
+/* 
+ 
 //console.log(localStorage.getItem('todos'));
 let s = localStorage.getItem('todos');
 console.log(JSON.parse(s));
-
+ 
 b.edit('Test3 Edited', 'This is an edited test todo', 'Test Project Edited');
-
+ 
 s = localStorage.getItem('todos');
 console.error(JSON.parse(s));
-
+ 
 b.delete();
-
+ 
 s = localStorage.getItem('todos');
 console.log(JSON.parse(s));
-
+ 
  */
 localStorage.clear();

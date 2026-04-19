@@ -3,6 +3,7 @@ import Projects from "../Models/Projects.js";
 export default class Project {
     constructor(name, description) {
         this.id = crypto.randomUUID();
+        console.log(typeof this.id);
         this.name = name;
         this.description = description;
         this.createdAt = new Date().toISOString();
