@@ -34,6 +34,7 @@ function taskFlowController() {
     appController.createDefaultData();
 
     const defaultList = document.querySelector('#projects__list');
+    const projectList = document.querySelector('#projects__list');
 
     const createProjectDialogControls = () => {
         const openCreateProjectDialog = document.querySelector('#open-create-project-dialog-btn');
@@ -67,14 +68,16 @@ function taskFlowController() {
                 alert(error.message);
             }
         });
-
     }
 
     const renderProjects = () => {
         const projects = Projects.findAll();
         defaultList.innerHTML = '';
-        projects.forEach(project => {
+        projects.forEach((project, index) => {
             const projectElement = document.createElement('button');
+            if (index == 0) {
+                projectElement.classList.add('active');
+            }
             projectElement.classList.add('project');
             projectElement.dataset.projectId = project.id;
             projectElement.textContent = project.name;
@@ -82,7 +85,27 @@ function taskFlowController() {
         });
     }
 
+    const renderProjectTitle = (projectId) => {
+        const projectSpan = document.querySelector('.project-items__title #project-title');
+        projectList.addEventListener('click', (e) => {
+            if (e.target.classList.contains('project')) {
+                projectSpan.textContent = e.target.textContent;
+            }
+        });
+        const firstProject = Projects.findAll()[0];
+        if (projectId) {
+            const project = Projects.findById(projectId);
+            projectSpan.textContent = project.name;
+        } else if (firstProject) {
+            projectSpan.textContent = firstProject.name;
+        } else {
+            projectSpan.textContent = 'No Projects';
+        }
+    }
+
+
     createProjectDialogControls();
+    renderProjectTitle();
     renderProjects();
 })();
 

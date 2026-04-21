@@ -25,6 +25,27 @@
     </div>
 
     <main class="project-items">
+        <div class="project-items__search">
+                <div class="container">
+                    <input type="text" id="project-item-search-input" placeholder="Search project items...">
+                    <button id="project-items__create-todo-btn">Add Todo</button>
+                </div>
+        </div>
+
+        <div class="project-items__list container">
+            <div class="project-items__title">
+                <h2 id="project-items__title-text">Project: <span id="project-title"></span></h2>
+                <div class="project-items__sort">
+                    <label for="sort-select">Sort by:</label>
+                    <select id="sort-select">
+                        <option value="due-date">Due Date</option>
+                        <option value="priority">Priority</option>
+                        <option value="creation-date">Creation Date</option>
+                    </select>
+                </div>
+            </div>
+
+        </div>
 
     </main>
 

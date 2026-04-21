@@ -45,9 +45,33 @@ body {
     transition: background-color 0.2s ease;
 }
 
+.project-items {
+    display: grid;
+    grid-template-rows: auto 1fr;
+}
+
+.project-items__search {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding: 1rem;
+    padding-left: 0;
+    border-bottom: 1px solid #ccc;
+}
+
 #create-project {
     display: flex;
     gap: 1rem;
+}
+
+/* input[type="text"] {
+    width: fit-content;
+} */
+
+.project-items__title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 dialog {
