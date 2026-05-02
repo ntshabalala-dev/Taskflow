@@ -78,6 +78,7 @@ function buttonHelper() {
 
             try {
                 (new Project(nameInput.value, descriptionInput.value));
+                // Re-render projects list
                 renderProjects();
 
                 nameInput.value = '';
@@ -112,6 +113,15 @@ function buttonHelper() {
         });
 
         cancelTodoDialogBtn.addEventListener('click', () => {
+            createTodoDialog.close();
+        });
+
+        const form = document.querySelector('#create-todo-form');
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const formData = new FormData(form);
+            // console.log([...formData]);
+            // console.log(formData.get('project-user-choice'));
             createTodoDialog.close();
         });
 
