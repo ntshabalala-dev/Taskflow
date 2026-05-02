@@ -28,6 +28,29 @@ function taskFlowController() {
     }
 }
 
+function linkHelper() {
+    const links = document.querySelectorAll('.menu-container__options--section a');
+    const firstLink = document.querySelector('.menu-container__options--section:nth-child(1) a');
+
+    firstLink.classList.add('active');
+
+    links.forEach(link => {
+        link.addEventListener('click', function () {
+            // 1. Find the currently active tag
+            const activeTag = document.querySelector('a.active');
+
+            if (activeTag) {
+                console.log('Previously active:', activeTag.textContent);
+                // Remove the class from the old active tag
+                activeTag.classList.remove('active');
+            }
+
+            // 2. Add the active class to the clicked tag
+            this.classList.add('active');
+        });
+    });
+}
+
 //IIFE for screen controller
 (function () {
     const appController = taskFlowController();
