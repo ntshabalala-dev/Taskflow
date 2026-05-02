@@ -90,6 +90,34 @@ function buttonHelper() {
         });
     }
 
+    const createTodoDialogControls = () => {
+        const openCreateTodoDialog = document.querySelector('#project-items__create-todo-btn');
+        const cancelTodoDialogBtn = document.querySelector('#cancel-todo-btn');
+        const createTodoDialog = document.querySelector('#create-todo-dialog');
+        const createTodoBtn = document.querySelector('#create-todo-btn');
+        const projectSelect = document.querySelector('#project-select');
+
+        // Populate project select options
+        const projects = Projects.findAll();
+        projects.forEach(project => {
+            const option = document.createElement('option');
+            option.name = project.name;
+            option.value = project.id;
+            option.textContent = project.name;
+            projectSelect.appendChild(option);
+        });
+
+        openCreateTodoDialog.addEventListener('click', () => {
+            createTodoDialog.showModal();
+        });
+
+        cancelTodoDialogBtn.addEventListener('click', () => {
+            createTodoDialog.close();
+        });
+
+
+    }
+
     const renderProjects = () => {
         const projects = Projects.findAll();
         defaultList.innerHTML = '';
@@ -125,6 +153,7 @@ function buttonHelper() {
 
 
     createProjectDialogControls();
+    createTodoDialogControls();
     renderProjectTitle();
     renderProjects();
     buttonHelper();

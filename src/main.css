@@ -191,6 +191,19 @@ dialog::backdrop {
 
 }
 
+/* todo form */
+#create-todo-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+#create-todo-form .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
 /* Standard Laptops */
 @media screen and (min-width: 1270px) and (max-width: 1536px) {
     #content__hero-text {
