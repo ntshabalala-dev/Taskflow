@@ -54,8 +54,29 @@ body {
     background-color: #e8e9e9;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     border: #ccc solid 1px;
-
 }
+
+.project-items__control {
+    display: grid;
+    grid-template-columns: auto 1fr 300px auto;
+    align-items: center
+        /* gap: 1rem; */
+    ;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    /* background-color: #e8e9e9; */
+    /* border-bottom: 1px solid #ccc; */
+}
+
+.todo-grid> :first-child {
+    margin-right: .5rem;
+}
+
+#project-items__select-all {
+    width: 18px;
+    height: 18px;
+}
+
 
 .project-items {
     display: grid;
