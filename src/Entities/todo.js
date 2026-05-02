@@ -1,11 +1,12 @@
 import todos from '../Models/Todos.js';
 
 export default class Todo {
-    constructor(title, description, projectId, id = null) {
+    constructor(title, description, projectId, dueDate = null, id = null) {
         this.id = id || crypto.randomUUID();
         this.title = title.trim();
         this.description = description.trim();
         this.projectId = projectId;
+        this.dueDate = dueDate;
         this.completed = false;
         this.createdAt = new Date().toISOString();
         this.modifiedAt = null;
@@ -16,7 +17,7 @@ export default class Todo {
         this.completed = !this.completed;
     }
 
-    edit(newTitle, newDescription, newProject) {
+    edit(newTitle, newDescription, newProject, newDueDate = null) {
         if (newTitle.trim().length === 0) {
             throw new Error("Todo title cannot be empty");
         }
@@ -30,6 +31,7 @@ export default class Todo {
         this.title = newTitle.trim();
         this.description = newDescription.trim();
         this.projectId = newProject.trim();
+        this.dueDate = newDueDate;
         this.modifiedAt = new Date().toISOString();
 
         // Update the stored todo
@@ -54,6 +56,7 @@ export default class Todo {
             title: this.title,
             description: this.description,
             projectId: this.projectId,
+            dueDate: this.dueDate,
             completed: this.completed,
             createdAt: this.createdAt,
             modifiedAt: this.modifiedAt
@@ -66,6 +69,7 @@ export default class Todo {
         todo.title = data.title;
         todo.description = data.description;
         todo.projectId = data.projectId;
+        todo.dueDate = data.dueDate ?? null;
         todo.completed = data.completed;
         todo.createdAt = data.createdAt;
         todo.modifiedAt = data.modifiedAt ?? null;

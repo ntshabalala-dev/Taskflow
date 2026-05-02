@@ -57,8 +57,6 @@ body {
 }
 
 .project-items__control {
-    display: grid;
-    grid-template-columns: auto 1fr 300px auto;
     align-items: center
         /* gap: 1rem; */
     ;
@@ -66,6 +64,11 @@ body {
     padding-bottom: 0.5rem;
     /* background-color: #e8e9e9; */
     /* border-bottom: 1px solid #ccc; */
+}
+
+.todo-grid {
+    display: grid;
+    grid-template-columns: auto 1fr 200px 250px;
 }
 
 .todo-grid> :first-child {
