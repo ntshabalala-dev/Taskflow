@@ -28,24 +28,21 @@ function taskFlowController() {
     }
 }
 
-function linkHelper() {
-    const links = document.querySelectorAll('.menu-container__options--section a');
-    const firstLink = document.querySelector('.menu-container__options--section:nth-child(1) a');
+function buttonHelper() {
+    const projects = document.querySelectorAll('#projects__list .project');
 
-    firstLink.classList.add('active');
+    projects.forEach(project => {
+        project.addEventListener('click', function () {
+            // 1. Find the currently active button
+            const activeButton = document.querySelector('#projects__list button.active');
 
-    links.forEach(link => {
-        link.addEventListener('click', function () {
-            // 1. Find the currently active tag
-            const activeTag = document.querySelector('a.active');
-
-            if (activeTag) {
-                console.log('Previously active:', activeTag.textContent);
-                // Remove the class from the old active tag
-                activeTag.classList.remove('active');
+            if (activeButton) {
+                console.log('Previously active:', activeButton.textContent);
+                // Remove the class from the old active button
+                activeButton.classList.remove('active');
             }
 
-            // 2. Add the active class to the clicked tag
+            // 2. Add the active class to the clicked button
             this.classList.add('active');
         });
     });
@@ -130,6 +127,7 @@ function linkHelper() {
     createProjectDialogControls();
     renderProjectTitle();
     renderProjects();
+    buttonHelper();
 })();
 
 
