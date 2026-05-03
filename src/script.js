@@ -54,7 +54,7 @@ function buttonHelper() {
     appController.createDefaultData();
 
     const defaultList = document.querySelector('#projects__list');
-    const projectList = document.querySelector('#projects__list');
+    const projectsList = document.querySelector('#projects__list');
 
     const createProjectDialogControls = () => {
         const openCreateProjectDialog = document.querySelector('#open-create-project-dialog-btn');
@@ -120,8 +120,32 @@ function buttonHelper() {
         form.addEventListener('submit', (e) => {
             e.preventDefault();
             const formData = new FormData(form);
-            // console.log([...formData]);
+            //console.log([...formData]);
             // console.log(formData.get('project-user-choice'));
+            try {
+                const title = formData.get('todo-title');
+                const description = formData.get('todo-description');
+                const projectId = formData.get('project-user-choice');
+                const dueDate = formData.get('todo-due-date') || null;
+                const priority = formData.get('priority-user-choice');
+
+                const todo = new Todo(title, description, projectId, dueDate, priority);
+                console.log(todo);
+
+                // Clear form inputs
+                form.reset();
+
+                // Re-render project items if the new todo belongs to the currently viewed project
+                const activeProjectButton = document.querySelector('#projects__list button.active');
+                if (activeProjectButton && activeProjectButton.dataset.projectId === projectId) {
+                    renderProjectItems(projectId);
+                    console.log('show items');
+                }
+
+            } catch (error) {
+                alert(error.message);
+                return;
+            }
             createTodoDialog.close();
         });
 
@@ -130,7 +154,7 @@ function buttonHelper() {
 
     const renderProjects = () => {
         const projects = Projects.findAll();
-        defaultList.innerHTML = '';
+        projectsList.innerHTML = '';
         projects.forEach((project, index) => {
             const projectElement = document.createElement('button');
             if (index == 0) {
@@ -139,15 +163,56 @@ function buttonHelper() {
             projectElement.classList.add('project');
             projectElement.dataset.projectId = project.id;
             projectElement.textContent = project.name;
-            defaultList.appendChild(projectElement);
+            projectsList.appendChild(projectElement);
         });
+    }
+
+    const renderProjectItems = (projectId) => {
+        const todos = Todos.findAllByProject(projectId);
+        const projectItemsContainer = document.querySelector('.project-items__todos');
+        projectItemsContainer.innerHTML = '';
+
+        console.log(todos);
+
+        todos.forEach((todo) => {
+            const projectItem = document.createElement('div');
+            projectItem.classList.add('project-items__todo', 'todo-grid');
+
+            const projectItemCheckBox = document.createElement('input');
+            projectItemCheckBox.type = 'checkbox';
+            projectItemCheckBox.id = 'project-item__select';
+            projectItemCheckBox.dataset.todoId = todo.id;
+            projectItemCheckBox.name = 'project-item__select';
+
+            const projectItemTitle = document.createElement('span');
+            projectItemTitle.textContent = todo.title;
+
+            const projectItemDueDate = document.createElement('span');
+            projectItemDueDate.textContent = todo.dueDate ? new Date(todo.dueDate).toLocaleDateString() : 'No due date';
+
+            const projectItemPriority = document.createElement('span');
+            projectItemPriority.textContent = todo.priority;
+
+            projectItem.append(
+                projectItemCheckBox,
+                projectItemTitle,
+                projectItemDueDate,
+                projectItemPriority
+            );
+
+            projectItemsContainer.appendChild(projectItem);
+        })
     }
 
     const renderProjectTitle = (projectId) => {
         const projectSpan = document.querySelector('.project-items__title #project-title');
-        projectList.addEventListener('click', (e) => {
+        projectsList.addEventListener('click', (e) => {
             if (e.target.classList.contains('project')) {
-                projectSpan.textContent = e.target.textContent;
+                const target = e.target;
+                projectSpan.textContent = target.textContent;
+                //console.log(target.dataset.projectId, typeof target.dataset.projectId);
+
+                renderProjectItems(target.dataset.projectId);
             }
         });
         const firstProject = Projects.findAll()[0];
