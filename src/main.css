@@ -41,13 +41,37 @@ body {
 }
 
 .project {
-    text-align: left;
+    /* text-align: left; */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
     padding: 0.2rem;
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.2s ease;
     background-color: transparent;
     border: none;
+}
+
+.project span button {
+    background-color: transparent;
+    border: none;
+    /* padding-top: 1px; */
+    /* align-items: end; */
+}
+
+.project span {
+    display: flex;
+}
+
+.project span button img {
+    width: 18px;
+    height: 18px%;
+}
+
+.project span button:hover {
+    cursor: pointer;
 }
 
 .project.active {

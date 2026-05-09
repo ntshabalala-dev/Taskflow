@@ -3,7 +3,10 @@ import Projects from './Models/Projects.js';
 import Project from './Entities/project.js';
 import Todos from './Models/Todos.js';
 import Todo from './Entities/todo.js';
-import main from '../src/main.css'
+import '../src/main.css'
+import editSvg from './Assets/icons/edit.svg';
+import deleteSvg from './Assets/icons/trash-2.svg';
+
 
 // let p = new Project('Test', "This is a test project");
 // let p2 = new Project('Test2', "This is a test project two");
@@ -163,7 +166,44 @@ function buttonHelper() {
             projectElement.classList.add('project');
             projectElement.dataset.projectId = project.id;
             projectElement.textContent = project.name;
+            projectControlButtons(projectElement);
             projectsList.appendChild(projectElement);
+        });
+    }
+
+    const projectControlButtons = (projectElement) => {
+        const controlSpan = document.createElement('span');
+        projectElement.appendChild(controlSpan);
+        const editBtn = document.createElement('button');
+        const deleteBtn = document.createElement('button');
+
+        const editIcon = document.createElement('img');
+        editIcon.src = editSvg;
+        editIcon.alt = 'Edit';
+        // editIcon.width = 16;
+        // editIcon.height = 16;
+        editBtn.appendChild(editIcon);
+
+        const deleteIcon = document.createElement('img');
+        deleteIcon.src = deleteSvg;
+        deleteIcon.alt = 'Delete';
+        // deleteIcon.width = 16;
+        // deleteIcon.height = 16;
+        deleteBtn.appendChild(deleteIcon);
+
+        controlSpan.append(editBtn, deleteBtn);
+
+        controlSpan.addEventListener('click', (e) => {
+            // Prevent the click from propagating to the project button
+            e.stopPropagation();
+            const projectId = projectElement.dataset.projectId;
+            if (e.target === editBtn || e.target === editIcon) {
+                // Handle edit project
+                console.log('Edit project', projectId);
+            } else if (e.target === deleteBtn || e.target === deleteIcon) {
+                // Handle delete project
+                console.log('Delete project', projectId);
+            }
         });
     }
 
