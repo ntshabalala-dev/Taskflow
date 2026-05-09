@@ -210,8 +210,6 @@ function buttonHelper() {
             if (e.target.classList.contains('project')) {
                 const target = e.target;
                 projectSpan.textContent = target.textContent;
-                //console.log(target.dataset.projectId, typeof target.dataset.projectId);
-
                 renderProjectItems(target.dataset.projectId);
             }
         });
@@ -221,6 +219,7 @@ function buttonHelper() {
             projectSpan.textContent = project.name;
         } else if (firstProject) {
             projectSpan.textContent = firstProject.name;
+            renderProjectItems(firstProject.id);
         } else {
             projectSpan.textContent = 'No Projects';
         }
