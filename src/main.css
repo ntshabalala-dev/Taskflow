@@ -6,7 +6,7 @@
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f0f0f0;
+    background-color: #e8e9e9;
     color: black;
     /* create theme for colors */
     display: grid;
@@ -67,7 +67,7 @@ body {
 
 .project span button img {
     width: 18px;
-    height: 18px%;
+    height: 18px;
 }
 
 .project span button:hover {
@@ -115,6 +115,7 @@ body {
     padding-top: 1rem;
     padding-bottom: 1rem;
     border-bottom: 1px solid #ccc;
+    background-color: #ffffff;
 }
 
 .todo-search {
@@ -170,6 +171,14 @@ dialog::backdrop {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+    background-color: #ffffff;
+    border-radius: 1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.project-items__control,
+.project-items__todos {
+    padding: .7rem;
 }
 
 /* Tablet/Desktop View: 2 Columns */
