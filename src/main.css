@@ -103,12 +103,14 @@ body {
     grid-template-columns: auto 1fr 200px 150px 100px;
 }
 
-.todo-grid> :first-child {
+.todo-grid> :first-child,
+#expanded-card-checkbox {
     margin-right: .5rem;
 }
 
 #project-items__select-all,
-#project-item__select {
+#project-item__select,
+#expanded-card-checkbox {
     width: 18px;
     height: 18px;
 }
@@ -187,6 +189,12 @@ dialog::backdrop {
 .project-items__control,
 .project-items__todos {
     padding: .7rem;
+}
+
+.expanded-card.open {
+    display: grid;
+    grid-column: span 5;
+    grid-template-columns: auto 1fr 200px 250px
 }
 
 /* Tablet/Desktop View: 2 Columns */

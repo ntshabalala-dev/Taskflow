@@ -209,6 +209,39 @@ function buttonHelper() {
                 const todoId = controlElement.dataset.todoId;
                 if (e.target === editBtn || e.target === editIcon) {
                     // Handle edit todo
+                    const expandedCard = document.createElement('div');
+                    expandedCard.classList.add('expanded-card', 'open');
+
+                    const myInput = document.createElement("input");
+                    myInput.type = "text";
+                    myInput.placeholder = "test";
+                    myInput.style.marginRight = "0.5rem";
+
+                    const myInput2 = document.createElement("input");
+                    myInput.type = "text";
+                    myInput.placeholder = "test";
+
+                    const myInput3 = document.createElement("select");
+
+                    const newOption = document.createElement('option');
+                    newOption.value = 'option_value';
+                    newOption.textContent = 'Display Text';
+
+                    myInput3.appendChild(newOption);
+
+                    const hiddenCheckbox = document.createElement("input");
+                    hiddenCheckbox.id = "expanded-card-checkbox";
+                    hiddenCheckbox.type = "checkbox";
+                    hiddenCheckbox.style.visibility = "hidden";
+
+                    expandedCard.append(hiddenCheckbox, myInput, myInput2, myInput3);
+
+                    controlElement.appendChild(expandedCard);
+
+                    console.log(controlElement);
+
+
+
                     console.log('Edit todo', todoId);
                 } else if (e.target === deleteBtn || e.target === deleteIcon) {
                     // Handle delete todo
