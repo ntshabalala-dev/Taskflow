@@ -54,12 +54,15 @@ body {
     border: none;
 }
 
-.project span button {
+.project span button,
+.todo span button {
     background-color: transparent;
     border: none;
     /* padding-top: 1px; */
     /* align-items: end; */
 }
+
+
 
 .project span {
     display: flex;
@@ -68,6 +71,11 @@ body {
 .project span button img {
     width: 18px;
     height: 18px;
+}
+
+.todo span button img {
+    width: 20px;
+    height: 20px;
 }
 
 .project span button:hover {
@@ -92,7 +100,7 @@ body {
 
 .todo-grid {
     display: grid;
-    grid-template-columns: auto 1fr 200px 250px;
+    grid-template-columns: auto 1fr 200px 150px 100px;
 }
 
 .todo-grid> :first-child {

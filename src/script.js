@@ -166,29 +166,25 @@ function buttonHelper() {
             projectElement.classList.add('project');
             projectElement.dataset.projectId = project.id;
             projectElement.textContent = project.name;
-            projectControlButtons(projectElement);
+            applicationControlButtons(projectElement);
             projectsList.appendChild(projectElement);
         });
     }
 
-    const projectControlButtons = (projectElement) => {
+    const applicationControlButtons = (controlElement) => {
         const controlSpan = document.createElement('span');
-        projectElement.appendChild(controlSpan);
+        controlElement.appendChild(controlSpan);
         const editBtn = document.createElement('button');
         const deleteBtn = document.createElement('button');
 
         const editIcon = document.createElement('img');
         editIcon.src = editSvg;
         editIcon.alt = 'Edit';
-        // editIcon.width = 16;
-        // editIcon.height = 16;
         editBtn.appendChild(editIcon);
 
         const deleteIcon = document.createElement('img');
         deleteIcon.src = deleteSvg;
         deleteIcon.alt = 'Delete';
-        // deleteIcon.width = 16;
-        // deleteIcon.height = 16;
         deleteBtn.appendChild(deleteIcon);
 
         controlSpan.append(editBtn, deleteBtn);
@@ -196,14 +192,30 @@ function buttonHelper() {
         controlSpan.addEventListener('click', (e) => {
             // Prevent the click from propagating to the project button
             e.stopPropagation();
-            const projectId = projectElement.dataset.projectId;
-            if (e.target === editBtn || e.target === editIcon) {
-                // Handle edit project
-                console.log('Edit project', projectId);
-            } else if (e.target === deleteBtn || e.target === deleteIcon) {
-                // Handle delete project
-                console.log('Delete project', projectId);
+            console.log(controlElement.classList.contains('project'));
+
+            const isProject = controlElement.classList.contains('project');
+
+            if (isProject) {
+                const projectId = controlElement.dataset.projectId;
+                if (e.target === editBtn || e.target === editIcon) {
+                    // Handle edit project
+                    console.log('Edit project', projectId);
+                } else if (e.target === deleteBtn || e.target === deleteIcon) {
+                    // Handle delete project
+                    console.log('Delete project', projectId);
+                }
+            } else {
+                const todoId = controlElement.dataset.todoId;
+                if (e.target === editBtn || e.target === editIcon) {
+                    // Handle edit todo
+                    console.log('Edit todo', todoId);
+                } else if (e.target === deleteBtn || e.target === deleteIcon) {
+                    // Handle delete todo
+                    console.log('Delete todo', todoId);
+                }
             }
+
         });
     }
 
@@ -216,7 +228,8 @@ function buttonHelper() {
 
         todos.forEach((todo) => {
             const projectItem = document.createElement('div');
-            projectItem.classList.add('project-items__todo', 'todo-grid');
+            projectItem.dataset.todoId = todo.id;
+            projectItem.classList.add('todo', 'project-items__todo', 'todo-grid');
 
             const projectItemCheckBox = document.createElement('input');
             projectItemCheckBox.type = 'checkbox';
@@ -233,12 +246,16 @@ function buttonHelper() {
             const projectItemPriority = document.createElement('span');
             projectItemPriority.textContent = todo.priority;
 
+            // const projectItemControls = document.createElement('span');
+
             projectItem.append(
                 projectItemCheckBox,
                 projectItemTitle,
                 projectItemDueDate,
                 projectItemPriority
             );
+
+            applicationControlButtons(projectItem);
 
             projectItemsContainer.appendChild(projectItem);
         })
