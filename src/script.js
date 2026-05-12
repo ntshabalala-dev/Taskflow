@@ -175,7 +175,7 @@ function buttonHelper() {
 
     const applicationControlButtons = (controlElement) => {
 
-        const isProject = controlElement.classList.contains('project');
+        const isProjectContainer = controlElement.classList.contains('project');
         const controlSpan = document.createElement('span');
         controlElement.appendChild(controlSpan);
         const editBtn = document.createElement('button');
@@ -194,7 +194,7 @@ function buttonHelper() {
         deleteIcon.alt = 'Delete';
         deleteBtn.appendChild(deleteIcon);
 
-        if (!isProject) {
+        if (!isProjectContainer) {
             controlSpan.classList.add('todo-controls');
 
             chevronIcon.src = chevronDownSvg;
@@ -206,60 +206,71 @@ function buttonHelper() {
 
         controlSpan.append(editBtn, deleteBtn);
 
+        // @card = cardelement
+        const createExpandedCard = (card) => {
+            const myInput = document.createElement("input");
+            myInput.type = "text";
+            myInput.placeholder = "test";
+            myInput.style.marginRight = "0.5rem";
+
+            const myInput2 = document.createElement("input");
+            myInput.type = "text";
+            myInput.placeholder = "test";
+
+            const myInput3 = document.createElement("select");
+
+            const newOption = document.createElement('option');
+            newOption.value = 'option_value';
+            newOption.textContent = 'Display Text';
+
+            myInput3.appendChild(newOption);
+
+            const hiddenCheckbox = document.createElement("input");
+            hiddenCheckbox.id = "expanded-card-checkbox";
+            hiddenCheckbox.type = "checkbox";
+            hiddenCheckbox.style.visibility = "hidden";
+
+            card.append(hiddenCheckbox, myInput, myInput2, myInput3);
+
+            return card;
+        }
+
         controlSpan.addEventListener('click', (e) => {
             // Prevent the click from propagating to the project button
             e.stopPropagation();
+            const target = e.target;
             console.log(controlElement.classList.contains('project'));
 
-
-            if (isProject) {
+            if (isProjectContainer) {
                 const projectId = controlElement.dataset.projectId;
-                if (e.target === editBtn || e.target === editIcon) {
+                if (target === editBtn || target === editIcon) {
                     // Handle edit project
                     console.log('Edit project', projectId);
-                } else if (e.target === deleteBtn || e.target === deleteIcon) {
+                } else if (target === deleteBtn || target === deleteIcon) {
                     // Handle delete project
                     console.log('Delete project', projectId);
                 }
             } else {
                 const todoId = controlElement.dataset.todoId;
-                if (e.target === chevronBtn || e.target === chevronIcon) {
-                    // Handle edit todo
-                    const expandedCard = document.createElement('div');
-                    expandedCard.classList.add('expanded-card', 'open');
+                // Handle expand/collapse card
+                if (target === chevronBtn || target === chevronIcon) {
+                    if (target.alt === 'expand') {
+                        const expandedCardContainer = document.createElement('div');
+                        chevronIcon.src = chevronUpSvg;
+                        chevronIcon.alt = 'collapse';
+                        expandedCardContainer.classList.add('expanded-card', 'open');
+                        controlElement.appendChild(createExpandedCard(expandedCardContainer));
+                    } else {
+                        chevronIcon.src = chevronDownSvg;
+                        chevronIcon.alt = 'expand';
+                        const expandedCard = controlElement.querySelector('.expanded-card')
+                        controlElement.removeChild(expandedCard);
+                    }
 
-                    const myInput = document.createElement("input");
-                    myInput.type = "text";
-                    myInput.placeholder = "test";
-                    myInput.style.marginRight = "0.5rem";
-
-                    const myInput2 = document.createElement("input");
-                    myInput.type = "text";
-                    myInput.placeholder = "test";
-
-                    const myInput3 = document.createElement("select");
-
-                    const newOption = document.createElement('option');
-                    newOption.value = 'option_value';
-                    newOption.textContent = 'Display Text';
-
-                    myInput3.appendChild(newOption);
-
-                    const hiddenCheckbox = document.createElement("input");
-                    hiddenCheckbox.id = "expanded-card-checkbox";
-                    hiddenCheckbox.type = "checkbox";
-                    hiddenCheckbox.style.visibility = "hidden";
-
-                    expandedCard.append(hiddenCheckbox, myInput, myInput2, myInput3);
-
-                    controlElement.appendChild(expandedCard);
-
-                    console.log(controlElement);
-
-
-
+                } else if (target === editBtn || target === editIcon) {
+                    // Handle delete todo
                     console.log('Edit todo', todoId);
-                } else if (e.target === deleteBtn || e.target === deleteIcon) {
+                } else if (target === deleteBtn || target === deleteIcon) {
                     // Handle delete todo
                     console.log('Delete todo', todoId);
                 }
