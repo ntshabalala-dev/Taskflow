@@ -101,6 +101,7 @@ body {
 .todo-grid {
     display: grid;
     grid-template-columns: auto 1fr 200px 150px 100px;
+    align-items: center;
 }
 
 .todo-grid> :first-child,
@@ -181,13 +182,16 @@ dialog::backdrop {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+}
+
+.project-items__control {
+    padding: .7rem;
+}
+
+.project-items__todo.todo {
     background-color: #ffffff;
     border-radius: 1rem;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.project-items__control,
-.project-items__todos {
     padding: .7rem;
 }
 
@@ -195,6 +199,21 @@ dialog::backdrop {
     display: grid;
     grid-column: span 5;
     grid-template-columns: auto 1fr 200px 250px
+}
+
+.project-items__todos .todo-controls {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.project-items__todos .todo-controls button {
+    display: flex;
+    align-items: center;
+}
+
+.project-items__todos .todo-controls button:first-child img {
+    padding-top: 4px;
+    height: 24px;
 }
 
 /* Tablet/Desktop View: 2 Columns */

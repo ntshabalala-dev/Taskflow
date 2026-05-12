@@ -6,6 +6,8 @@ import Todo from './Entities/todo.js';
 import '../src/main.css'
 import editSvg from './Assets/icons/edit.svg';
 import deleteSvg from './Assets/icons/trash-2.svg';
+import chevronDownSvg from './Assets/icons/chevron-down.svg';
+import chevronUpSvg from './Assets/icons/chevron-up.svg';
 
 
 // let p = new Project('Test', "This is a test project");
@@ -172,10 +174,15 @@ function buttonHelper() {
     }
 
     const applicationControlButtons = (controlElement) => {
+
+        const isProject = controlElement.classList.contains('project');
         const controlSpan = document.createElement('span');
         controlElement.appendChild(controlSpan);
         const editBtn = document.createElement('button');
         const deleteBtn = document.createElement('button');
+
+        const chevronBtn = document.createElement('button');
+        const chevronIcon = document.createElement('img');
 
         const editIcon = document.createElement('img');
         editIcon.src = editSvg;
@@ -187,6 +194,16 @@ function buttonHelper() {
         deleteIcon.alt = 'Delete';
         deleteBtn.appendChild(deleteIcon);
 
+        if (!isProject) {
+            controlSpan.classList.add('todo-controls');
+
+            chevronIcon.src = chevronDownSvg;
+            chevronIcon.alt = 'expand';
+            chevronBtn.appendChild(chevronIcon);
+            controlSpan.appendChild(chevronBtn);
+        }
+
+
         controlSpan.append(editBtn, deleteBtn);
 
         controlSpan.addEventListener('click', (e) => {
@@ -194,7 +211,6 @@ function buttonHelper() {
             e.stopPropagation();
             console.log(controlElement.classList.contains('project'));
 
-            const isProject = controlElement.classList.contains('project');
 
             if (isProject) {
                 const projectId = controlElement.dataset.projectId;
@@ -207,7 +223,7 @@ function buttonHelper() {
                 }
             } else {
                 const todoId = controlElement.dataset.todoId;
-                if (e.target === editBtn || e.target === editIcon) {
+                if (e.target === chevronBtn || e.target === chevronIcon) {
                     // Handle edit todo
                     const expandedCard = document.createElement('div');
                     expandedCard.classList.add('expanded-card', 'open');
@@ -257,7 +273,14 @@ function buttonHelper() {
         const projectItemsContainer = document.querySelector('.project-items__todos');
         projectItemsContainer.innerHTML = '';
 
+
+        if (todos.length <= 0) {
+            return
+        }
+
         console.log(todos);
+
+        // projectItemsContainer.style.visibility = 'visible';
 
         todos.forEach((todo) => {
             const projectItem = document.createElement('div');
@@ -304,6 +327,8 @@ function buttonHelper() {
             }
         });
         const firstProject = Projects.findAll()[0];
+        console.log(firstProject);
+
         if (projectId) {
             const project = Projects.findById(projectId);
             projectSpan.textContent = project.name;
