@@ -240,9 +240,24 @@ dialog::backdrop {
     margin-right: .5rem;
 }
 
-/* .form-control.title~.form-control>div:nth-child(2) {
-    width: 100%;
-} */
+.form-control__buttons {
+    grid-column: 3/5;
+    display: grid;
+    gap: .5rem;
+    grid-template-columns: repeat(3, auto);
+    margin-top: 1rem;
+    margin-right: .5rem;
+    /* display: flex;
+    justify-content: end; */
+}
+
+.form-control__buttons button {
+    padding-top: .5rem;
+    padding-bottom: .5rem;
+    background-color: transparent;
+    border: 1px solid;
+    border-radius: .5rem;
+}
 
 #todo-due-date {
     /* width: 100%; */

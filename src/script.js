@@ -302,7 +302,24 @@ function buttonHelper() {
             hiddenCheckbox.type = "checkbox";
             hiddenCheckbox.style.visibility = "hidden";
 
-            card.append(hiddenCheckbox, formControl1, formControl2, formControl3);
+            const formControl__buttons = document.createElement('div');
+            formControl__buttons.classList.add('form-control__buttons');
+
+            const saveBtn = document.createElement('button');
+            saveBtn.textContent = 'Save Changes';
+            saveBtn.type = 'submit';
+
+            const markCompleteBtn = document.createElement('button');
+            markCompleteBtn.textContent = 'Mark as Complete';
+            markCompleteBtn.type = 'button';
+
+            const deleteToDoBtn = document.createElement('button');
+            deleteToDoBtn.textContent = 'Delete Todo';
+            deleteToDoBtn.type = 'button';
+
+            formControl__buttons.append(saveBtn, markCompleteBtn, deleteToDoBtn);
+
+            card.append(hiddenCheckbox, formControl1, formControl2, formControl3, formControl__buttons);
 
             return card;
         }
