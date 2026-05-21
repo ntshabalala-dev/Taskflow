@@ -209,6 +209,7 @@ dialog::backdrop {
 .project-items__todos .todo-controls button {
     display: flex;
     align-items: center;
+    justify-content: center;
 }
 
 .project-items__todos .todo-controls button:first-child img {
@@ -222,10 +223,26 @@ dialog::backdrop {
     flex-direction: column;
 }
 
-.form-control.duedate {
+.form-control.duedate,
+.form-control.priority {
     display: flex;
     align-items: end;
 }
+
+.form-control__priority,
+.form-control__duedate {
+    width: 100%;
+}
+
+#todo-due-date,
+#todo-priority-user-choice,
+#todo-description {
+    margin-right: .5rem;
+}
+
+/* .form-control.title~.form-control>div:nth-child(2) {
+    width: 100%;
+} */
 
 #todo-due-date {
     /* width: 100%; */

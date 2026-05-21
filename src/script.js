@@ -245,7 +245,6 @@ function buttonHelper() {
             descriptionInput.id = "todo-description";
             descriptionInput.type = "text";
             descriptionInput.placeholder = "test";
-            descriptionInput.style.marginRight = "0.5rem";
 
             const formControl__description = document.createElement('div');
             formControl__description.classList.add('form-control__description');
@@ -275,19 +274,35 @@ function buttonHelper() {
             formControl2.append(formControl__duedate);
 
             // Column 3: Priority
-            const myInput3 = document.createElement("select");
-            const newOption = document.createElement('option');
-            newOption.value = 'option_value';
-            newOption.textContent = 'Display Text';
+            const priorityLabel = document.createElement("label");
+            priorityLabel.textContent = "Priority";
+            priorityLabel.setAttribute('for', 'todo-priority-user-choice');
 
-            myInput3.appendChild(newOption);
+            const priorityInput = document.createElement("select");
+            priorityInput.id = "todo-priority-user-choice";
+            ['High', 'Medium', 'Low'].forEach(element => {
+                const newOption = document.createElement('option');
+                newOption.value = element;
+                newOption.textContent = element;
+                priorityInput.appendChild(newOption);
+            });
+
+
+            const formControl__priority = document.createElement('div');
+            formControl__priority.classList.add('form-control__priority');
+            formControl__priority.append(priorityLabel, priorityInput);
+
+            const formControl3 = document.createElement('div');
+            formControl3.classList.add('form-control', 'priority');
+            formControl3.append(formControl__priority);
+
 
             const hiddenCheckbox = document.createElement("input");
             hiddenCheckbox.id = "expanded-card-checkbox";
             hiddenCheckbox.type = "checkbox";
             hiddenCheckbox.style.visibility = "hidden";
 
-            card.append(hiddenCheckbox, formControl1, formControl2, myInput3);
+            card.append(hiddenCheckbox, formControl1, formControl2, formControl3);
 
             return card;
         }
