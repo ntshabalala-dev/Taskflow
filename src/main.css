@@ -216,6 +216,23 @@ dialog::backdrop {
     height: 24px;
 }
 
+/* form-control */
+.form-control>* {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-control.duedate {
+    display: flex;
+    align-items: end;
+}
+
+#todo-due-date {
+    /* width: 100%; */
+    /* margin-right: .5rem; */
+}
+
+
 /* Tablet/Desktop View: 2 Columns */
 @media (min-width: 600px) {
     /* .contact {

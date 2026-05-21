@@ -78,8 +78,21 @@ function buttonHelper() {
 
         createProjectBtn.addEventListener('click', (e) => {
             e.preventDefault();
+            const formControl = document.createElement('div');
+            formControl.className = 'form-control';
+
+            // Find all relevant fields (inputs and their labels) to wrap them
+            const nameLabel = document.querySelector('#project-name').closest('.form-group'); // Assuming a structure where labels are grouped
             const nameInput = document.querySelector('#project-name');
+            const descriptionLabel = document.querySelector('#project-description').closest('.form-group');
             const descriptionInput = document.querySelector('#project-description');
+
+            // For simplicity based on the provided code context, we wrap inputs directly.
+            // If labels exist and need wrapping too, this part needs more context.
+            // We will wrap the inputs as requested in the existing flow.
+
+            formControl.appendChild(nameInput);
+            formControl.appendChild(descriptionInput);
 
             try {
                 (new Project(nameInput.value, descriptionInput.value));
@@ -208,17 +221,61 @@ function buttonHelper() {
 
         // @card = cardelement
         const createExpandedCard = (card) => {
-            const myInput = document.createElement("input");
-            myInput.type = "text";
-            myInput.placeholder = "test";
-            myInput.style.marginRight = "0.5rem";
+            // Column 1: Todo Title
+            const titleInput = document.createElement("input");
+            titleInput.type = "text";
+            titleInput.placeholder = "test";
+            titleInput.style.marginRight = "0.5rem";
+            titleInput.id = 'todo-title';
 
-            const myInput2 = document.createElement("input");
-            myInput.type = "text";
-            myInput.placeholder = "test";
+            const titleLabel = document.createElement("label");
+            titleLabel.textContent = "Title";
+            titleLabel.setAttribute('for', 'todo-title');
 
+            const formControl__title = document.createElement('div');
+            formControl__title.classList.add('form-control__title');
+            formControl__title.append(titleLabel, titleInput);
+
+            // Todo Description
+            const descriptionLabel = document.createElement("label");
+            descriptionLabel.textContent = "Description";
+            descriptionLabel.setAttribute('for', 'todo-description');
+
+            const descriptionInput = document.createElement("input");
+            descriptionInput.id = "todo-description";
+            descriptionInput.type = "text";
+            descriptionInput.placeholder = "test";
+            descriptionInput.style.marginRight = "0.5rem";
+
+            const formControl__description = document.createElement('div');
+            formControl__description.classList.add('form-control__description');
+            formControl__description.append(descriptionLabel, descriptionInput);
+
+            const formControl1 = document.createElement('div');
+            formControl1.classList.add('form-control', 'title');
+            formControl1.append(formControl__title, formControl__description);
+
+            // Column 2: Due date
+            const dueDateLabel = document.createElement("label");
+            dueDateLabel.textContent = "Due Date";
+            dueDateLabel.setAttribute('for', 'todo-due-date');
+
+            const dueDateInput = document.createElement("input");
+            const myDiv = document.createElement("div");
+            dueDateInput.id = "todo-due-date";
+            dueDateInput.type = "text";
+            dueDateInput.placeholder = "test";
+
+            const formControl__duedate = document.createElement('div');
+            formControl__duedate.classList.add('form-control__duedate');
+            formControl__duedate.append(dueDateLabel, dueDateInput);
+
+            const formControl2 = document.createElement('div');
+            formControl2.classList.add('form-control', 'duedate');
+            formControl2.append(formControl__duedate);
+
+            // Column 3: Priority
             const myInput3 = document.createElement("select");
-
             const newOption = document.createElement('option');
             newOption.value = 'option_value';
             newOption.textContent = 'Display Text';
@@ -230,7 +287,7 @@ function buttonHelper() {
             hiddenCheckbox.type = "checkbox";
             hiddenCheckbox.style.visibility = "hidden";
 
-            card.append(hiddenCheckbox, myInput, myInput2, myInput3);
+            card.append(hiddenCheckbox, formControl1, formControl2, myInput3);
 
             return card;
         }
@@ -241,6 +298,7 @@ function buttonHelper() {
             const target = e.target;
             console.log(controlElement.classList.contains('project'));
 
+            // Controls for the project buttons
             if (isProjectContainer) {
                 const projectId = controlElement.dataset.projectId;
                 if (target === editBtn || target === editIcon) {
@@ -251,11 +309,12 @@ function buttonHelper() {
                     console.log('Delete project', projectId);
                 }
             } else {
+                // Controls for the todo buttons
                 const todoId = controlElement.dataset.todoId;
                 // Handle expand/collapse card
                 if (target === chevronBtn || target === chevronIcon) {
                     if (target.alt === 'expand') {
-                        const expandedCardContainer = document.createElement('div');
+                        const expandedCardContainer = document.createElement('form');
                         chevronIcon.src = chevronUpSvg;
                         chevronIcon.alt = 'collapse';
                         expandedCardContainer.classList.add('expanded-card', 'open');
@@ -284,14 +343,12 @@ function buttonHelper() {
         const projectItemsContainer = document.querySelector('.project-items__todos');
         projectItemsContainer.innerHTML = '';
 
-
+        // Only render items if they exist
         if (todos.length <= 0) {
             return
         }
 
         console.log(todos);
-
-        // projectItemsContainer.style.visibility = 'visible';
 
         todos.forEach((todo) => {
             const projectItem = document.createElement('div');
