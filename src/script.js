@@ -220,11 +220,13 @@ function buttonHelper() {
         controlSpan.append(editBtn, deleteBtn);
 
         // @card = cardelement
-        const createExpandedCard = (card) => {
+        const createExpandedCard = (card, todoId) => {
+            const todo = Todos.findById(todoId);
             // Column 1: Todo Title
             const titleInput = document.createElement("input");
             titleInput.type = "text";
-            titleInput.placeholder = "test";
+            titleInput.value = todo.title;
+            titleInput.placeholder = "Todo Title";
             titleInput.style.marginRight = "0.5rem";
             titleInput.id = 'todo-title';
 
@@ -244,7 +246,9 @@ function buttonHelper() {
             const descriptionInput = document.createElement("input");
             descriptionInput.id = "todo-description";
             descriptionInput.type = "text";
-            descriptionInput.placeholder = "test";
+            descriptionInput.name = "todo-description";
+            descriptionInput.value = todo.description;
+            descriptionInput.placeholder = "Todo Description";
 
             const formControl__description = document.createElement('div');
             formControl__description.classList.add('form-control__description');
@@ -262,8 +266,10 @@ function buttonHelper() {
             const dueDateInput = document.createElement("input");
             const myDiv = document.createElement("div");
             dueDateInput.id = "todo-due-date";
-            dueDateInput.type = "text";
-            dueDateInput.placeholder = "test";
+            dueDateInput.type = "date";
+            dueDateInput.placeholder = "Select due date";
+            dueDateInput.name = "todo-due-date";
+            dueDateInput.value = todo.dueDate ? new Date(todo.dueDate).toISOString().split('T')[0] : '';
 
             const formControl__duedate = document.createElement('div');
             formControl__duedate.classList.add('form-control__duedate');
@@ -278,19 +284,25 @@ function buttonHelper() {
             priorityLabel.textContent = "Priority";
             priorityLabel.setAttribute('for', 'todo-priority-user-choice');
 
-            const priorityInput = document.createElement("select");
-            priorityInput.id = "todo-priority-user-choice";
+            const prioritySelect = document.createElement("select");
+            prioritySelect.id = "todo-priority-user-choice";
+            prioritySelect.name = "priority-user-choice";
+            const todoPriorityCapitalized = todo.priority.charAt(0).toUpperCase() + todo.priority.slice(1);
+
             ['High', 'Medium', 'Low'].forEach(element => {
-                const newOption = document.createElement('option');
-                newOption.value = element;
-                newOption.textContent = element;
-                priorityInput.appendChild(newOption);
+                const option = document.createElement('option');
+                option.value = element;
+                option.textContent = element;
+                if (element == todoPriorityCapitalized) {
+                    option.selected = true;
+                }
+                prioritySelect.appendChild(option);
             });
 
 
             const formControl__priority = document.createElement('div');
             formControl__priority.classList.add('form-control__priority');
-            formControl__priority.append(priorityLabel, priorityInput);
+            formControl__priority.append(priorityLabel, prioritySelect);
 
             const formControl3 = document.createElement('div');
             formControl3.classList.add('form-control', 'priority');
@@ -343,6 +355,9 @@ function buttonHelper() {
             } else {
                 // Controls for the todo buttons
                 const todoId = controlElement.dataset.todoId;
+
+                //console.log(todo);
+
                 // Handle expand/collapse card
                 if (target === chevronBtn || target === chevronIcon) {
                     if (target.alt === 'expand') {
@@ -350,7 +365,7 @@ function buttonHelper() {
                         chevronIcon.src = chevronUpSvg;
                         chevronIcon.alt = 'collapse';
                         expandedCardContainer.classList.add('expanded-card', 'open');
-                        controlElement.appendChild(createExpandedCard(expandedCardContainer));
+                        controlElement.appendChild(createExpandedCard(expandedCardContainer, todoId));
                     } else {
                         chevronIcon.src = chevronDownSvg;
                         chevronIcon.alt = 'expand';
