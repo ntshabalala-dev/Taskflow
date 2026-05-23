@@ -19,19 +19,19 @@ export default class Todo {
     }
 
     edit(newTitle, newDescription, newProjectId, newDueDate = null, newPriority = null) {
-        if (newTitle.trim().length === 0) {
+        if (newTitle !== undefined && newTitle.trim().length === 0) {
             throw new Error("Todo title cannot be empty");
         }
-        if (newDescription.trim().length === 0) {
+        if (newDescription !== undefined && newDescription.trim().length === 0) {
             throw new Error("Todo description cannot be empty");
         }
-        if (newProject.trim().length === 0) {
+        if (newProjectId !== undefined && newProjectId.trim().length === 0) {
             throw new Error("Todo project cannot be empty");
         }
 
-        this.title = newTitle ? newTitle.trim() : this.title;
-        this.description = newDescription ? newDescription.trim() : this.description;
-        this.projectId = newProjectId ? newProject.trim() : this.projectId;
+        this.title = newTitle !== undefined ? newTitle.trim() : this.title;
+        this.description = newDescription !== undefined ? newDescription.trim() : this.description;
+        this.projectId = newProjectId !== undefined ? newProjectId.trim() : this.projectId;
         this.dueDate = newDueDate ? newDueDate : this.dueDate;
         this.priority = newPriority ? newPriority : this.priority;
         this.modifiedAt = new Date().toISOString();

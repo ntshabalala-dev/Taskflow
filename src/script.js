@@ -243,9 +243,9 @@ function buttonHelper() {
             descriptionLabel.textContent = "Description";
             descriptionLabel.setAttribute('for', 'todo-description');
 
-            const descriptionInput = document.createElement("input");
+            const descriptionInput = document.createElement("textarea");
             descriptionInput.id = "todo-description";
-            descriptionInput.type = "text";
+            descriptionInput.rows = 3;
             descriptionInput.name = "todo-description";
             descriptionInput.value = todo.description;
             descriptionInput.placeholder = "Todo Description";
@@ -256,7 +256,7 @@ function buttonHelper() {
 
             const formControl1 = document.createElement('div');
             formControl1.classList.add('form-control', 'title');
-            formControl1.append(formControl__title, formControl__description);
+            formControl1.append(formControl__description);
 
             // Column 2: Due date
             const dueDateLabel = document.createElement("label");
@@ -410,6 +410,7 @@ function buttonHelper() {
 
             const projectItemTitle = document.createElement('span');
             projectItemTitle.textContent = todo.title;
+            projectItemTitle.classList.add('todo-title');
 
             const projectItemDueDate = document.createElement('span');
             projectItemDueDate.textContent = todo.dueDate ? new Date(todo.dueDate).toLocaleDateString() : 'No due date';
@@ -417,14 +418,62 @@ function buttonHelper() {
             const projectItemPriority = document.createElement('span');
             projectItemPriority.textContent = todo.priority;
 
-            // const projectItemControls = document.createElement('span');
-
             projectItem.append(
                 projectItemCheckBox,
                 projectItemTitle,
                 projectItemDueDate,
                 projectItemPriority
             );
+
+            // Inline title editing
+            projectItemTitle.addEventListener('click', () => {
+                const originalTitle = todo.title;
+
+                const textarea = document.createElement('textarea');
+                textarea.value = originalTitle;
+                textarea.rows = 1;
+                textarea.classList.add('todo-title-input');
+
+                projectItemTitle.replaceWith(textarea);
+                textarea.focus();
+                textarea.select();
+
+                let saved = false;
+
+                const saveTitle = () => {
+                    if (saved) return;
+                    saved = true;
+
+                    const newTitle = textarea.value.trim();
+                    if (newTitle && newTitle !== originalTitle) {
+                        todo.edit(newTitle);
+                    }
+
+                    projectItemTitle.textContent = todo.title;
+                    textarea.replaceWith(projectItemTitle);
+                };
+
+                const cancelEdit = () => {
+                    if (saved) return;
+                    saved = true;
+
+                    projectItemTitle.textContent = originalTitle;
+                    textarea.replaceWith(projectItemTitle);
+                };
+
+                textarea.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        saveTitle();
+                    } else if (e.key === 'Escape') {
+                        cancelEdit();
+                    }
+                });
+
+                textarea.addEventListener('blur', () => {
+                    saveTitle();
+                });
+            });
 
             applicationControlButtons(projectItem);
 

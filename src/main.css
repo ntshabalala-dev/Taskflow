@@ -122,6 +122,19 @@ body {
     padding-bottom: .1rem;
 }
 
+.todo-title {
+    cursor: pointer;
+}
+
+.todo-title-input {
+    font-size: inherit;
+    font-family: inherit;
+    padding: 0;
+    border: 1px solid #0EA5E9;
+    border-radius: 4px;
+    resize: none;
+}
+
 .project-items {
     display: grid;
     grid-template-rows: auto 1fr;
