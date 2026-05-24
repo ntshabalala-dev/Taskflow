@@ -60,6 +60,10 @@ function buttonHelper() {
 
     const defaultList = document.querySelector('#projects__list');
     const projectsList = document.querySelector('#projects__list');
+    let pendingDeleteTodoId = null;
+    const confirmDeleteDialog = document.querySelector('#confirm-delete-dialog');
+    let pendingEditTodoId = null;
+    const editTodoDialog = document.querySelector('#edit-todo-dialog');
 
     const createProjectDialogControls = () => {
         const openCreateProjectDialog = document.querySelector('#open-create-project-dialog-btn');
@@ -168,6 +172,102 @@ function buttonHelper() {
         });
 
 
+    }
+
+    const confirmDeleteDialogControls = () => {
+        const cancelDeleteBtn = document.querySelector('#cancel-delete-btn');
+        const confirmDeleteBtn = document.querySelector('#confirm-delete-btn');
+
+        cancelDeleteBtn.addEventListener('click', () => {
+            pendingDeleteTodoId = null;
+            confirmDeleteDialog.close();
+        });
+
+        confirmDeleteBtn.addEventListener('click', () => {
+            if (!pendingDeleteTodoId) return;
+
+            const todo = Todos.findById(pendingDeleteTodoId);
+            todo.delete();
+
+            const activeProjectButton = document.querySelector('#projects__list button.active');
+            if (activeProjectButton) {
+                renderProjectItems(activeProjectButton.dataset.projectId);
+            }
+
+            pendingDeleteTodoId = null;
+            confirmDeleteDialog.close();
+        });
+
+        confirmDeleteDialog.addEventListener('click', (e) => {
+            if (e.target === confirmDeleteDialog) {
+                pendingDeleteTodoId = null;
+                confirmDeleteDialog.close();
+            }
+        });
+    }
+
+    const editTodoDialogControls = () => {
+        const cancelEditBtn = document.querySelector('#cancel-edit-btn');
+        const saveEditBtn = document.querySelector('#save-edit-btn');
+        const editTitleInput = document.querySelector('#edit-todo-title');
+        const editDescriptionInput = document.querySelector('#edit-todo-description');
+        const editDueDateInput = document.querySelector('#edit-todo-due-date');
+        const editPrioritySelect = document.querySelector('#edit-todo-priority');
+        const editProjectSelect = document.querySelector('#edit-todo-project');
+
+        const populateProjectSelect = () => {
+            editProjectSelect.innerHTML = '';
+            const projects = Projects.findAll();
+            projects.forEach(project => {
+                const option = document.createElement('option');
+                option.value = project.id;
+                option.textContent = project.name;
+                editProjectSelect.appendChild(option);
+            });
+        };
+
+        cancelEditBtn.addEventListener('click', () => {
+            pendingEditTodoId = null;
+            editTodoDialog.close();
+        });
+
+        saveEditBtn.addEventListener('click', () => {
+            if (!pendingEditTodoId) return;
+
+            const title = editTitleInput.value;
+            const description = editDescriptionInput.value;
+
+            if (!title.trim() || !description.trim()) {
+                alert('Title and description are required.');
+                return;
+            }
+
+            const todo = Todos.findById(pendingEditTodoId);
+            todo.edit(
+                title,
+                description,
+                editProjectSelect.value,
+                editDueDateInput.value || null,
+                editPrioritySelect.value
+            );
+
+            const activeProjectButton = document.querySelector('#projects__list button.active');
+            if (activeProjectButton) {
+                renderProjectItems(activeProjectButton.dataset.projectId);
+            }
+
+            pendingEditTodoId = null;
+            editTodoDialog.close();
+        });
+
+        editTodoDialog.addEventListener('click', (e) => {
+            if (e.target === editTodoDialog) {
+                pendingEditTodoId = null;
+                editTodoDialog.close();
+            }
+        });
+
+        return { populateProjectSelect };
     }
 
     const renderProjects = () => {
@@ -322,8 +422,16 @@ function buttonHelper() {
             saveBtn.type = 'submit';
 
             const markCompleteBtn = document.createElement('button');
-            markCompleteBtn.textContent = 'Mark as Complete';
+            markCompleteBtn.textContent = todo.completed ? 'Mark Incomplete' : 'Mark as Complete';
             markCompleteBtn.type = 'button';
+            markCompleteBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                todo.toggle();
+                const activeProjectButton = document.querySelector('#projects__list button.active');
+                if (activeProjectButton) {
+                    renderProjectItems(activeProjectButton.dataset.projectId);
+                }
+            });
 
             const deleteToDoBtn = document.createElement('button');
             deleteToDoBtn.textContent = 'Delete Todo';
@@ -374,11 +482,22 @@ function buttonHelper() {
                     }
 
                 } else if (target === editBtn || target === editIcon) {
-                    // Handle delete todo
-                    console.log('Edit todo', todoId);
+                    const todo = Todos.findById(todoId);
+                    pendingEditTodoId = todoId;
+
+                    populateEditProjectSelect();
+                    document.querySelector('#edit-todo-title').value = todo.title;
+                    document.querySelector('#edit-todo-description').value = todo.description;
+                    document.querySelector('#edit-todo-due-date').value = todo.dueDate
+                        ? new Date(todo.dueDate).toISOString().split('T')[0]
+                        : '';
+                    document.querySelector('#edit-todo-priority').value = todo.priority;
+                    document.querySelector('#edit-todo-project').value = todo.projectId;
+
+                    editTodoDialog.showModal();
                 } else if (target === deleteBtn || target === deleteIcon) {
-                    // Handle delete todo
-                    console.log('Delete todo', todoId);
+                    pendingDeleteTodoId = todoId;
+                    confirmDeleteDialog.showModal();
                 }
             }
 
@@ -401,12 +520,18 @@ function buttonHelper() {
             const projectItem = document.createElement('div');
             projectItem.dataset.todoId = todo.id;
             projectItem.classList.add('todo', 'project-items__todo', 'todo-grid');
+            if (todo.completed) {
+                projectItem.classList.add('completed');
+            }
 
             const projectItemCheckBox = document.createElement('input');
             projectItemCheckBox.type = 'checkbox';
             projectItemCheckBox.id = 'project-item__select';
             projectItemCheckBox.dataset.todoId = todo.id;
             projectItemCheckBox.name = 'project-item__select';
+            if (todo.completed) {
+                projectItemCheckBox.checked = true;
+            }
 
             const projectItemTitle = document.createElement('span');
             projectItemTitle.textContent = todo.title;
@@ -505,8 +630,24 @@ function buttonHelper() {
     }
 
 
+    const hamburgerToggle = document.querySelector('#hamburger-toggle');
+    const projectsSidebar = document.querySelector('.projects');
+
+    if (window.innerWidth <= 768) {
+        projectsSidebar.classList.add('collapsed');
+        hamburgerToggle.setAttribute('aria-expanded', 'false');
+    }
+
+    hamburgerToggle.addEventListener('click', () => {
+        projectsSidebar.classList.toggle('collapsed');
+        const isCollapsed = projectsSidebar.classList.contains('collapsed');
+        hamburgerToggle.setAttribute('aria-expanded', !isCollapsed);
+    });
+
     createProjectDialogControls();
     createTodoDialogControls();
+    confirmDeleteDialogControls();
+    const { populateProjectSelect: populateEditProjectSelect } = editTodoDialogControls();
     renderProjectTitle();
     renderProjects();
     buttonHelper();

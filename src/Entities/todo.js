@@ -16,6 +16,14 @@ export default class Todo {
 
     toggle() {
         this.completed = !this.completed;
+        this.modifiedAt = new Date().toISOString();
+
+        let items = todos.findAll();
+        const index = items.findIndex(item => item.id === this.id);
+        if (index !== -1) {
+            items[index] = this.serialize();
+            localStorage.setItem('todos', JSON.stringify(items));
+        }
     }
 
     edit(newTitle, newDescription, newProjectId, newDueDate = null, newPriority = null) {

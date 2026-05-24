@@ -30,8 +30,62 @@ body {
     gap: 1rem;
     padding: 1rem;
     background-color: #0EA5E9;
-    /* border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
+    width: 260px;
+    transition: width 0.3s ease, padding 0.3s ease;
+    overflow: hidden;
+}
+
+.projects.collapsed {
+    width: 60px;
+    padding: 1rem 0.5rem;
+}
+
+.projects.collapsed #projects__search,
+.projects.collapsed #projects__list,
+.projects.collapsed #projects__logo h1 {
+    display: none;
+}
+
+#projects__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.projects.collapsed #projects__header {
+    justify-content: center;
+}
+
+#hamburger-toggle {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    flex-shrink: 0;
+}
+
+.hamburger-bar {
+    display: block;
+    width: 22px;
+    height: 2.5px;
+    background-color: #fff;
+    border-radius: 2px;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.projects.collapsed .hamburger-bar:nth-child(1) {
+    transform: rotate(45deg) translate(4px, 5px);
+}
+
+.projects.collapsed .hamburger-bar:nth-child(2) {
+    opacity: 0;
+}
+
+.projects.collapsed .hamburger-bar:nth-child(3) {
+    transform: rotate(-45deg) translate(4px, -5px);
 }
 
 #projects__list {
@@ -122,6 +176,12 @@ body {
     padding-bottom: .1rem;
 }
 
+.todo.completed .todo-title,
+.todo.completed span:nth-child(3) {
+    text-decoration: line-through;
+    color: #888;
+}
+
 .todo-title {
     cursor: pointer;
 }
@@ -181,6 +241,67 @@ dialog {
 
 dialog::backdrop {
     background: rgba(0, 0, 0, 0.5);
+}
+
+#edit-todo-dialog {
+    min-width: 480px;
+}
+
+.edit-todo-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.edit-todo-grid .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.edit-todo-grid .form-group label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.edit-todo-grid .form-group input,
+.edit-todo-grid .form-group select,
+.edit-todo-grid .form-group textarea {
+    padding: 0.4rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 0.9rem;
+}
+
+.edit-todo-description {
+    grid-column: span 2;
+}
+
+#edit-todo-form h3 {
+    margin-bottom: 1rem;
+}
+
+#edit-todo-form .dialog-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+#edit-todo-form .dialog-buttons button {
+    padding: 0.5rem 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+#save-edit-btn {
+    background-color: #0EA5E9;
+    color: #fff;
+    border-color: #0EA5E9;
 }
 
 /* todo form */
@@ -287,6 +408,41 @@ dialog::backdrop {
 
 
 /* Tablet/Desktop View: 2 Columns */
+@media (max-width: 768px) {
+    .projects {
+        width: 60px;
+        padding: 1rem 0.5rem;
+    }
+
+    .projects #projects__search,
+    .projects #projects__list,
+    .projects #projects__logo h1 {
+        display: none;
+    }
+
+    .projects #projects__header {
+        justify-content: center;
+    }
+
+    .projects:not(.collapsed) {
+        width: 260px;
+        padding: 1rem;
+    }
+
+    .projects:not(.collapsed) #projects__search,
+    .projects:not(.collapsed) #projects__logo h1 {
+        display: block;
+    }
+
+    .projects:not(.collapsed) #projects__list {
+        display: flex;
+    }
+
+    .projects:not(.collapsed) #projects__header {
+        justify-content: space-between;
+    }
+}
+
 @media (min-width: 600px) {
     /* .contact {
         grid-template-columns: repeat(2, 1fr);
