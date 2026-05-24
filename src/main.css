@@ -15,6 +15,14 @@ body {
 
 }
 
+#projects__logo span {
+    display: block;
+    font-size: 2rem;
+    font-weight: bold;
+    padding-top: .23rem;
+    /* margin-block: 0.67em; */
+}
+
 .container {
     /* width: min(1200px, 80%);
     margin: 0 auto; */
@@ -28,7 +36,7 @@ body {
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    padding: 1rem;
+    padding-inline: 1rem;
     background-color: #0EA5E9;
     /* border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
@@ -38,6 +46,13 @@ body {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+    /* Desktop */
+    width: 230px;
+}
+
+#project-create-search {
+    display: flex;
+    flex-direction: column;
 }
 
 .project {
@@ -154,8 +169,44 @@ body {
 
 #create-project {
     display: flex;
+    justify-content: space-between;
     gap: 1rem;
+    margin-top: .3rem;
+    margin-bottom: .7rem;
+    align-items: center;
+    /* height: 2rem; */
 }
+
+#project-search-input {
+    padding: .4rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+#create-project-text {
+    font-weight: 500;
+    font-size: 1rem;
+}
+
+#open-create-project-dialog-btn {
+    background-color: #053044;
+    color: white;
+    border: none;
+    padding-inline: .3rem;
+    /* padding-block: .3rem; */
+    border-radius: .2rem;
+    font-size: 1rem;
+
+    height: 1.5rem;
+    width: 1.5rem;
+
+}
+
+#project-create-subtext {
+    font-size: .85rem;
+    font-weight: 400;
+}
+
 
 /* input[type="text"] {
     width: fit-content;
@@ -165,7 +216,12 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-top: 2rem;
+    padding-top: 1.5rem;
+}
+
+#projects__logo,
+#projects__search {
+    padding-inline: .5rem;
 }
 
 dialog {
