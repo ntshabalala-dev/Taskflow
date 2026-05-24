@@ -53,6 +53,21 @@ function buttonHelper() {
     });
 }
 
+function toggleMenu() {
+    const navLogo = document.querySelector('#projects__nav-logo span');
+    const search = document.querySelector('#projects__search');
+    const list = document.querySelector('#projects__list');
+
+    const hamburger = document.querySelector('.hamburger');
+
+    hamburger.addEventListener('click', () => {
+        navLogo.classList.toggle('active');
+        search.classList.toggle('active');
+        list.classList.toggle('active');
+        hamburger.classList.toggle('active');
+    });
+}
+
 //IIFE for screen controller
 (function () {
     const appController = taskFlowController();
@@ -510,6 +525,7 @@ function buttonHelper() {
     renderProjectTitle();
     renderProjects();
     buttonHelper();
+    toggleMenu();
 })();
 
 

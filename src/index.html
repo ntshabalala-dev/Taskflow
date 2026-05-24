@@ -10,8 +10,19 @@
 <body>
 
     <div class="projects">
-        <div id="projects__logo"> <span>Taskflow</span></div>
-        <div id="projects__search">
+        <div id="projects__nav">
+            <div id="projects__nav-logo">
+                <span class="active">Taskflow</span>
+            </div>
+            <!-- The Hamburger Button -->
+            <button class="hamburger active" id="projects__nav-hamburger" aria-label="Toggle navigation">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
+
+        </div>
+        <div id="projects__search" class="active">
             <div id="project-create-search">
                 <p id="project-create-subtext">PROJECTS</p>
                 <div id="create-project">
@@ -21,17 +32,17 @@
                 <input type="text" id="project-search-input" placeholder="Search projects...">
             </div>
         </div>
-        <div id="projects__list">
+        <div id="projects__list" class="active"></div>
 
-        </div>
+    </div>
     </div>
 
     <main class="project-items">
         <div class="project-items__search container">
-                <div class="todo-search">
-                    <input type="text" id="project-item-search-input" placeholder="Search project items...">
-                    <button id="project-items__create-todo-btn">Add Todo</button>
-                </div>
+            <div class="todo-search">
+                <input type="text" id="project-item-search-input" placeholder="Search project items...">
+                <button id="project-items__create-todo-btn">Add Todo</button>
+            </div>
         </div>
 
         <div class="project-items__list container">
