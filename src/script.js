@@ -410,7 +410,7 @@ function toggleMenu() {
             return
         }
 
-        console.log(todos);
+        //console.log(todos);
 
         todos.forEach((todo) => {
             const projectItem = document.createElement('div');
@@ -441,54 +441,54 @@ function toggleMenu() {
             );
 
             // Inline title editing
-            projectItemTitle.addEventListener('click', () => {
-                const originalTitle = todo.title;
+            // projectItemTitle.addEventListener('click', () => {
+            //     const originalTitle = todo.title;
 
-                const textarea = document.createElement('textarea');
-                textarea.value = originalTitle;
-                textarea.rows = 1;
-                textarea.classList.add('todo-title-input');
+            //     const textarea = document.createElement('textarea');
+            //     textarea.value = originalTitle;
+            //     textarea.rows = 1;
+            //     textarea.classList.add('todo-title-input');
 
-                projectItemTitle.replaceWith(textarea);
-                textarea.focus();
-                textarea.select();
+            //     projectItemTitle.replaceWith(textarea);
+            //     textarea.focus();
+            //     textarea.select();
 
-                let saved = false;
+            //     let saved = false;
 
-                const saveTitle = () => {
-                    if (saved) return;
-                    saved = true;
+            //     const saveTitle = () => {
+            //         if (saved) return;
+            //         saved = true;
 
-                    const newTitle = textarea.value.trim();
-                    if (newTitle && newTitle !== originalTitle) {
-                        todo.edit(newTitle);
-                    }
+            //         const newTitle = textarea.value.trim();
+            //         if (newTitle && newTitle !== originalTitle) {
+            //             todo.edit(newTitle);
+            //         }
 
-                    projectItemTitle.textContent = todo.title;
-                    textarea.replaceWith(projectItemTitle);
-                };
+            //         projectItemTitle.textContent = todo.title;
+            //         textarea.replaceWith(projectItemTitle);
+            //     };
 
-                const cancelEdit = () => {
-                    if (saved) return;
-                    saved = true;
+            //     const cancelEdit = () => {
+            //         if (saved) return;
+            //         saved = true;
 
-                    projectItemTitle.textContent = originalTitle;
-                    textarea.replaceWith(projectItemTitle);
-                };
+            //         projectItemTitle.textContent = originalTitle;
+            //         textarea.replaceWith(projectItemTitle);
+            //     };
 
-                textarea.addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter' && !e.shiftKey) {
-                        e.preventDefault();
-                        saveTitle();
-                    } else if (e.key === 'Escape') {
-                        cancelEdit();
-                    }
-                });
+            //     textarea.addEventListener('keydown', (e) => {
+            //         if (e.key === 'Enter' && !e.shiftKey) {
+            //             e.preventDefault();
+            //             saveTitle();
+            //         } else if (e.key === 'Escape') {
+            //             cancelEdit();
+            //         }
+            //     });
 
-                textarea.addEventListener('blur', () => {
-                    saveTitle();
-                });
-            });
+            //     textarea.addEventListener('blur', () => {
+            //         saveTitle();
+            //     });
+            // });
 
             applicationControlButtons(projectItem);
 
@@ -518,6 +518,8 @@ function toggleMenu() {
             projectSpan.textContent = 'No Projects';
         }
     }
+
+
 
 
     createProjectDialogControls();
