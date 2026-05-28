@@ -513,33 +513,48 @@ function toggleMenu() {
                     if (e.key === 'Enter' && !e.shiftKey) {
                         e.preventDefault();
                         isSubmitting = true;
-                        console.log('stembu');
+                        const newTitle = todoInput.value.trim();
+                        if (newTitle.length === 0) {
+                            this.replaceWith(revertTarget);
+                            alert('Title cannot be empty');
+                        }
+
+                        if (newTitle && newTitle !== todo.title) {
+                            try {
+                                // Prevent the blur event from firing when the user is submitting the form with Enter or Escape
+                                todo.edit(newTitle);
+                                revertTarget.textContent = todo.title;
+                                this.replaceWith(revertTarget);
+                            } catch (error) {
+                                alert(error.message);
+                            }
+                        }
+                    }
+
+                    if (e.key === 'Escape' && !e.shiftKey) {
+                        isSubmitting = true;
+                        console.log('Escape pressed');
                         this.replaceWith(revertTarget);
                     }
                 });
 
                 todoInput.addEventListener('blur', function (e) {
-                    // Prevent the blur event from firing when the user is submitting the form with Enter
-                    // this.replaceWith(revertTarget); above triggers the blur event
                     if (isSubmitting) {
                         isSubmitting = false;
                         return;
                     }
 
-                    console.log('blur');
-
                     const newTitle = todoInput.value.trim();
-                    console.log(newTitle);
+                    if (newTitle.length === 0) {
+                        alert('Title cannot be empty');
+                    }
                     if (newTitle && newTitle !== todo.title) {
                         e.preventDefault();
-                        console.log(todo.title);
+                        todo.edit(newTitle);
                         revertTarget.textContent = todo.title;
-
                     }
                     this.replaceWith(revertTarget);
                 });
-
-
             }
         });
     }

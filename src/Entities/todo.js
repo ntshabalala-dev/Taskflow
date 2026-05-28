@@ -29,6 +29,8 @@ export default class Todo {
             throw new Error("Todo project cannot be empty");
         }
 
+        console.log(newTitle, newDescription, newProjectId)
+
         this.title = newTitle !== undefined ? newTitle.trim() : this.title;
         this.description = newDescription !== undefined ? newDescription.trim() : this.description;
         this.projectId = newProjectId !== undefined ? newProjectId.trim() : this.projectId;
@@ -42,6 +44,7 @@ export default class Todo {
         if (index !== -1) {
             items[index] = this.serialize();
             localStorage.setItem('todos', JSON.stringify(items));
+            console.log('Todo updated');
         }
     }
 
