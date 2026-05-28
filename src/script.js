@@ -494,6 +494,54 @@ function toggleMenu() {
 
             projectItemsContainer.appendChild(projectItem);
         })
+
+        projectItemsContainer.addEventListener('click', (e) => {
+            const target = e.target;
+            if (target.classList.contains('todo-title')) {
+                const todoId = target.parentElement.firstChild.dataset.todoId;
+                const revertTarget = target;
+                let isSubmitting = false;
+                const todo = Todos.findById(todoId);
+                const todoInput = document.createElement('input');
+                todoInput.type = 'text';
+                todoInput.value = todo.title;
+                target.replaceWith(todoInput);
+                todoInput.focus();
+                todoInput.select();
+
+                todoInput.addEventListener('keydown', function (e) {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        isSubmitting = true;
+                        console.log('stembu');
+                        this.replaceWith(revertTarget);
+                    }
+                });
+
+                todoInput.addEventListener('blur', function (e) {
+                    // Prevent the blur event from firing when the user is submitting the form with Enter
+                    // this.replaceWith(revertTarget); above triggers the blur event
+                    if (isSubmitting) {
+                        isSubmitting = false;
+                        return;
+                    }
+
+                    console.log('blur');
+
+                    const newTitle = todoInput.value.trim();
+                    console.log(newTitle);
+                    if (newTitle && newTitle !== todo.title) {
+                        e.preventDefault();
+                        console.log(todo.title);
+                        revertTarget.textContent = todo.title;
+
+                    }
+                    this.replaceWith(revertTarget);
+                });
+
+
+            }
+        });
     }
 
     const renderProjectTitle = (projectId) => {
