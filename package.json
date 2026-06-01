@@ -9,9 +9,8 @@
         "build": "webpack --config webpack.prod.js",
         "build-dev": "webpack --config webpack.dev.js",
         "commit": "git add dist -f && git commit -m 'Deployment commit'",
-        "push" : "git subtree push --prefix dist origin gh-pages",
+        "push": "git subtree push --prefix dist origin gh-pages",
         "deploy": "npm run build && npm run commit && npm run push"
-
     },
     "repository": {
         "type": "git",
@@ -34,5 +33,8 @@
         "webpack-cli": "^7.0.1",
         "webpack-dev-server": "^5.2.3",
         "webpack-merge": "^6.0.1"
+    },
+    "dependencies": {
+        "validator": "^13.15.35"
     }
 }

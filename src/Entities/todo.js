@@ -19,7 +19,16 @@ export default class Todo {
     }
 
     // TODO: Covert to object
-    edit(newTitle, newDescription, newProjectId, newDueDate = null, newPriority = null) {
+    // newTitle, newDescription, newProjectId, newDueDate = null, newPriority = null
+    edit(DataObject) {
+        console.log('Data O: ', DataObject);
+
+        const newTitle = DataObject.newTitle;
+        const newDescription = DataObject.newDescription;
+        const newProjectId = DataObject.newProjectId;
+        const newDueDate = DataObject.newDueDate ?? null;
+        const newPriority = DataObject.newPriority ?? null;
+
         if (newTitle !== undefined && newTitle.trim().length === 0) {
             throw new Error("Todo title cannot be empty");
         }
@@ -45,7 +54,7 @@ export default class Todo {
         if (index !== -1) {
             items[index] = this.serialize();
             localStorage.setItem('todos', JSON.stringify(items));
-            console.log('Todo updated');
+            console.log('Todo updated', this.serialize());
         }
     }
 

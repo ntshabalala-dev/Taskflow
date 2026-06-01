@@ -1,4 +1,3 @@
-
 import Projects from './Models/Projects.js';
 import Project from './Entities/project.js';
 import Todos from './Models/Todos.js';
@@ -8,7 +7,8 @@ import editSvg from './Assets/icons/edit.svg';
 import deleteSvg from './Assets/icons/trash-2.svg';
 import chevronDownSvg from './Assets/icons/chevron-down.svg';
 import chevronUpSvg from './Assets/icons/chevron-up.svg';
-
+import escape from 'validator/lib/escape.js';
+import trim from 'validator/lib/trim.js';
 
 // let p = new Project('Test', "This is a test project");
 // let p2 = new Project('Test2', "This is a test project two");
@@ -28,8 +28,13 @@ function taskFlowController() {
         }
     }
 
+    const cleanData = (data) => {
+        return escape(trim(data));
+    }
+
     return {
-        createDefaultData
+        createDefaultData,
+        cleanData
     }
 }
 
@@ -395,6 +400,12 @@ function toggleMenu() {
                                 console.log([...formData]);
                                 // const inputTitle = document.querySelector('.project-items__todo .todo-title');
                                 // console.log(inputTitle.textContent);
+                                const newDescription = appController.cleanData(formData.get('todo-description'));
+                                const newDueDate = appController.cleanData(formData.get('todo-due-date'));
+                                const newPriority = appController.cleanData(formData.get('priority-user-choice'));
+
+                                console.log(newDescription, newDueDate, newPriority);
+
                             }
 
                         });
@@ -514,7 +525,7 @@ function toggleMenu() {
 
         projectItemsContainer.addEventListener('click', (e) => {
             const target = e.target;
-            console.log(target);
+            console.log(projectItemsContainer);
 
             if (target.classList.contains('todo-title')) {
                 const todoId = target.parentElement.firstChild.dataset.todoId;
@@ -541,13 +552,13 @@ function toggleMenu() {
                         if (newTitle && newTitle !== todo.title) {
                             try {
                                 // Prevent the blur event from firing when the user is submitting the form with Enter or Escape
-                                todo.edit(newTitle);
+                                todo.edit({ newTitle: newTitle });
                                 revertTarget.textContent = todo.title;
-                                this.replaceWith(revertTarget);
                             } catch (error) {
                                 alert(error.message);
                             }
                         }
+                        this.replaceWith(revertTarget);
                     }
 
                     if (e.key === 'Escape' && !e.shiftKey) {
@@ -569,7 +580,7 @@ function toggleMenu() {
                     }
                     if (newTitle && newTitle !== todo.title) {
                         e.preventDefault();
-                        todo.edit(newTitle);
+                        todo.edit({ newTitle: newTitle });
                         revertTarget.textContent = todo.title;
                     }
                     this.replaceWith(revertTarget);
