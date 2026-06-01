@@ -235,8 +235,8 @@ function toggleMenu() {
         controlSpan.append(editBtn, deleteBtn);
 
         // @card = cardelement
-        const createExpandedCard = (card, todoId) => {
-            const todo = Todos.findById(todoId);
+        const createExpandedCard = (card, todo) => {
+            //const todo = Todos.findById(todoId);
             // Column 1: Todo Title
             const titleInput = document.createElement("input");
             titleInput.type = "text";
@@ -334,14 +334,17 @@ function toggleMenu() {
 
             const saveBtn = document.createElement('button');
             saveBtn.textContent = 'Save Changes';
+            saveBtn.id = 'expanded-save-btn';
             saveBtn.type = 'submit';
 
             const markCompleteBtn = document.createElement('button');
             markCompleteBtn.textContent = 'Mark as Complete';
+            markCompleteBtn.id = 'expanded-complete-btn';
             markCompleteBtn.type = 'button';
 
             const deleteToDoBtn = document.createElement('button');
             deleteToDoBtn.textContent = 'Delete Todo';
+            deleteToDoBtn.id = 'expanded-delete-btn';
             deleteToDoBtn.type = 'button';
 
             formControl__buttons.append(saveBtn, markCompleteBtn, deleteToDoBtn);
@@ -370,17 +373,31 @@ function toggleMenu() {
             } else {
                 // Controls for the todo buttons
                 const todoId = controlElement.dataset.todoId;
-
-                //console.log(todo);
+                const todo = Todos.findById(todoId);
 
                 // Handle expand/collapse card
                 if (target === chevronBtn || target === chevronIcon) {
                     if (target.alt === 'expand') {
-                        const expandedCardContainer = document.createElement('form');
+                        const expandedCardContainerForm = document.createElement('form');
                         chevronIcon.src = chevronUpSvg;
                         chevronIcon.alt = 'collapse';
-                        expandedCardContainer.classList.add('expanded-card', 'open');
-                        controlElement.appendChild(createExpandedCard(expandedCardContainer, todoId));
+                        expandedCardContainerForm.classList.add('expanded-card', 'open');
+                        controlElement.appendChild(createExpandedCard(expandedCardContainerForm, todo));
+                        const formButtons = expandedCardContainerForm.querySelector('.form-control__buttons');
+
+                        formButtons.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            const target = e.target;
+                            console.log(target.id)
+
+                            if (target.id === 'expanded-save-btn') {
+                                const formData = new FormData(expandedCardContainerForm);
+                                console.log([...formData]);
+                                // const inputTitle = document.querySelector('.project-items__todo .todo-title');
+                                // console.log(inputTitle.textContent);
+                            }
+
+                        });
                     } else {
                         chevronIcon.src = chevronDownSvg;
                         chevronIcon.alt = 'expand';
@@ -389,7 +406,7 @@ function toggleMenu() {
                     }
 
                 } else if (target === editBtn || target === editIcon) {
-                    // Handle delete todo
+                    // Handle delete todo show dialog asking user to delete
                     console.log('Edit todo', todoId);
                 } else if (target === deleteBtn || target === deleteIcon) {
                     // Handle delete todo
@@ -497,6 +514,8 @@ function toggleMenu() {
 
         projectItemsContainer.addEventListener('click', (e) => {
             const target = e.target;
+            console.log(target);
+
             if (target.classList.contains('todo-title')) {
                 const todoId = target.parentElement.firstChild.dataset.todoId;
                 const revertTarget = target;

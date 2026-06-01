@@ -18,6 +18,7 @@ export default class Todo {
         this.completed = !this.completed;
     }
 
+    // TODO: Covert to object
     edit(newTitle, newDescription, newProjectId, newDueDate = null, newPriority = null) {
         if (newTitle !== undefined && newTitle.trim().length === 0) {
             throw new Error("Todo title cannot be empty");
