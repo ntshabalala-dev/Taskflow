@@ -488,3 +488,73 @@ dialog::backdrop {
         height: 320px;
     }
 }
+
+#edit-todo-dialog {
+    min-width: 480px;
+}
+
+.edit-todo-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.edit-todo-grid .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.edit-todo-grid .form-group label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.edit-todo-grid .form-group input,
+.edit-todo-grid .form-group select,
+.edit-todo-grid .form-group textarea {
+    padding: 0.4rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 0.9rem;
+}
+
+.edit-todo-description {
+    grid-column: span 2;
+}
+
+#edit-todo-form h3,
+#confirm-delete-form h3 {
+    margin-bottom: 1rem;
+}
+
+#edit-todo-form .dialog-buttons,
+#confirm-delete-form .dialog-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+#edit-todo-form .dialog-buttons button,
+#confirm-delete-form .dialog-buttons button {
+    padding: 0.5rem 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+#save-edit-btn {
+    background-color: #0EA5E9;
+    color: #fff;
+    border-color: #0EA5E9;
+}
+
+#confirm-delete-btn {
+    background-color: #e53e3e;
+    color: #fff;
+    border-color: #e53e3e;
+}
