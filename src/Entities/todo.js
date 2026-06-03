@@ -27,8 +27,6 @@ export default class Todo {
     }
 
     edit(DataObject) {
-        console.log('Data O: ', DataObject);
-
         const newTitle = DataObject.newTitle;
         const newDescription = DataObject.newDescription;
         const newProjectId = DataObject.newProjectId;
@@ -100,6 +98,7 @@ export default class Todo {
     }
 
     delete() {
+        console.log('Deleting todo with id:', this.id);
         let items = todos.findAll();
         items = items.filter(item => item.id !== this.id);
         localStorage.setItem('todos', JSON.stringify(items));

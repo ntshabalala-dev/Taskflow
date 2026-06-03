@@ -148,19 +148,22 @@ function toggleMenu() {
                 return;
             }
 
-            todo.edit(
-                title,
-                description,
-                editProjectSelect.value,
-                editDueDateInput.value || null,
-                editPrioritySelect.value
-            );
+            const data = {
+                newTitle: appController.cleanData(title),
+                newDescription: appController.cleanData(description),
+                newProjectId: editProjectSelect.value,
+                newDueDate: editDueDateInput.value || null,
+                newPriority: editPrioritySelect.value
+            };
+
+            console.log('Edit data: ', data);
+
+            todo.edit(data);
 
             const activeProjectButton = document.querySelector('#projects__list button.active');
             if (activeProjectButton) {
                 renderProjectItems(activeProjectButton.dataset.projectId);
             }
-
 
             editTodoDialog.close();
         });
@@ -573,125 +576,76 @@ function toggleMenu() {
                 projectItemPriority
             );
 
-            // Inline title editing
-            // projectItemTitle.addEventListener('click', () => {
-            //     const originalTitle = todo.title;
+            projectItemTitle.addEventListener('click', (e) => {
+                const target = e.target;
 
-            //     const textarea = document.createElement('textarea');
-            //     textarea.value = originalTitle;
-            //     textarea.rows = 1;
-            //     textarea.classList.add('todo-title-input');
+                if (target.classList.contains('todo-title')) {
+                    //const todoId = todo.id;
+                    const revertTarget = target;
+                    let isSubmitting = false;
+                    //const todo = Todos.findById(todoId);
+                    const todoInput = document.createElement('input');
+                    todoInput.type = 'text';
+                    todoInput.value = todo.title;
+                    target.replaceWith(todoInput);
+                    todoInput.focus();
+                    todoInput.select();
 
-            //     projectItemTitle.replaceWith(textarea);
-            //     textarea.focus();
-            //     textarea.select();
+                    todoInput.addEventListener('keydown', function (e) {
+                        if (e.key === 'Enter' && !e.shiftKey) {
+                            e.preventDefault();
+                            isSubmitting = true;
+                            const newTitle = todoInput.value.trim();
+                            if (newTitle.length === 0) {
+                                this.replaceWith(revertTarget);
+                                alert('Title cannot be empty');
+                            }
 
-            //     let saved = false;
+                            if (newTitle && newTitle !== todo.title) {
+                                try {
+                                    // Prevent the blur event from firing when the user is submitting the form with Enter or Escape
+                                    todo.edit({ newTitle: newTitle });
+                                    revertTarget.textContent = todo.title;
+                                } catch (error) {
+                                    alert(error.message);
+                                }
+                            }
+                            this.replaceWith(revertTarget);
+                        }
 
-            //     const saveTitle = () => {
-            //         if (saved) return;
-            //         saved = true;
+                        if (e.key === 'Escape' && !e.shiftKey) {
+                            isSubmitting = true;
+                            console.log('Escape pressed');
+                            this.replaceWith(revertTarget);
+                        }
+                    });
 
-            //         const newTitle = textarea.value.trim();
-            //         if (newTitle && newTitle !== originalTitle) {
-            //             todo.edit(newTitle);
-            //         }
+                    todoInput.addEventListener('blur', function (e) {
+                        if (isSubmitting) {
+                            isSubmitting = false;
+                            return;
+                        }
 
-            //         projectItemTitle.textContent = todo.title;
-            //         textarea.replaceWith(projectItemTitle);
-            //     };
-
-            //     const cancelEdit = () => {
-            //         if (saved) return;
-            //         saved = true;
-
-            //         projectItemTitle.textContent = originalTitle;
-            //         textarea.replaceWith(projectItemTitle);
-            //     };
-
-            //     textarea.addEventListener('keydown', (e) => {
-            //         if (e.key === 'Enter' && !e.shiftKey) {
-            //             e.preventDefault();
-            //             saveTitle();
-            //         } else if (e.key === 'Escape') {
-            //             cancelEdit();
-            //         }
-            //     });
-
-            //     textarea.addEventListener('blur', () => {
-            //         saveTitle();
-            //     });
-            // });
+                        const newTitle = todoInput.value.trim();
+                        if (newTitle.length === 0) {
+                            alert('Title cannot be empty');
+                        }
+                        if (newTitle && newTitle !== todo.title) {
+                            e.preventDefault();
+                            todo.edit({ newTitle: newTitle });
+                            revertTarget.textContent = todo.title;
+                        }
+                        this.replaceWith(revertTarget);
+                    });
+                }
+            });
 
             applicationControlButtons(projectItem);
 
             projectItemsContainer.appendChild(projectItem);
         })
 
-        projectItemsContainer.addEventListener('click', (e) => {
-            const target = e.target;
-            console.log(projectItemsContainer);
 
-            if (target.classList.contains('todo-title')) {
-                const todoId = target.parentElement.firstChild.dataset.todoId;
-                const revertTarget = target;
-                let isSubmitting = false;
-                const todo = Todos.findById(todoId);
-                const todoInput = document.createElement('input');
-                todoInput.type = 'text';
-                todoInput.value = todo.title;
-                target.replaceWith(todoInput);
-                todoInput.focus();
-                todoInput.select();
-
-                todoInput.addEventListener('keydown', function (e) {
-                    if (e.key === 'Enter' && !e.shiftKey) {
-                        e.preventDefault();
-                        isSubmitting = true;
-                        const newTitle = todoInput.value.trim();
-                        if (newTitle.length === 0) {
-                            this.replaceWith(revertTarget);
-                            alert('Title cannot be empty');
-                        }
-
-                        if (newTitle && newTitle !== todo.title) {
-                            try {
-                                // Prevent the blur event from firing when the user is submitting the form with Enter or Escape
-                                todo.edit({ newTitle: newTitle });
-                                revertTarget.textContent = todo.title;
-                            } catch (error) {
-                                alert(error.message);
-                            }
-                        }
-                        this.replaceWith(revertTarget);
-                    }
-
-                    if (e.key === 'Escape' && !e.shiftKey) {
-                        isSubmitting = true;
-                        console.log('Escape pressed');
-                        this.replaceWith(revertTarget);
-                    }
-                });
-
-                todoInput.addEventListener('blur', function (e) {
-                    if (isSubmitting) {
-                        isSubmitting = false;
-                        return;
-                    }
-
-                    const newTitle = todoInput.value.trim();
-                    if (newTitle.length === 0) {
-                        alert('Title cannot be empty');
-                    }
-                    if (newTitle && newTitle !== todo.title) {
-                        e.preventDefault();
-                        todo.edit({ newTitle: newTitle });
-                        revertTarget.textContent = todo.title;
-                    }
-                    this.replaceWith(revertTarget);
-                });
-            }
-        });
     }
 
     const renderProjectTitle = (projectId) => {
