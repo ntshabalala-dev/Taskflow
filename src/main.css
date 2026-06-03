@@ -17,12 +17,11 @@ body {
 
 
 .container {
-    /* width: min(1200px, 80%);
-    margin: 0 auto; */
-    /* border: 1px solid red; */
-    /* width: 100%; */
-    padding-left: 5%;
-    padding-right: 5%;
+    padding-inline: 5%;
+}
+
+.container.active {
+    padding-inline: 10%;
 }
 
 .projects {

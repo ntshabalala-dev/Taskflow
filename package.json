@@ -35,6 +35,7 @@
         "webpack-merge": "^6.0.1"
     },
     "dependencies": {
+        "toastify-js": "^1.12.0",
         "validator": "^13.15.35"
     }
 }

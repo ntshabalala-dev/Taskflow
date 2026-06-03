@@ -9,6 +9,8 @@ import chevronDownSvg from './Assets/icons/chevron-down.svg';
 import chevronUpSvg from './Assets/icons/chevron-up.svg';
 import escape from 'validator/lib/escape.js';
 import trim from 'validator/lib/trim.js';
+import Toastify from 'toastify-js'
+import "toastify-js/src/toastify.css"
 
 // let p = new Project('Test', "This is a test project");
 // let p2 = new Project('Test2', "This is a test project two");
@@ -32,7 +34,26 @@ function taskFlowController() {
         return escape(trim(data));
     }
 
+    const toast = (message, type) => {
+        switch (type) {
+            case 'success':
+                Toastify({
+                    text: message,
+                    duration: 5000,
+                    gravity: "top", // top or bottom
+                    position: "center", // left, center or right
+                    style: { background: "#10b981" }
+                }).showToast();
+                break;
+            case 'error':
+                break;
+            default:
+                break;
+        }
+    }
+
     return {
+        toast,
         createDefaultData,
         cleanData
     }
@@ -62,14 +83,18 @@ function toggleMenu() {
     const navLogo = document.querySelector('#projects__nav-logo span');
     const search = document.querySelector('#projects__search');
     const list = document.querySelector('#projects__list');
-
     const hamburger = document.querySelector('.hamburger');
+    const containers = document.querySelectorAll('.container');
 
     hamburger.addEventListener('click', () => {
         navLogo.classList.toggle('active');
         search.classList.toggle('active');
         list.classList.toggle('active');
         hamburger.classList.toggle('active');
+        containers.forEach(container => {
+            container.classList.toggle('active');
+        });
+
     });
 }
 
@@ -164,6 +189,8 @@ function toggleMenu() {
             if (activeProjectButton) {
                 renderProjectItems(activeProjectButton.dataset.projectId);
             }
+
+            appController.toast('✓ Todo Updated Successfully!', 'success');
 
             editTodoDialog.close();
         });
