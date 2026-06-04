@@ -414,6 +414,10 @@ function toggleMenu() {
             dueDateInput.name = "todo-due-date";
             dueDateInput.value = todo.dueDate ? new Date(todo.dueDate).toISOString().split('T')[0] : '';
 
+            if (todo.completed) {
+                dueDateInput.disabled = true;
+            }
+
             const formControl__duedate = document.createElement('div');
             formControl__duedate.classList.add('form-control__duedate');
             formControl__duedate.append(dueDateLabel, dueDateInput);
@@ -466,7 +470,7 @@ function toggleMenu() {
             saveBtn.type = 'submit';
 
             const markCompleteBtn = document.createElement('button');
-            markCompleteBtn.textContent = 'Mark as Complete';
+            markCompleteBtn.textContent = todo.completed ? 'Mark as Incomplete' : 'Mark as Complete';;
             markCompleteBtn.id = 'expanded-complete-btn';
             markCompleteBtn.type = 'button';
 
@@ -503,7 +507,6 @@ function toggleMenu() {
                 const todoId = controlElement.dataset.todoId;
                 const todo = Todos.findById(todoId);
 
-
                 if (target === chevronBtn || target === chevronIcon) {
                     // Handle expand/collapse card
                     if (target.alt === 'expand') {
@@ -518,18 +521,62 @@ function toggleMenu() {
                             e.preventDefault();
                             const target = e.target;
                             console.log(target.id)
+                            const dueDateElement = controlElement.querySelector('#project-item__due-date');
 
                             if (target.id === 'expanded-save-btn') {
                                 const formData = new FormData(expandedCardContainerForm);
                                 console.log([...formData]);
-                                // const inputTitle = document.querySelector('.project-items__todo .todo-title');
-                                // console.log(inputTitle.textContent);
-                                const newDescription = appController.cleanData(formData.get('todo-description'));
-                                const newDueDate = appController.cleanData(formData.get('todo-due-date'));
-                                const newPriority = appController.cleanData(formData.get('priority-user-choice'));
+                                const activeProjectButton = document.querySelector('#projects__list button.active');
+                                const newDescription = appController.cleanData(formData.get('todo-description') ?? todo.description);
+                                const newDueDate = appController.cleanData(formData.get('todo-due-date') ?? todo.dueDate);
+                                const newPriority = appController.cleanData(formData.get('priority-user-choice') ?? todo.priority);
+                                const oldDueDate = todo.dueDate ? new Date(todo.dueDate).toISOString().split('T')[0] : null;
+                                const oldPriority = todo.priority;
 
-                                console.log(newDescription, newDueDate, newPriority);
+                                const data = {
+                                    newDescription: newDescription || null,
+                                    newDueDate: newDueDate || null,
+                                    newPriority: newPriority
+                                };
 
+                                todo.edit(data);
+
+                                if (activeProjectButton) {
+                                    if (newDueDate !== oldDueDate) {
+                                        dueDateElement.textContent = newDueDate ? new Date(newDueDate).toLocaleDateString() : 'No due date';
+                                    }
+
+                                    if (newPriority !== oldPriority) {
+                                        const priorityElement = controlElement.querySelector('#project-item__priority');
+                                        priorityElement.textContent = newPriority;
+                                    }
+                                }
+
+
+                                appController.toast('✓ Todo Updated Successfully!', 'success');
+                            } else if (target.id === 'expanded-complete-btn') {
+                                console.log(controlElement);
+                                todo.toggleComplete();
+                                const checkboxElement = controlElement.querySelector('#project-item__select');
+                                const dueDateElement = controlElement.querySelector('.form-control__duedate #todo-due-date');
+
+                                if (todo.completed) {
+                                    checkboxElement.checked = true;
+                                    checkboxElement.disabled = true;
+                                    dueDateElement.disabled = true;
+                                    dueDateElement.classList.add('completed');
+                                    controlElement.classList.add('completed');
+                                } else {
+                                    checkboxElement.checked = false;
+                                    checkboxElement.disabled = false;
+                                    dueDateElement.disabled = false;
+                                    dueDateElement.classList.remove('completed');
+                                    controlElement.classList.remove('completed');
+                                }
+
+                                appController.toast('✓ Todo Marked as ' + (todo.completed ? 'Complete' : 'Incomplete') + '!', 'success');
+
+                                target.textContent = todo.completed ? 'Mark as Incomplete' : 'Mark as Complete';
                             }
 
                         });
@@ -556,7 +603,7 @@ function toggleMenu() {
                     // Handle delete todo
                     confirmDeleteDialogControls(todo);
                     confirmDeleteDialog.showModal(todo);
-                    console.log('Delete todo', todoId);
+                    //console.log('Delete todo', todoId);
                 }
             }
 
@@ -576,6 +623,7 @@ function toggleMenu() {
         //console.log(todos);
 
         todos.forEach((todo) => {
+            console.log(todo);
             const projectItem = document.createElement('div');
             projectItem.dataset.todoId = todo.id;
             projectItem.classList.add('todo', 'project-items__todo', 'todo-grid');
@@ -586,14 +634,21 @@ function toggleMenu() {
             projectItemCheckBox.dataset.todoId = todo.id;
             projectItemCheckBox.name = 'project-item__select';
 
+            if (todo.completed) {
+                projectItemCheckBox.checked = true;
+                projectItemCheckBox.disabled = true;
+            }
+
             const projectItemTitle = document.createElement('span');
             projectItemTitle.textContent = todo.title;
             projectItemTitle.classList.add('todo-title');
 
             const projectItemDueDate = document.createElement('span');
+            projectItemDueDate.id = 'project-item__due-date';
             projectItemDueDate.textContent = todo.dueDate ? new Date(todo.dueDate).toLocaleDateString() : 'No due date';
 
             const projectItemPriority = document.createElement('span');
+            projectItemPriority.id = 'project-item__priority';
             projectItemPriority.textContent = todo.priority;
 
             projectItem.append(

@@ -14,7 +14,7 @@ export default class Todo {
         this.store();
     }
 
-    toggle() {
+    toggleComplete() {
         this.completed = !this.completed;
         this.modifiedAt = new Date().toISOString();
 

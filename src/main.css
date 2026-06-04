@@ -333,6 +333,11 @@ dialog::backdrop {
     margin-right: .5rem;
 }
 
+.todo .completed {
+    text-decoration: line-through;
+    color: #888;
+}
+
 .form-control__buttons {
     grid-column: 3/5;
     display: grid;
