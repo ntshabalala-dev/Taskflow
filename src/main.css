@@ -12,7 +12,7 @@ body {
     display: grid;
     grid-template-columns: auto 1fr;
     min-height: 100svh;
-
+    /* width: 100%; */
 }
 
 
@@ -32,6 +32,19 @@ body {
     background-color: #0EA5E9;
     /* border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
+
+    /* For mobile */
+    /* position: absolute;
+    height: 100%; */
+}
+
+.project-items {
+    display: grid;
+    grid-template-rows: auto 1fr;
+
+    /* For mobile */
+    /* grid-column: 1 / 3;
+    width: 100%; */
 }
 
 #projects__list {
@@ -142,10 +155,6 @@ body {
     resize: none;
 }
 
-.project-items {
-    display: grid;
-    grid-template-rows: auto 1fr;
-}
 
 .project-items__search {
     padding-top: 1rem;
@@ -333,7 +342,8 @@ dialog::backdrop {
     margin-right: .5rem;
 }
 
-.todo .completed {
+.todo.completed #project-item__due-date,
+.todo.completed .todo-title {
     text-decoration: line-through;
     color: #888;
 }

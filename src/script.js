@@ -564,13 +564,13 @@ function toggleMenu() {
                                     checkboxElement.checked = true;
                                     checkboxElement.disabled = true;
                                     dueDateElement.disabled = true;
-                                    dueDateElement.classList.add('completed');
+                                    // dueDateElement.classList.add('completed');
                                     controlElement.classList.add('completed');
                                 } else {
                                     checkboxElement.checked = false;
                                     checkboxElement.disabled = false;
                                     dueDateElement.disabled = false;
-                                    dueDateElement.classList.remove('completed');
+                                    // dueDateElement.classList.remove('completed');
                                     controlElement.classList.remove('completed');
                                 }
 
@@ -590,13 +590,18 @@ function toggleMenu() {
                     // Handle delete todo show dialog asking user to delete
                     console.log('Edit todo', todoId);
                     editTodoDialogControls(todo);
+                    const dueDate = document.querySelector('#edit-todo-due-date');
                     document.querySelector('#edit-todo-title').value = todo.title;
                     document.querySelector('#edit-todo-description').value = todo.description;
-                    document.querySelector('#edit-todo-due-date').value = todo.dueDate
+                    dueDate.value = todo.dueDate
                         ? new Date(todo.dueDate).toISOString().split('T')[0]
                         : '';
                     document.querySelector('#edit-todo-priority').value = todo.priority;
                     document.querySelector('#edit-todo-project').value = todo.projectId;
+
+                    if (todo.completed) {
+                        dueDate.disabled = true;
+                    }
 
                     editTodoDialog.showModal();
                 } else if (target === deleteBtn || target === deleteIcon) {
@@ -620,8 +625,6 @@ function toggleMenu() {
             return
         }
 
-        //console.log(todos);
-
         todos.forEach((todo) => {
             console.log(todo);
             const projectItem = document.createElement('div');
@@ -637,6 +640,7 @@ function toggleMenu() {
             if (todo.completed) {
                 projectItemCheckBox.checked = true;
                 projectItemCheckBox.disabled = true;
+                projectItem.classList.add('completed');
             }
 
             const projectItemTitle = document.createElement('span');
@@ -726,8 +730,6 @@ function toggleMenu() {
 
             projectItemsContainer.appendChild(projectItem);
         })
-
-
     }
 
     const renderProjectTitle = (projectId) => {
