@@ -192,6 +192,17 @@ body {
     font-size: .85rem;
 }
 
+#todo-search__clear-btn {
+    align-self: center;
+    width: 17px;
+    height: 17px;
+    display: none;
+}
+
+#todo-search__clear-btn.show {
+    display: block;
+}
+
 #todo-search__icon {
     width: 18px;
     height: 18px;

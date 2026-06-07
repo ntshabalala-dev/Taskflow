@@ -11,6 +11,7 @@ import escape from 'validator/lib/escape.js';
 import trim from 'validator/lib/trim.js';
 import Toastify from 'toastify-js'
 import "toastify-js/src/toastify.css"
+import Search from './Scripts/Search.js';
 
 // let p = new Project('Test', "This is a test project");
 // let p2 = new Project('Test2', "This is a test project two");
@@ -31,7 +32,7 @@ function taskFlowController() {
     }
 
     const cleanData = (data) => {
-        return escape(trim(data));
+        return escape(trim(data)) || '';
     }
 
     const toast = (message, type) => {
@@ -43,6 +44,15 @@ function taskFlowController() {
                     gravity: "top", // top or bottom
                     position: "center", // left, center or right
                     style: { background: "#10b981" }
+                }).showToast();
+                break;
+            case 'warning':
+                Toastify({
+                    text: message,
+                    duration: 5000,
+                    gravity: "top", // top or bottom
+                    position: "center", // left, center or right
+                    style: { background: "#f59e0b" }
                 }).showToast();
                 break;
             case 'error':
@@ -107,6 +117,59 @@ function toggleMenu() {
     const projectsList = document.querySelector('#projects__list');
     const confirmDeleteDialog = document.querySelector('#confirm-delete-dialog');
     const editTodoDialog = document.querySelector('#edit-todo-dialog');
+
+    const SearchComponent = () => {
+        const searchButton = document.querySelector('#todo-search__button');
+        const searchInput = document.querySelector('#project-item-search-input');
+        const clearSearchButton = document.querySelector('#todo-search__clear-btn');
+        let c = 0;
+
+        const removeClearButton = () => {
+            if (clearSearchButton.classList.contains('show')) {
+                c = 0;
+                clearSearchButton.classList.toggle('show');
+            }
+        }
+
+        searchInput.addEventListener('click', function () {
+            if (this.value.length > 0 && !clearSearchButton.classList.contains('show')) {
+                clearSearchButton.classList.toggle('show');
+                c = -1;
+            }
+        })
+
+        searchInput.addEventListener('input', function (e) {
+            console.log('hee');
+            console.log(clearSearchButton)
+            if (c == 0) {
+                clearSearchButton.classList.toggle('show');
+                c = -1;
+            }
+
+            if (this.value.length === 0) {
+                removeClearButton();
+            }
+        });
+
+        searchInput.addEventListener('blur', (e) => {
+            removeClearButton();
+        });
+
+        // todo enter & esc key event
+
+        searchButton.addEventListener('click', (e) => {
+            console.log(searchInput.value);
+
+            const searchTerm = appController.cleanData(searchInput.value);
+            if (searchTerm.length === 0) {
+                appController.toast('Please enter a valid search term', 'error');
+            }
+
+            removeClearButton()
+            console.log(searchTerm.length);
+            console.log(searchTerm)
+        });
+    }
 
     const confirmDeleteDialogControls = (todo) => {
         const cancelDeleteBtn = document.querySelector('#cancel-delete-btn');
@@ -756,6 +819,7 @@ function toggleMenu() {
     createProjectDialogControls();
     createTodoDialogControls();
     renderProjectTitle();
+    SearchComponent();
     renderProjects();
     buttonHelper();
     toggleMenu();
