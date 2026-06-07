@@ -105,9 +105,7 @@ function toggleMenu() {
 
     const defaultList = document.querySelector('#projects__list');
     const projectsList = document.querySelector('#projects__list');
-    let pendingDeleteTodoId = null;
     const confirmDeleteDialog = document.querySelector('#confirm-delete-dialog');
-    let pendingEditTodoId = null;
     const editTodoDialog = document.querySelector('#edit-todo-dialog');
 
     const confirmDeleteDialogControls = (todo) => {
@@ -127,7 +125,7 @@ function toggleMenu() {
             if (activeProjectButton) {
                 renderProjectItems(activeProjectButton.dataset.projectId);
             }
-
+            appController.toast('✓ Todo Deleted Successfully!', 'success');
             confirmDeleteDialog.close();
         });
 
@@ -551,8 +549,6 @@ function toggleMenu() {
                                         priorityElement.textContent = newPriority;
                                     }
                                 }
-
-
                                 appController.toast('✓ Todo Updated Successfully!', 'success');
                             } else if (target.id === 'expanded-complete-btn') {
                                 console.log(controlElement);
@@ -577,8 +573,10 @@ function toggleMenu() {
                                 appController.toast('✓ Todo Marked as ' + (todo.completed ? 'Complete' : 'Incomplete') + '!', 'success');
 
                                 target.textContent = todo.completed ? 'Mark as Incomplete' : 'Mark as Complete';
+                            } else if (target.id === 'expanded-delete-btn') {
+                                confirmDeleteDialogControls(todo);
+                                confirmDeleteDialog.showModal();
                             }
-
                         });
                     } else {
                         chevronIcon.src = chevronDownSvg;
@@ -754,9 +752,6 @@ function toggleMenu() {
             projectSpan.textContent = 'No Projects';
         }
     }
-
-
-
 
     createProjectDialogControls();
     createTodoDialogControls();
