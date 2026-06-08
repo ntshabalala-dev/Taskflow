@@ -9,9 +9,8 @@ import chevronDownSvg from './Assets/icons/chevron-down.svg';
 import chevronUpSvg from './Assets/icons/chevron-up.svg';
 import escape from 'validator/lib/escape.js';
 import trim from 'validator/lib/trim.js';
-import Toastify from 'toastify-js'
-import "toastify-js/src/toastify.css"
-import Search from './Scripts/Search.js';
+import Toastify from 'toastify-js';
+import "toastify-js/src/toastify.css";
 
 // let p = new Project('Test', "This is a test project");
 // let p2 = new Project('Test2', "This is a test project two");
@@ -118,7 +117,8 @@ function toggleMenu() {
     const confirmDeleteDialog = document.querySelector('#confirm-delete-dialog');
     const editTodoDialog = document.querySelector('#edit-todo-dialog');
 
-    const SearchComponent = () => {
+    const SearchTodos = () => {
+        const currentProject = document.querySelector('#projects__list .project.active')
         const searchButton = document.querySelector('#todo-search__button');
         const searchInput = document.querySelector('#project-item-search-input');
         const clearSearchButton = document.querySelector('#todo-search__clear-btn');
@@ -151,23 +151,32 @@ function toggleMenu() {
             }
         });
 
+        clearSearchButton.addEventListener('mousedown', () => {
+            searchInput.value = '';
+        })
+
         searchInput.addEventListener('blur', (e) => {
             removeClearButton();
         });
 
-        // todo enter & esc key event
-
         searchButton.addEventListener('click', (e) => {
-            console.log(searchInput.value);
-
             const searchTerm = appController.cleanData(searchInput.value);
             if (searchTerm.length === 0) {
-                appController.toast('Please enter a valid search term', 'error');
+                renderProjectItems(currentProject.dataset.projectId, searchTerm);
+                return
+            }
+            renderProjectItems(currentProject.dataset.projectId, searchTerm);
+        });
+
+        // todo enter & esc key event
+        searchInput.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+
             }
 
-            removeClearButton()
-            console.log(searchTerm.length);
-            console.log(searchTerm)
+            if (e.key === 'Escape' && !e.shiftKey) {
+
+            }
         });
     }
 
@@ -676,8 +685,12 @@ function toggleMenu() {
         });
     }
 
-    const renderProjectItems = (projectId) => {
-        const todos = Todos.findAllByProject(projectId);
+    /**
+    * @param {string} projectId - Project ID
+    * @param {string} searchTerm - User title search term
+    */
+    const renderProjectItems = (projectId, searchTerm = '') => {
+        const todos = !searchTerm ? Todos.findAllByProject(projectId) : Todos.findByTitleAndProject(searchTerm, projectId);
         const projectItemsContainer = document.querySelector('.project-items__todos');
         projectItemsContainer.innerHTML = '';
 
@@ -687,7 +700,7 @@ function toggleMenu() {
         }
 
         todos.forEach((todo) => {
-            console.log(todo);
+            //console.log(todo);
             const projectItem = document.createElement('div');
             projectItem.dataset.todoId = todo.id;
             projectItem.classList.add('todo', 'project-items__todo', 'todo-grid');
@@ -819,8 +832,8 @@ function toggleMenu() {
     createProjectDialogControls();
     createTodoDialogControls();
     renderProjectTitle();
-    SearchComponent();
     renderProjects();
+    SearchTodos();
     buttonHelper();
     toggleMenu();
 })();

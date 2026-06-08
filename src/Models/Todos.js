@@ -17,6 +17,20 @@ class Todos {
     }
 
     /**
+     * @param {string} titleSearchTerm - user title search term
+     * @param {string} projectId - project
+     * @returns {Todos}
+     */
+    static findByTitleAndProject(titleSearchTerm, projectId) {
+        const todos = this.findAll();
+        const found = todos.filter(
+            todo => todo.title.includes(titleSearchTerm) && todo.projectId == projectId
+        );
+        //console.log(found);
+        return found.map(todo => Todo.fromSerialized(todo));
+    }
+
+    /**
      * @param {string} projectId - The projects's id to find todos for
      */
     static findAllByProject(projectId) {
