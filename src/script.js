@@ -113,7 +113,7 @@ function toggleMenu() {
     appController.createDefaultData();
 
     const defaultList = document.querySelector('#projects__list');
-    const projectsList = document.querySelector('#projects__list');
+    let projectsList = document.querySelector('#projects__list');
     const confirmDeleteDialog = document.querySelector('#confirm-delete-dialog');
     const editTodoDialog = document.querySelector('#edit-todo-dialog');
 
@@ -122,6 +122,7 @@ function toggleMenu() {
         const searchButton = document.querySelector('#todo-search__button');
         const searchInput = document.querySelector('#project-item-search-input');
         const clearSearchButton = document.querySelector('#todo-search__clear-btn');
+        const projectsSearchButton = document.querySelector('#project-search-input');
         let c = 0;
 
         const removeClearButton = () => {
@@ -178,6 +179,14 @@ function toggleMenu() {
 
             }
         });
+
+        projectsSearchButton.addEventListener('input', function (e) {
+            if (!e.shiftKey) {
+                console.log(this.value);
+                renderProjects(this.value);
+            }
+        });
+
     }
 
     const confirmDeleteDialogControls = (todo) => {
@@ -383,8 +392,11 @@ function toggleMenu() {
 
     }
 
-    const renderProjects = () => {
-        const projects = Projects.findAll();
+    /**
+     * @param {string} searchTerm - User project search term
+     */
+    const renderProjects = (searchTerm = '') => {
+        const projects = searchTerm ? Projects.findByName(searchTerm) : Projects.findAll();
         projectsList.innerHTML = '';
         projects.forEach((project, index) => {
             const projectElement = document.createElement('button');
@@ -806,8 +818,12 @@ function toggleMenu() {
         })
     }
 
-    const renderProjectTitle = (projectId) => {
+    /**
+     * Renders the project title and project items
+     */
+    const renderProjectTitleAndItems = () => {
         const projectSpan = document.querySelector('.project-items__title #project-title');
+        projectsList = document.querySelector('#projects__list');
         projectsList.addEventListener('click', (e) => {
             if (e.target.classList.contains('project')) {
                 const target = e.target;
@@ -815,13 +831,13 @@ function toggleMenu() {
                 renderProjectItems(target.dataset.projectId);
             }
         });
-        const firstProject = Projects.findAll()[0];
-        console.log(firstProject);
 
-        if (projectId) {
-            const project = Projects.findById(projectId);
-            projectSpan.textContent = project.name;
-        } else if (firstProject) {
+        const firstProjectId = projectsList.hasChildNodes()
+            ? projectsList.firstChild.dataset.projectId
+            : null;
+
+        if (firstProjectId) {
+            const firstProject = Projects.findById(firstProjectId);
             projectSpan.textContent = firstProject.name;
             renderProjectItems(firstProject.id);
         } else {
@@ -831,8 +847,8 @@ function toggleMenu() {
 
     createProjectDialogControls();
     createTodoDialogControls();
-    renderProjectTitle();
     renderProjects();
+    renderProjectTitleAndItems();
     SearchTodos();
     buttonHelper();
     toggleMenu();

@@ -15,4 +15,14 @@ export default class Projects {
 
         return Project.fromSerialized(project);
     }
+
+    static findByName(name) {
+        const projects = this.findAll();
+        const project = projects.find(project => project.name === name);
+        if (!project) {
+            throw new Error(`Project with name ${name} not found`);
+        }
+
+        return Project.fromSerialized(project);
+    }
 }
