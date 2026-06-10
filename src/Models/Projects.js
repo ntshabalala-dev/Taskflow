@@ -16,13 +16,18 @@ export default class Projects {
         return Project.fromSerialized(project);
     }
 
+    /**
+     * @param {string} name - user project name
+     * @returns {Projects}
+     */
     static findByName(name) {
         const projects = this.findAll();
-        const project = projects.find(project => project.name === name);
-        if (!project) {
+        const searchTerm = name.toLowerCase();
+        const found = projects.filter(project => project.name.toLowerCase().includes(searchTerm));
+        if (!found) {
             throw new Error(`Project with name ${name} not found`);
         }
 
-        return Project.fromSerialized(project);
+        return found.map(project => Project.fromSerialized(project));
     }
 }

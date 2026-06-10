@@ -68,7 +68,7 @@ function taskFlowController() {
     }
 }
 
-function buttonHelper() {
+function projectsButtonHelper() {
     const projects = document.querySelectorAll('#projects__list .project');
 
     projects.forEach(project => {
@@ -184,6 +184,8 @@ function toggleMenu() {
             if (!e.shiftKey) {
                 console.log(this.value);
                 renderProjects(this.value);
+                renderProjectTitleAndItems()
+                projectsButtonHelper();
             }
         });
 
@@ -396,7 +398,14 @@ function toggleMenu() {
      * @param {string} searchTerm - User project search term
      */
     const renderProjects = (searchTerm = '') => {
-        const projects = searchTerm ? Projects.findByName(searchTerm) : Projects.findAll();
+        let projects;
+        try {
+            projects = searchTerm ? Projects.findByName(searchTerm) : Projects.findAll();
+        } catch (error) {
+            console.error(error);
+            return;
+        }
+        console.log(projects);
         projectsList.innerHTML = '';
         projects.forEach((project, index) => {
             const projectElement = document.createElement('button');
@@ -842,6 +851,7 @@ function toggleMenu() {
             renderProjectItems(firstProject.id);
         } else {
             projectSpan.textContent = 'No Projects';
+            document.querySelector('.project-items__todos').innerHTML = '';
         }
     }
 
@@ -850,7 +860,7 @@ function toggleMenu() {
     renderProjects();
     renderProjectTitleAndItems();
     SearchTodos();
-    buttonHelper();
+    projectsButtonHelper();
     toggleMenu();
 })();
 
