@@ -311,36 +311,6 @@ function toggleMenu() {
                 return;
             }
         });
-        //     e.preventDefault();
-        //     const formControl = document.createElement('div');
-        //     formControl.className = 'form-control';
-
-        //     // Find all relevant fields (inputs and their labels) to wrap them
-        //     const nameLabel = document.querySelector('#project-name').closest('.form-group'); // Assuming a structure where labels are grouped
-        //     const nameInput = document.querySelector('#project-name');
-        //     const descriptionLabel = document.querySelector('#project-description').closest('.form-group');
-        //     const descriptionInput = document.querySelector('#project-description');
-
-        //     // For simplicity based on the provided code context, we wrap inputs directly.
-        //     // If labels exist and need wrapping too, this part needs more context.
-        //     // We will wrap the inputs as requested in the existing flow.
-
-        //     formControl.appendChild(nameInput);
-        //     formControl.appendChild(descriptionInput);
-
-        //     try {
-        //         (new Project(nameInput.value, descriptionInput.value));
-        //         // Re-render projects list
-        //         renderProjects();
-
-        //         nameInput.value = '';
-        //         descriptionInput.value = ''
-
-        //         createProjectDialog.close();
-        //     } catch (error) {
-        //         alert(error.message);
-        //     }
-        // });
     }
 
     const createTodoDialogControls = () => {
