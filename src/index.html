@@ -82,17 +82,19 @@
     <dialog id="create-project-dialog">
         <form id="create-project-form">
             <h3>Create New Project</h3>
-            <div class="form-group">
-                <label for="project-name">Project Name</label>
-                <input type="text" id="project-name" name="project-name" required>
-            </div>
-            <div class="form-group">
-                <label for="project-description">Description</label>
-                <textarea id="project-description" name="project-description" required></textarea>
+            <div class="create-project-grid">
+                <div class="form-group">
+                    <label for="project-name">Project Name</label>
+                    <input type="text" id="project-name" name="project-name" required>
+                </div>
+                <div class="form-group create-project-description">
+                    <label for="project-description">Description</label>
+                    <textarea id="project-description" name="project-description" rows="3" required></textarea>
+                </div>
             </div>
             <div class="dialog-buttons">
-                <button commandfor="create-project-dialog" command="close" id="cancel-project-btn">Cancel</button>
-                <button id="create-project-btn">Create Project</button>
+                <button type="button" commandfor="create-project-dialog" command="close" id="cancel-project-btn">Cancel</button>
+                <button type="submit" id="create-project-btn">Create Project</button>
             </div>
         </form>
     </dialog>
@@ -100,39 +102,36 @@
     <dialog id="create-todo-dialog">
         <form id="create-todo-form">
             <h3>Add New Todo</h3>
-            <div class=" form-group todo-projects">
-                <label for="project-select">Select Project</label>
-                <select name="project-user-choice" id="project-select">
-                </select>
+            <div class="create-todo-grid">
+                <div class="form-group">
+                    <label for="todo-title">Todo Title</label>
+                    <input type="text" id="todo-title" name="todo-title" required>
+                </div>
+                <div class="form-group">
+                    <label for="todo-due-date">Due Date</label>
+                    <input type="date" id="todo-due-date" name="todo-due-date">
+                </div>
+                <div class="form-group create-todo-description">
+                    <label for="todo-description">Description</label>
+                    <textarea id="todo-description" name="todo-description" rows="3" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="priority">Priority</label>
+                    <select name="priority-user-choice" id="priority">
+                        <option value="Low" selected>Low</option>
+                        <option value="Medium">Medium</option>
+                        <option value="High">High</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="project-select">Project</label>
+                    <select name="project-user-choice" id="project-select">
+                    </select>
+                </div>
             </div>
-
-            <div class="form-group">
-                <label for="todo-title">Todo Title</label>
-                <input type="text" id="todo-title" name="todo-title" required>
-            </div>
-
-            <div class="form-group">
-                <label for="todo-description">Description</label>
-                <textarea id="todo-description" name="todo-description" required></textarea>
-            </div>
-
-            <div class="form-group">
-                <label for="todo-due-date">Due Date</label>
-                <input type="date" id="todo-due-date" name="todo-due-date">
-            </div>
-
-            <div class="form-group todo-priority">
-                <label for="priority">Priority</label>
-                <select name="priority-user-choice" id="priority">
-                    <option value="Low" selected>Low</option>
-                    <option value="Medium">Medium</option>
-                    <option value="High">High</option>
-                </select>
-            </div>
-
             <div class="dialog-buttons">
                 <button type="button" commandfor="create-todo-dialog" command="close" id="cancel-todo-btn">Cancel</button>
-                <button id="create-todo-btn">Add Todo</button>
+                <button type="submit" id="create-todo-btn">Add Todo</button>
             </div>
         </form>
     </dialog>

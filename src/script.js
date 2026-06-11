@@ -192,12 +192,7 @@ function toggleMenu() {
     }
 
     const confirmDeleteDialogControls = (todo) => {
-        const cancelDeleteBtn = document.querySelector('#cancel-delete-btn');
         const confirmDeleteBtn = document.querySelector('#confirm-delete-btn');
-
-        cancelDeleteBtn.addEventListener('click', () => {
-            confirmDeleteDialog.close();
-        });
 
         confirmDeleteBtn.addEventListener('click', () => {
             if (!todo) return;
@@ -288,54 +283,68 @@ function toggleMenu() {
     const createProjectDialogControls = () => {
         const openCreateProjectDialog = document.querySelector('#open-create-project-dialog-btn');
         const createProjectDialog = document.querySelector('#create-project-dialog');
-        const cancelBtn = document.querySelector('#cancel-project-btn');
         const createProjectBtn = document.querySelector('#create-project-btn');
-
+        const form = document.querySelector('#create-project-form');
 
         openCreateProjectDialog.addEventListener('click', () => {
             createProjectDialog.showModal();
         });
 
-        cancelBtn.addEventListener('click', () => {
-            createProjectDialog.close();
-        });
-
-        createProjectBtn.addEventListener('click', (e) => {
+        form.addEventListener('submit', function (e) {
+            console.log('submit');
             e.preventDefault();
-            const formControl = document.createElement('div');
-            formControl.className = 'form-control';
-
-            // Find all relevant fields (inputs and their labels) to wrap them
-            const nameLabel = document.querySelector('#project-name').closest('.form-group'); // Assuming a structure where labels are grouped
-            const nameInput = document.querySelector('#project-name');
-            const descriptionLabel = document.querySelector('#project-description').closest('.form-group');
-            const descriptionInput = document.querySelector('#project-description');
-
-            // For simplicity based on the provided code context, we wrap inputs directly.
-            // If labels exist and need wrapping too, this part needs more context.
-            // We will wrap the inputs as requested in the existing flow.
-
-            formControl.appendChild(nameInput);
-            formControl.appendChild(descriptionInput);
-
+            const formData = new FormData(this);
+            console.log([...formData]);
             try {
-                (new Project(nameInput.value, descriptionInput.value));
+                const title = appController.cleanData(formData.get('project-name'));
+                const description = appController.cleanData(formData.get('project-description'));
+
+                (new Project(title, description));
                 // Re-render projects list
                 renderProjects();
 
-                nameInput.value = '';
-                descriptionInput.value = ''
-
+                this.reset();
+                projectsButtonHelper();
                 createProjectDialog.close();
             } catch (error) {
                 alert(error.message);
+                return;
             }
         });
+        //     e.preventDefault();
+        //     const formControl = document.createElement('div');
+        //     formControl.className = 'form-control';
+
+        //     // Find all relevant fields (inputs and their labels) to wrap them
+        //     const nameLabel = document.querySelector('#project-name').closest('.form-group'); // Assuming a structure where labels are grouped
+        //     const nameInput = document.querySelector('#project-name');
+        //     const descriptionLabel = document.querySelector('#project-description').closest('.form-group');
+        //     const descriptionInput = document.querySelector('#project-description');
+
+        //     // For simplicity based on the provided code context, we wrap inputs directly.
+        //     // If labels exist and need wrapping too, this part needs more context.
+        //     // We will wrap the inputs as requested in the existing flow.
+
+        //     formControl.appendChild(nameInput);
+        //     formControl.appendChild(descriptionInput);
+
+        //     try {
+        //         (new Project(nameInput.value, descriptionInput.value));
+        //         // Re-render projects list
+        //         renderProjects();
+
+        //         nameInput.value = '';
+        //         descriptionInput.value = ''
+
+        //         createProjectDialog.close();
+        //     } catch (error) {
+        //         alert(error.message);
+        //     }
+        // });
     }
 
     const createTodoDialogControls = () => {
         const openCreateTodoDialog = document.querySelector('#project-items__create-todo-btn');
-        const cancelTodoDialogBtn = document.querySelector('#cancel-todo-btn');
         const createTodoDialog = document.querySelector('#create-todo-dialog');
         const createTodoBtn = document.querySelector('#create-todo-btn');
         const projectSelect = document.querySelector('#project-select');
@@ -352,10 +361,6 @@ function toggleMenu() {
 
         openCreateTodoDialog.addEventListener('click', () => {
             createTodoDialog.showModal();
-        });
-
-        cancelTodoDialogBtn.addEventListener('click', () => {
-            createTodoDialog.close();
         });
 
         const form = document.querySelector('#create-todo-form');
