@@ -5,6 +5,8 @@ import Todo from './Entities/todo.js';
 import '../src/main.css'
 import editSvg from './Assets/icons/edit.svg';
 import deleteSvg from './Assets/icons/trash-2.svg';
+import editSvg_w from './Assets/icons/edit-w.svg';
+import deleteSvg_w from './Assets/icons/trash-2-w.svg';
 import chevronDownSvg from './Assets/icons/chevron-down.svg';
 import chevronUpSvg from './Assets/icons/chevron-up.svg';
 import escape from 'validator/lib/escape.js';
@@ -407,16 +409,18 @@ function toggleMenu() {
         const chevronIcon = document.createElement('img');
 
         const editIcon = document.createElement('img');
-        editIcon.src = editSvg;
+        editIcon.src = editSvg_w;
         editIcon.alt = 'Edit';
         editBtn.appendChild(editIcon);
 
         const deleteIcon = document.createElement('img');
-        deleteIcon.src = deleteSvg;
+        deleteIcon.src = deleteSvg_w;
         deleteIcon.alt = 'Delete';
         deleteBtn.appendChild(deleteIcon);
 
         if (!isProjectContainer) {
+            editIcon.src = editSvg
+            deleteIcon.src = deleteSvg;
             controlSpan.classList.add('todo-controls');
 
             chevronIcon.src = chevronDownSvg;
