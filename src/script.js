@@ -14,15 +14,6 @@ import trim from 'validator/lib/trim.js';
 import Toastify from 'toastify-js';
 import "toastify-js/src/toastify.css";
 
-// let p = new Project('Test', "This is a test project");
-// let p2 = new Project('Test2', "This is a test project two");
-// let b = new Project('Test2', "This is another test project");
-
-//console.log(localStorage.getItem('projects'));
-
-//console.log(Projects.findAll());
-
-
 function taskFlowController() {
 
     const createDefaultData = () => {
@@ -119,7 +110,7 @@ function toggleMenu() {
     const confirmDeleteDialog = document.querySelector('#confirm-delete-dialog');
     const editTodoDialog = document.querySelector('#edit-todo-dialog');
 
-    const SearchTodos = () => {
+    const appSearch = () => {
         const currentProject = document.querySelector('#projects__list .project.active')
         const searchButton = document.querySelector('#todo-search__button');
         const searchInput = document.querySelector('#project-item-search-input');
@@ -193,26 +184,27 @@ function toggleMenu() {
 
     }
 
-    const confirmDeleteDialogControls = (todo) => {
+    const confirmDeleteDialogControls = (entity) => {
+        // console.log(entity instanceof entity);
         const confirmDeleteBtn = document.querySelector('#confirm-delete-btn');
 
         confirmDeleteBtn.addEventListener('click', () => {
-            if (!todo) return;
+            if (!entity) return;
 
-            todo.delete();
-
-            const activeProjectButton = document.querySelector('#projects__list button.active');
-            if (activeProjectButton) {
-                renderProjectItems(activeProjectButton.dataset.projectId);
+            if (entity instanceof Todo) {
+                entity.delete();
+                const activeProjectButton = document.querySelector('#projects__list button.active');
+                if (activeProjectButton) {
+                    renderProjectItems(activeProjectButton.dataset.projectId);
+                }
+                appController.toast('✓ Todo Deleted Successfully!', 'success');
+            } else if (entity instanceof Project) {
+                entity.delete();
+                renderProjects();
+                renderProjectTitleAndItems()
+                projectsButtonHelper();
             }
-            appController.toast('✓ Todo Deleted Successfully!', 'success');
             confirmDeleteDialog.close();
-        });
-
-        confirmDeleteDialog.addEventListener('click', (e) => {
-            if (e.target === confirmDeleteDialog) {
-                confirmDeleteDialog.close();
-            }
         });
     }
 
@@ -429,7 +421,6 @@ function toggleMenu() {
             controlSpan.appendChild(chevronBtn);
         }
 
-
         controlSpan.append(editBtn, deleteBtn);
 
         // @card = cardelement
@@ -562,15 +553,27 @@ function toggleMenu() {
             const target = e.target;
             console.log(controlElement.classList.contains('project'));
 
+            const setDialogEntity = (entity) => {
+                const entities = document.querySelectorAll('.entity');
+                entities.forEach(element => {
+                    element.textContent = entity;
+                });
+            }
+
             // Controls for the project buttons
             if (isProjectContainer) {
                 const projectId = controlElement.dataset.projectId;
+                const project = Projects.findById(projectId);
+
                 if (target === editBtn || target === editIcon) {
                     // Handle edit project
                     console.log('Edit project', projectId);
                 } else if (target === deleteBtn || target === deleteIcon) {
                     // Handle delete project
-                    console.log('Delete project', projectId);
+                    console.log('Delete project', project.id);
+                    confirmDeleteDialogControls(project);
+                    setDialogEntity('Project');
+                    confirmDeleteDialog.showModal();
                 }
             } else {
                 // Controls for the todo buttons
@@ -658,7 +661,6 @@ function toggleMenu() {
                     }
                 } else if (target === editBtn || target === editIcon) {
                     // Handle delete todo show dialog asking user to delete
-                    console.log('Edit todo', todoId);
                     editTodoDialogControls(todo);
                     const dueDate = document.querySelector('#edit-todo-due-date');
                     document.querySelector('#edit-todo-title').value = todo.title;
@@ -677,8 +679,8 @@ function toggleMenu() {
                 } else if (target === deleteBtn || target === deleteIcon) {
                     // Handle delete todo
                     confirmDeleteDialogControls(todo);
-                    confirmDeleteDialog.showModal(todo);
-                    //console.log('Delete todo', todoId);
+                    setDialogEntity('Todo');
+                    confirmDeleteDialog.showModal();
                 }
             }
 
@@ -838,7 +840,7 @@ function toggleMenu() {
     createTodoDialogControls();
     renderProjects();
     renderProjectTitleAndItems();
-    SearchTodos();
+    appSearch();
     projectsButtonHelper();
     toggleMenu();
 })();

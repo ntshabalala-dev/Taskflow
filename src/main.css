@@ -752,3 +752,7 @@ dialog::backdrop {
     color: #fff;
     border-color: #e53e3e;
 }
+
+.entity.lowercase {
+    text-transform: lowercase;
+}
