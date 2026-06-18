@@ -203,6 +203,10 @@ function toggleMenu() {
                 renderProjects();
                 renderProjectTitleAndItems()
                 projectsButtonHelper();
+
+                Todos.findAllByProject(entity.id).forEach(todo => {
+                    todo.delete();
+                });
             }
             confirmDeleteDialog.close();
         });
@@ -313,17 +317,22 @@ function toggleMenu() {
         const createTodoBtn = document.querySelector('#create-todo-btn');
         const projectSelect = document.querySelector('#project-select');
 
-        // Populate project select options
-        const projects = Projects.findAll();
-        projects.forEach(project => {
-            const option = document.createElement('option');
-            option.name = project.name;
-            option.value = project.id;
-            option.textContent = project.name;
-            projectSelect.appendChild(option);
-        });
+
 
         openCreateTodoDialog.addEventListener('click', () => {
+            // Populate project select options
+            const projects = Projects.findAll();
+            projectSelect.innerHTML = '';
+
+            projects.forEach(project => {
+                console.log(project);
+                const option = document.createElement('option');
+                option.name = project.name;
+                option.value = project.id;
+                option.textContent = project.name;
+                projectSelect.appendChild(option);
+            });
+
             createTodoDialog.showModal();
         });
 
@@ -348,6 +357,8 @@ function toggleMenu() {
 
                 // Re-render project items if the new todo belongs to the currently viewed project
                 const activeProjectButton = document.querySelector('#projects__list button.active');
+                let check = activeProjectButton && activeProjectButton.dataset.projectId === projectId;
+                console.log(check);
                 if (activeProjectButton && activeProjectButton.dataset.projectId === projectId) {
                     renderProjectItems(projectId);
                     console.log('show items');
