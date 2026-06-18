@@ -668,6 +668,7 @@ function toggleMenu() {
                         chevronIcon.src = chevronDownSvg;
                         chevronIcon.alt = 'expand';
                         const expandedCard = controlElement.querySelector('.expanded-card')
+                        console.log(controlElement);
                         controlElement.removeChild(expandedCard);
                     }
                 } else if (target === editBtn || target === editIcon) {

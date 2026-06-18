@@ -1,7 +1,7 @@
 import todos from '../Models/Todos.js';
 
 export default class Todo {
-    constructor(title, description, projectId, dueDate = null, priority = 'low', id = null) {
+    constructor(title, description, projectId, dueDate = null, priority = 'Low', id = null) {
         this.id = id || crypto.randomUUID();
         this.title = title.trim();
         this.description = description.trim();
