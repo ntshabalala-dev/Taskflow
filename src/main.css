@@ -480,7 +480,6 @@ dialog::backdrop {
     display: grid;
     grid-column: span 5;
     grid-template-columns: auto 1fr 200px 250px;
-    padding-top: .2rem;
 }
 
 .project-items__todos .todo-controls {
@@ -500,26 +499,45 @@ dialog::backdrop {
 }
 
 /* form-control */
-.form-control>* {
+.form-control {
     display: flex;
     flex-direction: column;
 }
 
-.form-control.duedate,
-.form-control.priority {
+.form-control label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.form-control input,
+.form-control select,
+.form-control textarea {
+    padding: 0.4rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 0.9rem;
+    /* width: 100%; */
+}
+
+.form-control input,
+.form-control textarea {
+    margin-right: .7rem;
+}
+
+.form-control textarea {
+    resize: none;
+}
+
+.form-control__title,
+.form-control__description,
+.form-control__duedate,
+.form-control__priority {
     display: flex;
-    align-items: end;
-}
-
-.form-control__priority,
-.form-control__duedate {
+    flex-direction: column;
+    gap: 0.25rem;
     width: 100%;
-}
-
-#todo-due-date,
-#todo-priority-user-choice,
-#todo-description {
-    margin-right: .5rem;
 }
 
 .todo.completed #project-item__due-date,
@@ -530,22 +548,39 @@ dialog::backdrop {
 
 .form-control__buttons {
     grid-column: 3/5;
-    display: grid;
-    gap: .5rem;
-    grid-template-columns: repeat(3, auto);
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
     margin-top: 1rem;
-    margin-right: .5rem;
-    /* display: flex;
-    justify-content: end; */
+    align-items: start;
 }
 
 .form-control__buttons button {
-    padding-top: .5rem;
-    padding-bottom: .5rem;
-    background-color: transparent;
-    border: 1px solid;
-    border-radius: .5rem;
+    padding: 0.5rem 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
     cursor: pointer;
+    font-family: inherit;
+    font-size: 0.85rem;
+    white-space: nowrap;
+}
+
+#expanded-save-btn {
+    background-color: #0EA5E9;
+    color: #fff;
+    border-color: #0EA5E9;
+}
+
+#expanded-complete-btn {
+    background-color: #10b981;
+    color: #fff;
+    border-color: #10b981;
+}
+
+#expanded-delete-btn {
+    background-color: #e53e3e;
+    color: #fff;
+    border-color: #e53e3e;
 }
 
 #todo-due-date {
