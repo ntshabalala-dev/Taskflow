@@ -280,9 +280,9 @@ function toggleMenu() {
 
     const createProjectDialogControls = () => {
         const openCreateProjectDialog = document.querySelector('#open-create-project-dialog-btn');
-        const createProjectDialog = document.querySelector('#create-project-dialog');
+        const createProjectDialog = document.querySelector('#create-edit-project-dialog');
         const createProjectBtn = document.querySelector('#create-project-btn');
-        const form = document.querySelector('#create-project-form');
+        const form = document.querySelector('#create-edit-project-form');
 
         openCreateProjectDialog.addEventListener('click', () => {
             createProjectDialog.showModal();
@@ -309,6 +309,39 @@ function toggleMenu() {
                 return;
             }
         });
+    }
+
+    const editProjectDialogControls = () => {
+        // const openCreateProjectDialog = document.querySelector('#open-create-project-dialog-btn');
+        // const createProjectDialog = document.querySelector('#create-project-dialog');
+        // const createProjectBtn = document.querySelector('#create-project-btn');
+        // const form = document.querySelector('#create-project-form');
+
+        // openCreateProjectDialog.addEventListener('click', () => {
+        //     createProjectDialog.showModal();
+        // });
+
+        // form.addEventListener('submit', function (e) {
+        //     console.log('submit');
+        //     e.preventDefault();
+        //     const formData = new FormData(this);
+        //     console.log([...formData]);
+        //     try {
+        //         const title = appController.cleanData(formData.get('project-name'));
+        //         const description = appController.cleanData(formData.get('project-description'));
+
+        //         (new Project(title, description));
+        //         // Re-render projects list
+        //         renderProjects();
+
+        //         this.reset();
+        //         projectsButtonHelper();
+        //         createProjectDialog.close();
+        //     } catch (error) {
+        //         alert(error.message);
+        //         return;
+        //     }
+        // });
     }
 
     const createTodoDialogControls = () => {

@@ -336,30 +336,30 @@ dialog::backdrop {
 }
 
 /* create-project dialog */
-#create-project-dialog {
+#create-edit-project-dialog {
     min-width: 480px;
 }
 
-.create-project-grid {
+.create-edit-project-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 1rem;
 }
 
-.create-project-grid .form-group {
+.create-edit-project-grid .form-group {
     display: flex;
     flex-direction: column;
     gap: 0.25rem;
 }
 
-.create-project-grid .form-group label {
+.create-edit-project-grid .form-group label {
     font-size: 0.85rem;
     font-weight: 600;
     color: #333;
 }
 
-.create-project-grid .form-group input,
-.create-project-grid .form-group textarea {
+.create-edit-project-grid .form-group input,
+.create-edit-project-grid .form-group textarea {
     padding: 0.4rem;
     border: 1px solid #ccc;
     border-radius: 4px;
@@ -371,18 +371,18 @@ dialog::backdrop {
     grid-column: span 2;
 }
 
-#create-project-form h3 {
+#create-edit-project-form h3 {
     margin-bottom: 1rem;
 }
 
-#create-project-form .dialog-buttons {
+#create-edit-project-form .dialog-buttons {
     display: flex;
     justify-content: flex-end;
     gap: 0.5rem;
     margin-top: 1rem;
 }
 
-#create-project-form .dialog-buttons button {
+#create-edit-project-form .dialog-buttons button {
     padding: 0.5rem 1rem;
     border: 1px solid #ccc;
     border-radius: 4px;
