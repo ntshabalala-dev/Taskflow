@@ -43,7 +43,7 @@ export default class Todo {
             throw new Error("Todo project cannot be empty");
         }
 
-        console.log(newTitle, newDescription, newProjectId)
+        console.log(newTitle, newDescription, newProjectId, newPriority);
 
         this.title = newTitle !== undefined ? newTitle.trim() : this.title;
         this.description = newDescription !== undefined ? newDescription.trim() : this.description;

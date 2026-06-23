@@ -109,6 +109,7 @@ function toggleMenu() {
     let projectsList = document.querySelector('#projects__list');
     const confirmDeleteDialog = document.querySelector('#confirm-delete-dialog');
     const editTodoDialog = document.querySelector('#edit-todo-dialog');
+    const editProjectSelect = document.querySelector('#edit-todo-project');
 
     const appSearch = () => {
         const currentProject = document.querySelector('#projects__list .project.active')
@@ -212,32 +213,22 @@ function toggleMenu() {
         });
     }
 
-    const editTodoDialogControls = (todo) => {
+    const editTodoDialogControls = () => {
         const cancelEditBtn = document.querySelector('#cancel-edit-btn');
         const saveEditBtn = document.querySelector('#save-edit-btn');
         const editTitleInput = document.querySelector('#edit-todo-title');
         const editDescriptionInput = document.querySelector('#edit-todo-description');
         const editDueDateInput = document.querySelector('#edit-todo-due-date');
         const editPrioritySelect = document.querySelector('#edit-todo-priority');
-        const editProjectSelect = document.querySelector('#edit-todo-project');
 
-        const populateProjectSelect = () => {
-            editProjectSelect.innerHTML = '';
-            const projects = Projects.findAll();
-            projects.forEach(project => {
-                const option = document.createElement('option');
-                option.value = project.id;
-                option.textContent = project.name;
-                editProjectSelect.appendChild(option);
-            });
-        };
+        saveEditBtn.addEventListener('click', function () {
+            const todo = Todos.findById(this.dataset.todoId) ?? null;
 
-        cancelEditBtn.addEventListener('click', () => {
-            editTodoDialog.close();
-        });
-
-        saveEditBtn.addEventListener('click', () => {
-            if (!todo) return;
+            if (!todo) {
+                // toastify.error('Todo not found!');
+                alert('Todo not found!');
+                return;
+            }
 
             const title = editTitleInput.value;
             const description = editDescriptionInput.value;
@@ -274,14 +265,12 @@ function toggleMenu() {
                 editTodoDialog.close();
             }
         });
-
-        populateProjectSelect();
     }
 
     const createProjectDialogControls = () => {
         const openCreateProjectDialog = document.querySelector('#open-create-project-dialog-btn');
         const createProjectDialog = document.querySelector('#create-edit-project-dialog');
-        const createProjectBtn = document.querySelector('#create-project-btn');
+        const createProjectBtn = document.querySelector('#create-edit-project-btn');
         const form = document.querySelector('#create-edit-project-form');
 
         openCreateProjectDialog.addEventListener('click', () => {
@@ -700,14 +689,26 @@ function toggleMenu() {
                     } else {
                         chevronIcon.src = chevronDownSvg;
                         chevronIcon.alt = 'expand';
-                        const expandedCard = controlElement.querySelector('.expanded-card')
+                        const expandedCard = document.querySelector('.expanded-card.open')
                         console.log(controlElement);
                         controlElement.removeChild(expandedCard);
                     }
                 } else if (target === editBtn || target === editIcon) {
                     // Handle delete todo show dialog asking user to delete
-                    editTodoDialogControls(todo);
                     const dueDate = document.querySelector('#edit-todo-due-date');
+                    //const editProjectSelect = document.querySelector('#edit-todo-project');
+                    const saveEditBtn = document.querySelector('#save-edit-btn');
+                    saveEditBtn.dataset.todoId = todo.id;
+
+                    editProjectSelect.innerHTML = '';
+                    const projects = Projects.findAll();
+                    projects.forEach(project => {
+                        const option = document.createElement('option');
+                        option.value = project.id;
+                        option.textContent = project.name;
+                        editProjectSelect.appendChild(option);
+                    });
+
                     document.querySelector('#edit-todo-title').value = todo.title;
                     document.querySelector('#edit-todo-description').value = todo.description;
                     dueDate.value = todo.dueDate
@@ -882,6 +883,7 @@ function toggleMenu() {
     }
 
     createProjectDialogControls();
+    editTodoDialogControls();
     createTodoDialogControls();
     renderProjects();
     renderProjectTitleAndItems();

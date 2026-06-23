@@ -390,7 +390,7 @@ dialog::backdrop {
     font-family: inherit;
 }
 
-#create-project-btn {
+#create-edit-project-btn {
     background-color: #0EA5E9;
     color: #fff;
     border-color: #0EA5E9;
