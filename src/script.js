@@ -110,6 +110,9 @@ function toggleMenu() {
     const confirmDeleteDialog = document.querySelector('#confirm-delete-dialog');
     const editTodoDialog = document.querySelector('#edit-todo-dialog');
     const editProjectSelect = document.querySelector('#edit-todo-project');
+    const prjSaveEditBtn = document.querySelector('#create-edit-project-btn');
+    const projectDialogTitle = document.querySelector('#create-edit-project-title');
+    const editProjectDialog = document.querySelector('#create-edit-project-dialog');
 
     const appSearch = () => {
         const currentProject = document.querySelector('#projects__list .project.active')
@@ -267,13 +270,21 @@ function toggleMenu() {
         });
     }
 
-    const createProjectDialogControls = () => {
+    const createEditProjectDialogControls = () => {
         const openCreateProjectDialog = document.querySelector('#open-create-project-dialog-btn');
         const createProjectDialog = document.querySelector('#create-edit-project-dialog');
         const createProjectBtn = document.querySelector('#create-edit-project-btn');
         const form = document.querySelector('#create-edit-project-form');
-
+        // Create project dialog
         openCreateProjectDialog.addEventListener('click', () => {
+            if (prjSaveEditBtn.dataset.ProjectId) {
+                editProjectDialog.querySelector('#project-name').value = '';
+                editProjectDialog.querySelector('#project-description').value = '';
+                projectDialogTitle.textContent = 'Create New Project';
+                prjSaveEditBtn.textContent = 'Create Project';
+                prjSaveEditBtn.dataset.ProjectId = null;
+            }
+
             createProjectDialog.showModal();
         });
 
@@ -298,39 +309,6 @@ function toggleMenu() {
                 return;
             }
         });
-    }
-
-    const editProjectDialogControls = () => {
-        // const openCreateProjectDialog = document.querySelector('#open-create-project-dialog-btn');
-        // const createProjectDialog = document.querySelector('#create-project-dialog');
-        // const createProjectBtn = document.querySelector('#create-project-btn');
-        // const form = document.querySelector('#create-project-form');
-
-        // openCreateProjectDialog.addEventListener('click', () => {
-        //     createProjectDialog.showModal();
-        // });
-
-        // form.addEventListener('submit', function (e) {
-        //     console.log('submit');
-        //     e.preventDefault();
-        //     const formData = new FormData(this);
-        //     console.log([...formData]);
-        //     try {
-        //         const title = appController.cleanData(formData.get('project-name'));
-        //         const description = appController.cleanData(formData.get('project-description'));
-
-        //         (new Project(title, description));
-        //         // Re-render projects list
-        //         renderProjects();
-
-        //         this.reset();
-        //         projectsButtonHelper();
-        //         createProjectDialog.close();
-        //     } catch (error) {
-        //         alert(error.message);
-        //         return;
-        //     }
-        // });
     }
 
     const createTodoDialogControls = () => {
@@ -601,6 +579,15 @@ function toggleMenu() {
                 if (target === editBtn || target === editIcon) {
                     // Handle edit project
                     console.log('Edit project', projectId);
+
+                    editProjectDialog.querySelector('#project-name').value = project.name;
+                    editProjectDialog.querySelector('#project-description').value = project.description;
+                    projectDialogTitle.textContent = 'Edit Project';
+                    prjSaveEditBtn.textContent = 'Save Changes';
+
+                    prjSaveEditBtn.dataset.ProjectId = project.id;
+
+                    editProjectDialog.showModal();
                 } else if (target === deleteBtn || target === deleteIcon) {
                     // Handle delete project
                     console.log('Delete project', project.id);
@@ -882,7 +869,7 @@ function toggleMenu() {
         }
     }
 
-    createProjectDialogControls();
+    createEditProjectDialogControls();
     editTodoDialogControls();
     createTodoDialogControls();
     renderProjects();
