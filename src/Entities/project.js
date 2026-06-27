@@ -17,12 +17,12 @@ export default class Project {
         localStorage.setItem('projects', JSON.stringify(items));
     }
 
-    edit(newName, newDescription) {
+    edit(DataObject) {
+        const newName = DataObject.newName ?? null;
+        const newDescription = DataObject.newDescription ?? null;
+
         if (newName.trim().length === 0) {
             throw new Error("Project name cannot be empty");
-        }
-        if (newDescription.trim().length === 0) {
-            throw new Error("Project description cannot be empty");
         }
 
         this.name = newName.trim();

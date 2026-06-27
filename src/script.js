@@ -282,7 +282,7 @@ function toggleMenu() {
                 editProjectDialog.querySelector('#project-description').value = '';
                 projectDialogTitle.textContent = 'Create New Project';
                 prjSaveEditBtn.textContent = 'Create Project';
-                prjSaveEditBtn.dataset.ProjectId = null;
+                prjSaveEditBtn.dataset.ProjectId = '';
             }
 
             createProjectDialog.showModal();
@@ -292,14 +292,39 @@ function toggleMenu() {
             console.log('submit');
             e.preventDefault();
             const formData = new FormData(this);
-            console.log([...formData]);
             try {
-                const title = appController.cleanData(formData.get('project-name'));
+                const name = appController.cleanData(formData.get('project-name'));
                 const description = appController.cleanData(formData.get('project-description'));
+                const projectId = prjSaveEditBtn.dataset.ProjectId;
 
-                (new Project(title, description));
-                // Re-render projects list
-                renderProjects();
+                if (!projectId) {
+                    (new Project(name, description));
+                    // Re-render projects list
+                    renderProjects();
+                } else {
+                    const data = {
+                        newName: name,
+                        newDescription: description,
+                    };
+                    const editedProject = document.querySelector(`[data-project-id="${projectId}"]`);
+                    console.log('Edit data: ', data);
+                    const project = Projects.findById(projectId);
+                    project.edit(data);
+                    const projectTitle = document.querySelector('.project-items__title #project-title');
+                    const activeProjectButton = document.querySelector('#projects__list button.active');
+                    if (activeProjectButton && activeProjectButton.dataset.projectId === projectId) {
+                        projectTitle.textContent = project.name;
+                    } else {
+                        const activeButton = document.querySelector('#projects__list button.active');
+                        activeButton.classList.remove('active');
+                        editedProject.classList.add('active');
+                        projectTitle.textContent = project.name;
+                        renderProjectItems(projectId);
+                    }
+                    editedProject.textContent = project.name;
+                    applicationControlButtons(editedProject);
+                    appController.toast('✓ Project Updated Successfully!', 'success');
+                }
 
                 this.reset();
                 projectsButtonHelper();
@@ -340,8 +365,6 @@ function toggleMenu() {
         form.addEventListener('submit', (e) => {
             e.preventDefault();
             const formData = new FormData(form);
-            //console.log([...formData]);
-            // console.log(formData.get('project-user-choice'));
             try {
                 const title = formData.get('todo-title');
                 const description = formData.get('todo-description');
@@ -845,12 +868,12 @@ function toggleMenu() {
      * Renders the project title and project items
      */
     const renderProjectTitleAndItems = () => {
-        const projectSpan = document.querySelector('.project-items__title #project-title');
+        const projectTitle = document.querySelector('.project-items__title #project-title');
         projectsList = document.querySelector('#projects__list');
         projectsList.addEventListener('click', (e) => {
             if (e.target.classList.contains('project')) {
                 const target = e.target;
-                projectSpan.textContent = target.textContent;
+                projectTitle.textContent = target.textContent;
                 renderProjectItems(target.dataset.projectId);
             }
         });
@@ -861,10 +884,10 @@ function toggleMenu() {
 
         if (firstProjectId) {
             const firstProject = Projects.findById(firstProjectId);
-            projectSpan.textContent = firstProject.name;
+            projectTitle.textContent = firstProject.name;
             renderProjectItems(firstProject.id);
         } else {
-            projectSpan.textContent = 'No Projects';
+            projectTitle.textContent = 'No Projects';
             document.querySelector('.project-items__todos').innerHTML = '';
         }
     }
