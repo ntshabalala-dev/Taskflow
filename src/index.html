@@ -9,180 +9,185 @@
 
 <body>
 
-    <div class="projects">
-        <div id="projects__nav">
-            <div id="projects__nav-logo">
-                <span class="active">Taskflow</span>
-            </div>
-            <!-- The Hamburger Button -->
-            <button class="hamburger active" id="projects__nav-hamburger" aria-label="Toggle navigation">
-                <span class="bar"></span>
-                <span class="bar"></span>
-                <span class="bar"></span>
-            </button>
-
+    <header>
+        <button class="hamburger active" id="projects__nav-hamburger" aria-label="Toggle navigation">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </button>
+        
+        <div id="projects__nav-logo">
+            <span class="active">Taskflow</span>
         </div>
-        <div id="projects__search" class="active">
-            <div id="project-create-search">
-                <p id="project-create-subtext">PROJECTS</p>
-                <div id="create-project">
-                    <p id="create-project-text">Create New Project</p>
-                    <button id="open-create-project-dialog-btn">+</button>
+
+        <div class="header__logo">
+            <img src="./Assets/icons/taskflow_logo.svg" alt="Taskflow Logo">
+        </div>
+    </header>
+
+    <main>
+        <div class="projects">
+            <div id="projects__nav">
+                <div id="projects__nav-logo">
+                    <span class="active">Taskflow</span>
                 </div>
-                <input type="text" id="project-search-input" placeholder="Search projects...">
-            </div>
-        </div>
-        <div id="projects__list" class="active"></div>
-
-    </div>
-    </div>
-
-    <main class="project-items">
-        <div class="project-items__search container">
-            <div class="todo-search">
-                <img id="todo-search__icon" src="./Assets/icons/search.svg" alt="">
-                <input type="text" id="project-item-search-input" placeholder="Search Todos by title...">
-                <img id="todo-search__clear-btn" src="./Assets/icons/x.svg" alt="">
-                <button id="todo-search__button">
-                    <img id="todo-search__button-icon" src="./Assets/icons/search.svg" alt="">
-                    <span>Search</span>
+                <!-- The Hamburger Button -->
+                <button class="hamburger active" id="projects__nav-hamburger" aria-label="Toggle navigation">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
                 </button>
             </div>
-            <button id="project-items__create-todo-btn">+ Add Todo</button>
-        </div>
-
-        <div class="project-items__list container">
-            <div class="project-items__title">
-                <h2 id="project-items__title-text">Project: <span id="project-title"></span></h2>
-                <div class="project-items__sort">
-                    <label for="sort-select">Sort by:</label>
-                    <select id="sort-select">
-                        <option value="due-date">Due Date</option>
-                        <option value="priority">Priority</option>
-                        <option value="creation-date">Creation Date</option>
-                    </select>
+            <div id="projects__search" class="active">
+                <div id="project-create-search">
+                    <p id="project-create-subtext">PROJECTS</p>
+                    <div id="create-project">
+                        <p id="create-project-text">Create New Project</p>
+                        <button id="open-create-project-dialog-btn">+</button>
+                    </div>
+                    <input type="text" id="project-search-input" placeholder="Search projects...">
                 </div>
             </div>
-
-            <div class="project-items__control todo-grid">
-                <input type="checkbox" id="project-items__select-all" name="select-all" value="on">
-                <div>Title</div>
-                <div>Due Date</div>
-                <div>Priority</div>
-            </div>
-
-            <div class="project-items__todos">
-
-            </div>
-
+            <div id="projects__list" class="active"></div>
         </div>
-
+        </div>
+        <div class="project-items">
+            <div class="project-items__search container">
+                <div class="todo-search">
+                    <img id="todo-search__icon" src="./Assets/icons/search.svg" alt="">
+                    <input type="text" id="project-item-search-input" placeholder="Search Todos by title...">
+                    <img id="todo-search__clear-btn" src="./Assets/icons/x.svg" alt="">
+                    <button id="todo-search__button">
+                        <img id="todo-search__button-icon" src="./Assets/icons/search.svg" alt="">
+                        <span>Search</span>
+                    </button>
+                </div>
+                <button id="project-items__create-todo-btn">+ Add Todo</button>
+            </div>
+            <div class="project-items__list container">
+                <div class="project-items__title">
+                    <h2 id="project-items__title-text">Project: <span id="project-title"></span></h2>
+                    <div class="project-items__sort">
+                        <label for="sort-select">Sort by:</label>
+                        <select id="sort-select">
+                            <option value="due-date">Due Date</option>
+                            <option value="priority">Priority</option>
+                            <option value="creation-date">Creation Date</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="project-items__control todo-grid">
+                    <input type="checkbox" id="project-items__select-all" name="select-all" value="on">
+                    <div>Title</div>
+                    <div>Due Date</div>
+                    <div>Priority</div>
+                </div>
+                <div class="project-items__todos">
+                </div>
+            </div>
+        </div>
+        <dialog id="create-edit-project-dialog">
+            <form id="create-edit-project-form">
+                <h3 id="create-edit-project-title">Create New Project</h3>
+                <div class="create-edit-project-grid">
+                    <div class="form-group">
+                        <label for="project-name">Project Name</label>
+                        <input type="text" id="project-name" name="project-name" required>
+                    </div>
+                    <div class="form-group create-project-description">
+                        <label for="project-description">Description</label>
+                        <textarea id="project-description" name="project-description" rows="3"></textarea>
+                    </div>
+                </div>
+                <div class="dialog-buttons">
+                    <button type="button" commandfor="create-edit-project-dialog" command="close" id="cancel-project-btn">Cancel</button>
+                    <button type="submit" id="create-edit-project-btn">Create Project</button>
+                </div>
+            </form>
+        </dialog>
+        <dialog id="create-todo-dialog">
+            <form id="create-todo-form">
+                <h3>Add New Todo</h3>
+                <div class="create-todo-grid">
+                    <div class="form-group">
+                        <label for="todo-title">Todo Title</label>
+                        <input type="text" id="todo-title" name="todo-title" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="todo-due-date">Due Date</label>
+                        <input type="date" id="todo-due-date" name="todo-due-date">
+                    </div>
+                    <div class="form-group create-todo-description">
+                        <label for="todo-description">Description</label>
+                        <textarea id="todo-description" name="todo-description" rows="3" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="priority">Priority</label>
+                        <select name="priority-user-choice" id="priority">
+                            <option value="Low" selected>Low</option>
+                            <option value="Medium">Medium</option>
+                            <option value="High">High</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="project-select">Project</label>
+                        <select name="project-user-choice" id="project-select">
+                        </select>
+                    </div>
+                </div>
+                <div class="dialog-buttons">
+                    <button type="button" commandfor="create-todo-dialog" command="close" id="cancel-todo-btn">Cancel</button>
+                    <button type="submit" id="create-todo-btn">Add Todo</button>
+                </div>
+            </form>
+        </dialog>
+         <dialog id="confirm-delete-dialog">
+            <form id="confirm-delete-form">
+                <h3>Delete <span class="entity"></span></h3>
+                <p>Are you sure you want to delete this <span class="entity lowercase"></span>? This action cannot be undone.</p>
+                <div class="dialog-buttons">
+                    <button commandfor="confirm-delete-dialog" command="close" id="cancel-delete-btn" type="button">Cancel</button>
+                    <button id="confirm-delete-btn" type="button">Delete</button>
+                </div>
+            </form>
+        </dialog>
+        <dialog id="edit-todo-dialog">
+            <form id="edit-todo-form">
+                <h3>Edit Todo</h3>
+                <div class="edit-todo-grid">
+                    <div class="form-group">
+                        <label for="edit-todo-title">Title</label>
+                        <input type="text" id="edit-todo-title" name="edit-todo-title" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-todo-due-date">Due Date</label>
+                        <input type="date" id="edit-todo-due-date" name="edit-todo-due-date">
+                    </div>
+                    <div class="form-group edit-todo-description">
+                        <label for="edit-todo-description">Description</label>
+                        <textarea id="edit-todo-description" name="edit-todo-description" rows="3" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-todo-priority">Priority</label>
+                        <select id="edit-todo-priority" name="edit-todo-priority">
+                            <option value="Low">Low</option>
+                            <option value="Medium">Medium</option>
+                            <option value="High">High</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-todo-project">Project</label>
+                        <select id="edit-todo-project" name="edit-todo-project">
+                        </select>
+                    </div>
+                </div>
+                <div class="dialog-buttons">
+                    <button commandfor="edit-todo-dialog" command="close" id="cancel-edit-btn" type="button">Cancel</button>
+                    <button id="save-edit-btn" type="button">Save Changes</button>
+                </div>
+            </form>
+        </dialog>
     </main>
-
-    <dialog id="create-edit-project-dialog">
-        <form id="create-edit-project-form">
-            <h3 id="create-edit-project-title">Create New Project</h3>
-            <div class="create-edit-project-grid">
-                <div class="form-group">
-                    <label for="project-name">Project Name</label>
-                    <input type="text" id="project-name" name="project-name" required>
-                </div>
-                <div class="form-group create-project-description">
-                    <label for="project-description">Description</label>
-                    <textarea id="project-description" name="project-description" rows="3"></textarea>
-                </div>
-            </div>
-            <div class="dialog-buttons">
-                <button type="button" commandfor="create-edit-project-dialog" command="close" id="cancel-project-btn">Cancel</button>
-                <button type="submit" id="create-edit-project-btn">Create Project</button>
-            </div>
-        </form>
-    </dialog>
-
-    <dialog id="create-todo-dialog">
-        <form id="create-todo-form">
-            <h3>Add New Todo</h3>
-            <div class="create-todo-grid">
-                <div class="form-group">
-                    <label for="todo-title">Todo Title</label>
-                    <input type="text" id="todo-title" name="todo-title" required>
-                </div>
-                <div class="form-group">
-                    <label for="todo-due-date">Due Date</label>
-                    <input type="date" id="todo-due-date" name="todo-due-date">
-                </div>
-                <div class="form-group create-todo-description">
-                    <label for="todo-description">Description</label>
-                    <textarea id="todo-description" name="todo-description" rows="3" required></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="priority">Priority</label>
-                    <select name="priority-user-choice" id="priority">
-                        <option value="Low" selected>Low</option>
-                        <option value="Medium">Medium</option>
-                        <option value="High">High</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="project-select">Project</label>
-                    <select name="project-user-choice" id="project-select">
-                    </select>
-                </div>
-            </div>
-            <div class="dialog-buttons">
-                <button type="button" commandfor="create-todo-dialog" command="close" id="cancel-todo-btn">Cancel</button>
-                <button type="submit" id="create-todo-btn">Add Todo</button>
-            </div>
-        </form>
-    </dialog>
-
-     <dialog id="confirm-delete-dialog">
-        <form id="confirm-delete-form">
-            <h3>Delete <span class="entity"></span></h3>
-            <p>Are you sure you want to delete this <span class="entity lowercase"></span>? This action cannot be undone.</p>
-            <div class="dialog-buttons">
-                <button commandfor="confirm-delete-dialog" command="close" id="cancel-delete-btn" type="button">Cancel</button>
-                <button id="confirm-delete-btn" type="button">Delete</button>
-            </div>
-        </form>
-    </dialog>
-
-    <dialog id="edit-todo-dialog">
-        <form id="edit-todo-form">
-            <h3>Edit Todo</h3>
-            <div class="edit-todo-grid">
-                <div class="form-group">
-                    <label for="edit-todo-title">Title</label>
-                    <input type="text" id="edit-todo-title" name="edit-todo-title" required>
-                </div>
-                <div class="form-group">
-                    <label for="edit-todo-due-date">Due Date</label>
-                    <input type="date" id="edit-todo-due-date" name="edit-todo-due-date">
-                </div>
-                <div class="form-group edit-todo-description">
-                    <label for="edit-todo-description">Description</label>
-                    <textarea id="edit-todo-description" name="edit-todo-description" rows="3" required></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="edit-todo-priority">Priority</label>
-                    <select id="edit-todo-priority" name="edit-todo-priority">
-                        <option value="Low">Low</option>
-                        <option value="Medium">Medium</option>
-                        <option value="High">High</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="edit-todo-project">Project</label>
-                    <select id="edit-todo-project" name="edit-todo-project">
-                    </select>
-                </div>
-            </div>
-            <div class="dialog-buttons">
-                <button commandfor="edit-todo-dialog" command="close" id="cancel-edit-btn" type="button">Cancel</button>
-                <button id="save-edit-btn" type="button">Save Changes</button>
-            </div>
-        </form>
-    </dialog>
 
 </body>
 

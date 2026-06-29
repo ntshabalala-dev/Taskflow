@@ -9,12 +9,28 @@ body {
     background-color: #e8e9e9;
     color: black;
     /* create theme for colors */
-    display: grid;
+    /* display: grid;
     grid-template-columns: auto 1fr;
-    min-height: 100svh;
+    min-height: 100svh; */
     /* width: 100%; */
 }
 
+main {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    min-height: 100svh;
+    width: 100%;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-block: 1rem;
+    padding-inline: 1.5rem;
+    background-color: #1a2434;
+    color: #e8e9e9;
+}
 
 .container {
     padding-inline: 5%;
