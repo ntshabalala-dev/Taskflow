@@ -82,20 +82,24 @@ function projectsButtonHelper() {
 }
 
 function toggleMenu() {
-    const navLogo = document.querySelector('#projects__nav-logo span');
-    const search = document.querySelector('#projects__search');
-    const list = document.querySelector('#projects__list');
+    // const navLogo = document.querySelector('#projects__nav-logo span');
+    // const search = document.querySelector('#projects__search');
+    const main = document.querySelector('main');
     const hamburger = document.querySelector('.hamburger');
     const containers = document.querySelectorAll('.container');
 
+    const projects = document.querySelector('.projects');
+
     hamburger.addEventListener('click', () => {
-        navLogo.classList.toggle('active');
-        search.classList.toggle('active');
-        list.classList.toggle('active');
+        projects.classList.toggle('active');
         hamburger.classList.toggle('active');
         containers.forEach(container => {
             container.classList.toggle('active');
         });
+
+        main.children[0].classList.contains('active')
+            ? main.style.gridTemplateColumns = 'auto 1fr'
+            : main.style.gridTemplateColumns = '1fr';
 
     });
 }
