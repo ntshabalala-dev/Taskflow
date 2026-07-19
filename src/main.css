@@ -234,9 +234,9 @@ header {
 #todo-search__button {
     display: flex;
     padding-block: .3rem;
-    padding-inline: .9rem;
     /* align-items: baseline; */
     gap: .3rem;
+    border: none;
 }
 
 #project-items__create-todo-btn {
@@ -255,8 +255,8 @@ header {
 }
 
 #todo-search__button-icon {
-    width: 15px;
-    height: 15px;
+    width: 18px;
+    height: 18px;
 }
 
 #create-project {
