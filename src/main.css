@@ -237,6 +237,7 @@ header {
     /* align-items: baseline; */
     gap: .3rem;
     border: none;
+    background: none;
 }
 
 #project-items__create-todo-btn {

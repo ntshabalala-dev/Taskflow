@@ -133,6 +133,7 @@ function toggleMenu() {
             }
         }
 
+        // Show clear button when user clicks on search input
         searchInput.addEventListener('click', function () {
             if (this.value.length > 0 && !clearSearchButton.classList.contains('show')) {
                 clearSearchButton.classList.toggle('show');
@@ -140,6 +141,7 @@ function toggleMenu() {
             }
         })
 
+        // Search bar input
         searchInput.addEventListener('input', function (e) {
             console.log('hee');
             console.log(clearSearchButton)
@@ -150,11 +152,14 @@ function toggleMenu() {
 
             if (this.value.length === 0) {
                 removeClearButton();
+                renderProjectItems(currentProject.dataset.projectId);
             }
         });
 
+        // Clear search input when clear button is clicked
         clearSearchButton.addEventListener('mousedown', () => {
             searchInput.value = '';
+            renderProjectItems(currentProject.dataset.projectId);
         })
 
         searchInput.addEventListener('blur', (e) => {
@@ -416,12 +421,14 @@ function toggleMenu() {
         projectsList.innerHTML = '';
         projects.forEach((project, index) => {
             const projectElement = document.createElement('button');
+            const projectTodoCount = Todos.findAllByProject(project.id).length;
+            console.log(projectTodoCount);
             if (index == 0) {
                 projectElement.classList.add('active');
             }
             projectElement.classList.add('project');
             projectElement.dataset.projectId = project.id;
-            projectElement.textContent = project.name;
+            projectElement.textContent = project.name + ` (${projectTodoCount})`;
             applicationControlButtons(projectElement);
             projectsList.appendChild(projectElement);
         });
