@@ -24,9 +24,9 @@ class Todos {
     static findByTitleAndProject(titleSearchTerm, projectId) {
         const todos = this.findAll();
         const found = todos.filter(
-            todo => todo.title.includes(titleSearchTerm) && todo.projectId == projectId
+            todo => todo.title.toLowerCase().includes(titleSearchTerm.toLowerCase()) && todo.projectId == projectId
         );
-        //console.log(found);
+
         return found.map(todo => Todo.fromSerialized(todo));
     }
 

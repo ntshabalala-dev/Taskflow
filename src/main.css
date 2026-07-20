@@ -120,9 +120,7 @@ header {
     height: 20px;
 }
 
-.project span button:hover {
-    cursor: pointer;
-}
+
 
 .project.active {
     background-color: #353d48;
@@ -225,8 +223,8 @@ header {
 }
 
 #todo-search__icon {
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    height: 16px;
     align-self: center;
     /* padding-top: 2px; */
 }
@@ -238,6 +236,13 @@ header {
     gap: .3rem;
     border: none;
     background: none;
+}
+
+#todo-search__clear-btn:hover,
+#todo-search__button-icon:hover,
+#project-items__create-todo-btn,
+.project span button:hover {
+    cursor: pointer;
 }
 
 #project-items__create-todo-btn {

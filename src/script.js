@@ -159,15 +159,17 @@ function toggleMenu() {
         // Clear search input when clear button is clicked
         clearSearchButton.addEventListener('mousedown', () => {
             searchInput.value = '';
+            removeClearButton();
             renderProjectItems(currentProject.dataset.projectId);
         })
 
         searchInput.addEventListener('blur', (e) => {
-            removeClearButton();
+            //removeClearButton();
         });
 
         searchButton.addEventListener('click', (e) => {
             const searchTerm = appController.cleanData(searchInput.value);
+            console.log('Search term:', searchTerm);
             if (searchTerm.length === 0) {
                 renderProjectItems(currentProject.dataset.projectId, searchTerm);
                 return
