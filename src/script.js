@@ -908,6 +908,7 @@ function toggleMenu() {
     const selectAllItems = (projectId) => {
         const projectItemsSelector = document.querySelector('#project-items__select-all');
         const checkboxes = document.querySelectorAll('.project-items__todos input[type="checkbox"]');
+        const deleteSelectedBtn = document.querySelector('.project-items__delete');
 
         projectItemsSelector.addEventListener('change', (e) => {
             const isChecked = e.target.checked;
@@ -915,6 +916,7 @@ function toggleMenu() {
             checkboxes.forEach(checkbox => {
                 checkbox.checked = isChecked;
             });
+            deleteSelectedBtn.classList.toggle('show', isChecked);
         });
     }
 

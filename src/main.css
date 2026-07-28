@@ -812,3 +812,23 @@ dialog::backdrop {
 .entity.lowercase {
     text-transform: lowercase;
 }
+
+.project-items__delete {
+    visibility: hidden;
+    margin-left: 1rem;
+}
+
+.project-items__delete.show {
+    visibility: visible;
+}
+
+.project-items__delete img {
+    width: 17px;
+    height: 17px;
+}
+
+.project-items__delete button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
