@@ -905,6 +905,19 @@ function toggleMenu() {
         }
     }
 
+    const selectAllItems = (projectId) => {
+        const projectItemsSelector = document.querySelector('#project-items__select-all');
+        const checkboxes = document.querySelectorAll('.project-items__todos input[type="checkbox"]');
+
+        projectItemsSelector.addEventListener('change', (e) => {
+            const isChecked = e.target.checked;
+            console.log('Select all items:', isChecked);
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = isChecked;
+            });
+        });
+    }
+
     createEditProjectDialogControls();
     editTodoDialogControls();
     createTodoDialogControls();
@@ -913,6 +926,7 @@ function toggleMenu() {
     appSearch();
     projectsButtonHelper();
     toggleMenu();
+    selectAllItems();
 })();
 
 
