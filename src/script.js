@@ -206,9 +206,25 @@ function toggleMenu() {
         confirmDeleteBtn.addEventListener('click', () => {
             if (!entity) return;
 
-            if (entity instanceof Todo) {
+            const activeProjectButton = document.querySelector('#projects__list button.active');
+
+            if (Array.isArray(entity)) {
+                entity.forEach(id => {
+                    const todo = Todos.findById(id);
+                    if (todo instanceof Todo) {
+                        //id.delete();
+                        console.log('Deleting todo with ID:', id);
+                    }
+                });
+
+                if (activeProjectButton) {
+                    renderProjectItems(activeProjectButton.dataset.projectId);
+                }
+                appController.toast('✓ Todo(s) Deleted Successfully!', 'success');
+
+                //return;
+            } else if (entity instanceof Todo) {
                 entity.delete();
-                const activeProjectButton = document.querySelector('#projects__list button.active');
                 if (activeProjectButton) {
                     renderProjectItems(activeProjectButton.dataset.projectId);
                 }
@@ -917,6 +933,28 @@ function toggleMenu() {
                 checkbox.checked = isChecked;
             });
             deleteSelectedBtn.classList.toggle('show', isChecked);
+        });
+
+        deleteSelectedItems();
+    }
+
+    const deleteSelectedItems = () => {
+        const deleteSelectedBtn = document.querySelector('.project-items__delete');
+        deleteSelectedBtn.addEventListener('click', () => {
+            const selectedCheckboxes = document.querySelectorAll('.project-items__todos input[type="checkbox"]:checked');
+            if (selectedCheckboxes.length === 0) {
+                alert('No items selected for deletion.');
+                return;
+            }
+
+            const todoIdsToDelete = Array.from(selectedCheckboxes).map(checkbox => checkbox.dataset.todoId);
+
+            confirmDeleteDialogControls(todoIdsToDelete);
+
+            console.log('Todo IDs to delete:', todoIdsToDelete);
+            const deleteMessage = document.querySelector('#confirm-delete-form p');
+            deleteMessage.textContent = `Are you sure you want to delete ${selectedCheckboxes.length} selected item(s)?`;
+            confirmDeleteDialog.showModal();
         });
     }
 
