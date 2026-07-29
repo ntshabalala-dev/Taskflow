@@ -117,6 +117,8 @@ function toggleMenu() {
     const prjSaveEditBtn = document.querySelector('#create-edit-project-btn');
     const projectDialogTitle = document.querySelector('#create-edit-project-title');
     const editProjectDialog = document.querySelector('#create-edit-project-dialog');
+    const projectItemsSelector = document.querySelector('#project-items__select-all');
+    const deleteSelectedBtn = document.querySelector('.project-items__delete');
 
     const appSearch = () => {
         const currentProject = document.querySelector('#projects__list .project.active')
@@ -199,45 +201,58 @@ function toggleMenu() {
 
     }
 
-    const confirmDeleteDialogControls = (entity) => {
+    const confirmDeleteDialogControls = () => {
         // console.log(entity instanceof entity);
         const confirmDeleteBtn = document.querySelector('#confirm-delete-btn');
 
         confirmDeleteBtn.addEventListener('click', () => {
+            const receivedObject = localStorage.getItem('entity') ?? null;
+            let entity = receivedObject ? JSON.parse(receivedObject) : null;
+
+            console.log('Entity to delete:', entity);
+            console.log('Entity type:', entity ? entity.constructor.name : 'null');
+
+            //return;
+
             if (!entity) return;
 
             const activeProjectButton = document.querySelector('#projects__list button.active');
 
             if (Array.isArray(entity)) {
-                entity.forEach(id => {
-                    const todo = Todos.findById(id);
+                console.log('Deleting multiple todos:', entity.length);
+                entity.forEach(todoId => {
+                    const todo = Todos.findById(todoId);
                     if (todo instanceof Todo) {
-                        //id.delete();
-                        console.log('Deleting todo with ID:', id);
+                        todo.delete();
                     }
                 });
 
                 if (activeProjectButton) {
                     renderProjectItems(activeProjectButton.dataset.projectId);
                 }
+                projectItemsSelector.checked = false;
+                deleteSelectedBtn.classList.remove('show');
+                selectAllItems();
                 appController.toast('✓ Todo(s) Deleted Successfully!', 'success');
+            } else {
+                entity = 'dueDate' in entity ? Todos.findById(entity.id) : Projects.findById(entity.id);
 
-                //return;
-            } else if (entity instanceof Todo) {
-                entity.delete();
-                if (activeProjectButton) {
-                    renderProjectItems(activeProjectButton.dataset.projectId);
+                if (entity instanceof Todo) {
+                    entity.delete();
+                    if (activeProjectButton) {
+                        renderProjectItems(activeProjectButton.dataset.projectId);
+                    }
+                    appController.toast('✓ Todo Deleted Successfully!', 'success');
+                } else if (entity instanceof Project) {
+                    entity.delete();
+                    renderProjects();
+                    renderProjectTitleAndItems()
+                    projectsButtonHelper();
+
+                    Todos.findAllByProject(entity.id).forEach(todo => {
+                        todo.delete();
+                    });
                 }
-                appController.toast('✓ Todo Deleted Successfully!', 'success');
-            } else if (entity instanceof Project) {
-                entity.delete();
-                renderProjects();
-                renderProjectTitleAndItems()
-                projectsButtonHelper();
-
-                Todos.findAllByProject(entity.id).forEach(todo => {
-                    todo.delete();
-                });
             }
             confirmDeleteDialog.close();
         });
@@ -440,7 +455,7 @@ function toggleMenu() {
         projects.forEach((project, index) => {
             const projectElement = document.createElement('button');
             const projectTodoCount = Todos.findAllByProject(project.id).length;
-            console.log(projectTodoCount);
+            //console.log(projectTodoCount);
             if (index == 0) {
                 projectElement.classList.add('active');
             }
@@ -643,7 +658,10 @@ function toggleMenu() {
                 } else if (target === deleteBtn || target === deleteIcon) {
                     // Handle delete project
                     console.log('Delete project', project.id);
-                    confirmDeleteDialogControls(project);
+                    //confirmDeleteDialogControls(project);
+
+                    localStorage.setItem('entity', JSON.stringify(project));
+
                     setDialogEntity('Project');
                     confirmDeleteDialog.showModal();
                 }
@@ -721,7 +739,8 @@ function toggleMenu() {
 
                                 target.textContent = todo.completed ? 'Mark as Incomplete' : 'Mark as Complete';
                             } else if (target.id === 'expanded-delete-btn') {
-                                confirmDeleteDialogControls(todo);
+                                //confirmDeleteDialogControls(todo);
+                                localStorage.setItem('entity', JSON.stringify(todo));
                                 confirmDeleteDialog.showModal();
                             }
                         });
@@ -763,7 +782,8 @@ function toggleMenu() {
                     editTodoDialog.showModal();
                 } else if (target === deleteBtn || target === deleteIcon) {
                     // Handle delete todo
-                    confirmDeleteDialogControls(todo);
+                    //confirmDeleteDialogControls(todo);
+                    localStorage.setItem('entity', JSON.stringify(todo));
                     setDialogEntity('Todo');
                     confirmDeleteDialog.showModal();
                 }
@@ -921,22 +941,30 @@ function toggleMenu() {
         }
     }
 
-    const selectAllItems = (projectId) => {
-        const projectItemsSelector = document.querySelector('#project-items__select-all');
-        const checkboxes = document.querySelectorAll('.project-items__todos input[type="checkbox"]');
-        const deleteSelectedBtn = document.querySelector('.project-items__delete');
+    const selectAllItems = () => {
+        const checkBoxes = document.querySelectorAll('.project-items__todos input[type="checkbox"]');
 
         projectItemsSelector.addEventListener('change', (e) => {
             const isChecked = e.target.checked;
             console.log('Select all items:', isChecked);
-            checkboxes.forEach(checkbox => {
+            checkBoxes.forEach(checkbox => {
                 checkbox.checked = isChecked;
             });
             deleteSelectedBtn.classList.toggle('show', isChecked);
         });
-
-        deleteSelectedItems();
+        syncCheckboxes(checkBoxes);
     }
+
+    const syncCheckboxes = (checkBoxes) => {
+        checkBoxes.forEach(checkbox => {
+            checkbox.addEventListener('change', () => {
+                const isChecked = Array.from(checkBoxes).some(cb => cb.checked);
+                console.log('Checkbox changed:', isChecked);
+                deleteSelectedBtn.classList.toggle('show', isChecked);
+            });
+        });
+    }
+
 
     const deleteSelectedItems = () => {
         const deleteSelectedBtn = document.querySelector('.project-items__delete');
@@ -947,26 +975,32 @@ function toggleMenu() {
                 return;
             }
 
-            const todoIdsToDelete = Array.from(selectedCheckboxes).map(checkbox => checkbox.dataset.todoId);
-
-            confirmDeleteDialogControls(todoIdsToDelete);
+            let todoIdsToDelete = Array.from(selectedCheckboxes).map(checkbox => checkbox.dataset.todoId);
 
             console.log('Todo IDs to delete:', todoIdsToDelete);
+
+            // confirmDeleteDialogControls(todoIdsToDelete);
+
+            localStorage.setItem('entity', JSON.stringify(todoIdsToDelete));
+
             const deleteMessage = document.querySelector('#confirm-delete-form p');
             deleteMessage.textContent = `Are you sure you want to delete ${selectedCheckboxes.length} selected item(s)?`;
             confirmDeleteDialog.showModal();
+            todoIdsToDelete = []; // Clear the array after deletion
         });
     }
 
     createEditProjectDialogControls();
     editTodoDialogControls();
     createTodoDialogControls();
+    confirmDeleteDialogControls();
     renderProjects();
     renderProjectTitleAndItems();
     appSearch();
     projectsButtonHelper();
     toggleMenu();
     selectAllItems();
+    deleteSelectedItems();
 })();
 
 
