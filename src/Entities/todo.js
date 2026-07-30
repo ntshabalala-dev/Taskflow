@@ -1,4 +1,5 @@
 import todos from '../Models/Todos.js';
+import projects from '../Models/Projects.js';
 
 export default class Todo {
     constructor(title, description, projectId, dueDate = null, priority = 'Low', id = null) {
@@ -102,5 +103,16 @@ export default class Todo {
         let items = todos.findAll();
         items = items.filter(item => item.id !== this.id);
         localStorage.setItem('todos', JSON.stringify(items));
+    }
+
+    getProject() {
+        const projectId = this.projectId;
+        const projects = projects.findAll();
+        const projectData = projects.find(project => project.id === projectId);
+
+        if (!projectData) {
+            throw new Error(`Project with id ${projectId} not found`);
+        }
+        return projectData;
     }
 }

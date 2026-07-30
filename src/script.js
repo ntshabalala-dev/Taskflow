@@ -216,8 +216,6 @@ function toggleMenu() {
             console.log('Entity to delete:', entity);
             console.log('Entity type:', entity ? entity.constructor.name : 'null');
 
-            //return;
-
             if (!entity) return;
 
             const activeProjectButton = document.querySelector('#projects__list button.active');
@@ -236,7 +234,6 @@ function toggleMenu() {
                 }
                 projectItemsSelector.checked = false;
                 deleteSelectedBtn.classList.remove('show');
-                selectAllItems();
                 appController.toast('✓ Todo(s) Deleted Successfully!', 'success');
             } else {
                 entity = 'dueDate' in entity ? Todos.findById(entity.id) : Projects.findById(entity.id);
@@ -258,9 +255,15 @@ function toggleMenu() {
                     });
                 }
             }
-            confirmDeleteDialog.close();
+
+            if (!(entity instanceof Project)) {
+                syncProjectTodoCounts();
+                syncCheckboxes();
+            }
 
             deleteMessage.innerHTML = originalDeleteMessage;
+
+            confirmDeleteDialog.close();
         });
     }
 
@@ -439,10 +442,10 @@ function toggleMenu() {
                 alert(error.message);
                 return;
             }
+            syncProjectTodoCounts();
+            syncCheckboxes();
             createTodoDialog.close();
         });
-
-
     }
 
     /**
@@ -461,13 +464,15 @@ function toggleMenu() {
         projects.forEach((project, index) => {
             const projectElement = document.createElement('button');
             const projectTodoCount = Todos.findAllByProject(project.id).length;
-            //console.log(projectTodoCount);
             if (index == 0) {
                 projectElement.classList.add('active');
             }
+            const projectTitle = document.createElement('span');
+
             projectElement.classList.add('project');
             projectElement.dataset.projectId = project.id;
-            projectElement.textContent = project.name + ` (${projectTodoCount})`;
+            projectTitle.textContent = project.name + ` (${projectTodoCount})`;
+            projectElement.appendChild(projectTitle);
             applicationControlButtons(projectElement);
             projectsList.appendChild(projectElement);
         });
@@ -948,9 +953,9 @@ function toggleMenu() {
     }
 
     const selectAllItems = () => {
-        const checkBoxes = document.querySelectorAll('.project-items__todos input[type="checkbox"]');
-
         projectItemsSelector.addEventListener('change', (e) => {
+            const checkBoxes = document.querySelectorAll('.project-items__todos input[type="checkbox"]');
+
             const isChecked = e.target.checked;
             console.log('Select all items:', isChecked);
             checkBoxes.forEach(checkbox => {
@@ -958,10 +963,12 @@ function toggleMenu() {
             });
             deleteSelectedBtn.classList.toggle('show', isChecked);
         });
-        syncCheckboxes(checkBoxes);
+        syncCheckboxes();
     }
 
-    const syncCheckboxes = (checkBoxes) => {
+    const syncCheckboxes = () => {
+        const checkBoxes = document.querySelectorAll('.project-items__todos input[type="checkbox"]');
+
         checkBoxes.forEach(checkbox => {
             checkbox.addEventListener('change', () => {
                 const isChecked = Array.from(checkBoxes).some(cb => cb.checked);
@@ -992,6 +999,18 @@ function toggleMenu() {
             deleteMessage.textContent = `Are you sure you want to delete ${selectedCheckboxes.length} selected item(s)?`;
             confirmDeleteDialog.showModal();
             todoIdsToDelete = []; // Clear the array after deletion
+        });
+    }
+
+    const syncProjectTodoCounts = () => {
+        const projects = document.querySelectorAll('#projects__list .project');
+
+        projects.forEach(projectElement => {
+            const project = Projects.findById(projectElement.dataset.projectId);
+
+            const projectTodoCount = Todos.findAllByProject(project.id).length;
+
+            projectElement.firstChild.textContent = project.name + ` (${projectTodoCount})`;
         });
     }
 
