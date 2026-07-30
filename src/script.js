@@ -119,6 +119,10 @@ function toggleMenu() {
     const editProjectDialog = document.querySelector('#create-edit-project-dialog');
     const projectItemsSelector = document.querySelector('#project-items__select-all');
     const deleteSelectedBtn = document.querySelector('.project-items__delete');
+    const deleteMessage = document.querySelector('#confirm-delete-form p');
+    const originalDeleteMessage = deleteMessage.innerHTML;
+
+    console.log(originalDeleteMessage);
 
     const appSearch = () => {
         const currentProject = document.querySelector('#projects__list .project.active')
@@ -255,6 +259,8 @@ function toggleMenu() {
                 }
             }
             confirmDeleteDialog.close();
+
+            deleteMessage.innerHTML = originalDeleteMessage;
         });
     }
 
@@ -983,7 +989,6 @@ function toggleMenu() {
 
             localStorage.setItem('entity', JSON.stringify(todoIdsToDelete));
 
-            const deleteMessage = document.querySelector('#confirm-delete-form p');
             deleteMessage.textContent = `Are you sure you want to delete ${selectedCheckboxes.length} selected item(s)?`;
             confirmDeleteDialog.showModal();
             todoIdsToDelete = []; // Clear the array after deletion
