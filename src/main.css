@@ -832,3 +832,8 @@ dialog::backdrop {
     border: none;
     cursor: pointer;
 }
+
+#projects__list .project span:first-child {
+    pointer-events: none;
+    /* Clicking the span targets the button directly */
+}

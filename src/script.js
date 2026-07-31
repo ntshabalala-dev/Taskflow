@@ -70,7 +70,6 @@ function projectsButtonHelper() {
             const activeButton = document.querySelector('#projects__list button.active');
 
             if (activeButton) {
-                console.log('Previously active:', activeButton.textContent);
                 // Remove the class from the old active button
                 activeButton.classList.remove('active');
             }
@@ -933,7 +932,11 @@ function toggleMenu() {
         projectsList.addEventListener('click', (e) => {
             if (e.target.classList.contains('project')) {
                 const target = e.target;
-                projectTitle.textContent = target.textContent;
+                console.log('Target:', target);
+
+                const projectName = Projects.findById(target.dataset.projectId)?.name;
+                //console.log('Project clicked:', projectName);
+                projectTitle.textContent = projectName;
                 renderProjectItems(target.dataset.projectId);
             }
         });
