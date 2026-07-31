@@ -932,12 +932,10 @@ function toggleMenu() {
         projectsList.addEventListener('click', (e) => {
             if (e.target.classList.contains('project')) {
                 const target = e.target;
-                console.log('Target:', target);
-
                 const projectName = Projects.findById(target.dataset.projectId)?.name;
-                //console.log('Project clicked:', projectName);
                 projectTitle.textContent = projectName;
                 renderProjectItems(target.dataset.projectId);
+                syncCheckboxes();
             }
         });
 
@@ -972,6 +970,12 @@ function toggleMenu() {
     const syncCheckboxes = () => {
         const checkBoxes = document.querySelectorAll('.project-items__todos input[type="checkbox"]');
 
+        if (checkBoxes.length === 0) {
+            deleteSelectedBtn.classList.remove('show');
+            projectItemsSelector.checked = false;
+            return;
+        }
+
         checkBoxes.forEach(checkbox => {
             checkbox.addEventListener('change', () => {
                 const isChecked = Array.from(checkBoxes).some(cb => cb.checked);
@@ -992,10 +996,6 @@ function toggleMenu() {
             }
 
             let todoIdsToDelete = Array.from(selectedCheckboxes).map(checkbox => checkbox.dataset.todoId);
-
-            console.log('Todo IDs to delete:', todoIdsToDelete);
-
-            // confirmDeleteDialogControls(todoIdsToDelete);
 
             localStorage.setItem('entity', JSON.stringify(todoIdsToDelete));
 
