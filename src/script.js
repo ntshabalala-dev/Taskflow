@@ -86,10 +86,9 @@ function toggleMenu() {
     const main = document.querySelector('main');
     const hamburger = document.querySelector('.hamburger');
     const containers = document.querySelectorAll('.container');
-
     const projects = document.querySelector('.projects');
 
-    hamburger.addEventListener('click', () => {
+    const toggleHamburgerMenu = () => {
         projects.classList.toggle('active');
         hamburger.classList.toggle('active');
         containers.forEach(container => {
@@ -99,8 +98,43 @@ function toggleMenu() {
         main.children[0].classList.contains('active')
             ? main.style.gridTemplateColumns = 'auto 1fr'
             : main.style.gridTemplateColumns = '1fr';
+    }
 
+    hamburger.addEventListener('click', () => {
+        toggleHamburgerMenu();
     });
+
+    // Define the media query
+    const mediaQuery = window.matchMedia('(min-width: 1024px)');
+
+    function handleTabletChange(mediaQuery) {
+        // e.matches is true if the screen is 1024px wide or more
+        if (mediaQuery.matches) {
+            console.log('Screen is at least 1024px wide (Desktop/Tablet)');
+            // Run your desktop-specific JavaScript here
+            console.log('dsd')
+            toggleHamburgerMenu();
+        } else {
+            console.log('Screen is less than 1024px wide (Mobile)');
+            // Run your mobile-specific JavaScript here
+            projects.classList.remove('active');
+            hamburger.classList.remove('active');
+            containers.forEach(container => {
+                container.classList.remove('active');
+            });
+
+            main.children[0].classList.contains('active')
+                ? main.style.gridTemplateColumns = 'auto 1fr'
+                : main.style.gridTemplateColumns = '1fr';
+        }
+    }
+
+    // 1. Run the check immediately on page load
+    handleTabletChange(mediaQuery);
+
+    // 2. Watch for active screen size changes
+    mediaQuery.addEventListener('change', handleTabletChange);
+
 }
 
 //IIFE for screen controller

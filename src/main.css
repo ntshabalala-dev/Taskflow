@@ -659,7 +659,19 @@ dialog::backdrop {
 }
 
 /* Tablet/Desktop View: 2 Columns */
-@media (min-width: 600px) {
+@media (max-width: 768px) {
+    .project-items__control {
+        display: none;
+    }
+
+    .project-items__title {
+        flex-direction: column;
+        align-items: flex-start;
+        padding-bottom: 0.5rem;
+    }
+
+    /* set grid to auto 1fr auto */
+
     /* .contact {
         grid-template-columns: repeat(2, 1fr);
         gap: 2rem;
