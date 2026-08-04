@@ -109,6 +109,7 @@ function toggleMenu() {
 
     function handleTabletChange(mediaQuery) {
         // e.matches is true if the screen is 1024px wide or more
+        console.log('Media query matches:', mediaQuery);
         if (mediaQuery.matches) {
             console.log('Screen is at least 1024px wide (Desktop/Tablet)');
             // Run your desktop-specific JavaScript here
@@ -425,8 +426,6 @@ function toggleMenu() {
         const createTodoDialog = document.querySelector('#create-todo-dialog');
         const createTodoBtn = document.querySelector('#create-todo-btn');
         const projectSelect = document.querySelector('#project-select');
-
-
 
         openCreateTodoDialog.addEventListener('click', () => {
             // Populate project select options

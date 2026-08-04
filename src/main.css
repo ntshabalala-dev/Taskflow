@@ -658,129 +658,6 @@ dialog::backdrop {
     display: flex;
 }
 
-/* 0 to 768px */
-@media (max-width: 768px) {
-    .project-items__control {
-        display: none;
-    }
-
-    .project-items__title {
-        flex-direction: column;
-        align-items: flex-start;
-        padding-bottom: 0.5rem;
-    }
-
-    .todo-controls>button:first-child~button {
-        display: none;
-    }
-
-    .project-items__todos .todo-controls {
-        grid-template-columns: auto;
-        grid-column: 4/5;
-        grid-row: 1 / 2;
-    }
-
-    .project-items__todos .todo-title {
-        grid-column: 2/4;
-        grid-row: 1 / 2;
-    }
-
-    .todo-grid {
-        grid-template-columns: auto auto 1fr auto;
-        grid-template-rows: auto auto;
-    }
-
-    #project-item__due-date {
-        grid-column: 2/3;
-    }
-
-    #project-item__priority {
-        grid-column: 3/4;
-    }
-
-
-
-    /* set grid to auto 1fr auto */
-
-    /* .contact {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 2rem;
-    }
-
-    .content-header {
-        font-size: 1rem;
-    }
-
-    .contact__information {
-        flex-direction: row;
-    }
-
-    .menu-container__selection {
-        grid-template-columns: repeat(2, 250px);
-        grid-template-rows: repeat(3, 1fr);
-    }
-
-    .menu-container {
-        flex-direction: row;
-        justify-content: space-evenly;
-        margin-bottom: 1.2rem;
-        align-items: start;
-    }
-
-    .menu-container__options {
-        flex-direction: column;
-    }
-
-    .menu-container__options--section a {
-        text-align: left;
-    }
-
-    #content__hero-text {
-        font-size: 2.5rem;
-    }
-
-    .food-gallery {
-        grid-template-columns: repeat(3, 1fr);
-    }
-
-    #home-page__hero-text {
-        font-size: 4rem;
-        margin-bottom: 10px;
-    }
-
-    #content__hero-text {
-        font-size: 4rem;
-
-    }
-
-    #home-page__hero-subtext {
-        font-size: 2rem;
-    }
-
-    .content__hero {
-        min-height: 35vh;
-    }
- */
-}
-
-
-
-/* Standard Laptops */
-@media screen and (min-width: 1270px) and (max-width: 1536px) {
-    #content__hero-text {
-        font-size: 3rem;
-    }
-
-    .content__hero {
-        min-height: 50vh;
-    }
-
-    .food-gallery img {
-        object-fit: cover;
-        height: 320px;
-    }
-}
-
 #edit-todo-dialog {
     min-width: 480px;
 }
@@ -878,4 +755,145 @@ dialog::backdrop {
 #projects__list .project span:first-child {
     pointer-events: none;
     /* Clicking the span targets the button directly */
+}
+
+.project-items__add-todo {
+    padding-top: .5rem;
+    display: none;
+}
+
+/* 0 to 768px */
+@media (max-width: 768px) {
+    .project-items__control {
+        display: none;
+    }
+
+    .project-items__title {
+        flex-direction: column;
+        align-items: flex-start;
+        padding-bottom: 0.5rem;
+    }
+
+    .todo-controls>button:first-child~button {
+        display: none;
+    }
+
+    .project-items__todos .todo-controls {
+        grid-template-columns: auto;
+        grid-column: 4/5;
+        grid-row: 1 / 2;
+    }
+
+    .project-items__todos .todo-title {
+        grid-column: 2/4;
+        grid-row: 1 / 2;
+    }
+
+    .todo-grid {
+        grid-template-columns: auto auto 1fr auto;
+        grid-template-rows: auto auto;
+    }
+
+    #project-item__due-date {
+        grid-column: 2/3;
+    }
+
+    #project-item__priority {
+        grid-column: 3/4;
+    }
+
+    .project-items__add-todo {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .project-items__add-todo button {
+        padding-block: .5rem;
+    }
+
+    .project-items__title {
+        padding-top: 0;
+    }
+
+    .project-items__search #project-items__create-todo-btn {
+        display: none;
+    }
+
+    /* set grid to auto 1fr auto */
+
+    /* .contact {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
+    }
+
+    .content-header {
+        font-size: 1rem;
+    }
+
+    .contact__information {
+        flex-direction: row;
+    }
+
+    .menu-container__selection {
+        grid-template-columns: repeat(2, 250px);
+        grid-template-rows: repeat(3, 1fr);
+    }
+
+    .menu-container {
+        flex-direction: row;
+        justify-content: space-evenly;
+        margin-bottom: 1.2rem;
+        align-items: start;
+    }
+
+    .menu-container__options {
+        flex-direction: column;
+    }
+
+    .menu-container__options--section a {
+        text-align: left;
+    }
+
+    #content__hero-text {
+        font-size: 2.5rem;
+    }
+
+    .food-gallery {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    #home-page__hero-text {
+        font-size: 4rem;
+        margin-bottom: 10px;
+    }
+
+    #content__hero-text {
+        font-size: 4rem;
+
+    }
+
+    #home-page__hero-subtext {
+        font-size: 2rem;
+    }
+
+    .content__hero {
+        min-height: 35vh;
+    }
+ */
+}
+
+/* Standard Laptops */
+@media screen and (min-width: 1270px) and (max-width: 1536px) {
+    #content__hero-text {
+        font-size: 3rem;
+    }
+
+    .content__hero {
+        min-height: 50vh;
+    }
+
+    .food-gallery img {
+        object-fit: cover;
+        height: 320px;
+    }
 }
