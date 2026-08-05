@@ -681,6 +681,14 @@ function toggleMenu() {
                 });
             }
 
+            const toggleExpandedClass = () => {
+                const expandedDueDate = document.querySelector('#project-item__due-date');
+                const expandedPriority = document.querySelector('#project-item__priority');
+
+                expandedDueDate.classList.toggle('expanded');
+                expandedPriority.classList.toggle('expanded');
+            }
+
             // Controls for the project buttons
             if (isProjectContainer) {
                 const projectId = controlElement.dataset.projectId;
@@ -720,6 +728,7 @@ function toggleMenu() {
                         chevronIcon.src = chevronUpSvg;
                         chevronIcon.alt = 'collapse';
                         expandedCardContainerForm.classList.add('expanded-card', 'open');
+                        toggleExpandedClass();
                         controlElement.appendChild(createExpandedCard(expandedCardContainerForm, todo));
                         const formButtons = expandedCardContainerForm.querySelector('.form-control__buttons');
 
@@ -788,6 +797,7 @@ function toggleMenu() {
                             }
                         });
                     } else {
+                        toggleExpandedClass();
                         chevronIcon.src = chevronDownSvg;
                         chevronIcon.alt = 'expand';
                         const expandedCard = document.querySelector('.expanded-card.open')

@@ -504,6 +504,7 @@ dialog::backdrop {
     display: grid;
     grid-column: span 5;
     grid-template-columns: auto 1fr 200px 250px;
+    margin-top: .2rem;
 }
 
 .project-items__todos .todo-controls {
@@ -816,6 +817,11 @@ dialog::backdrop {
     }
 
     .project-items__search #project-items__create-todo-btn {
+        display: none;
+    }
+
+    #project-item__due-date.expanded,
+    #project-item__priority.expanded {
         display: none;
     }
 
