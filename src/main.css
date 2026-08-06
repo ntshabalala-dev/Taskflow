@@ -763,6 +763,23 @@ dialog::backdrop {
     display: none;
 }
 
+@media (max-width: 425px) {
+    .expanded-card.open {
+        display: flex;
+        flex-direction: column;
+        margin-left: calc(18px + .5rem);
+    }
+
+    #expanded-card-checkbox {
+        display: none;
+    }
+
+    /* .form-control__buttons {
+        display: grid;
+        grid-template-columns: repeat(3, auto);
+    } */
+}
+
 /* 0 to 768px */
 @media (max-width: 768px) {
     .project-items__control {
