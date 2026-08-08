@@ -800,9 +800,11 @@ function toggleMenu() {
                         toggleExpandedClass();
                         chevronIcon.src = chevronDownSvg;
                         chevronIcon.alt = 'expand';
-                        const expandedCard = document.querySelector('.expanded-card.open')
+                        const expandedCard = controlElement.querySelector('.expanded-card.open');
                         console.log(controlElement);
-                        controlElement.removeChild(expandedCard);
+                        if (expandedCard && expandedCard.parentNode === controlElement) {
+                            controlElement.removeChild(expandedCard);
+                        }
                     }
                 } else if (target === editBtn || target === editIcon) {
                     // Handle delete todo show dialog asking user to delete
