@@ -763,6 +763,11 @@ dialog::backdrop {
     display: none;
 }
 
+#project-items__title-text {
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
 @media (max-width: 425px) {
     .expanded-card.open {
         display: flex;
@@ -772,6 +777,14 @@ dialog::backdrop {
 
     #expanded-card-checkbox {
         display: none;
+    }
+
+    .form-control__buttons {
+        padding-right: .7rem;
+    }
+
+    #todo-priority-user-choice {
+        margin-right: .7rem;
     }
 
 
