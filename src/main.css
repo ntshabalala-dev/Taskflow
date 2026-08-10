@@ -787,6 +787,11 @@ dialog::backdrop {
         margin-right: .7rem;
     }
 
+    .projects.active {
+        position: absolute;
+        height: 100svh;
+        z-index: 999;
+    }
 
     * {
         /* font-size: 0.9rem; */
