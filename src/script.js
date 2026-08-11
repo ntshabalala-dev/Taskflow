@@ -95,7 +95,13 @@ function toggleMenu() {
             container.classList.toggle('active');
         });
 
-        main.children[0].classList.contains('active')
+        let activeProjectsElement = null
+
+        if (main.children[0].classList.contains('active')) {
+            activeProjectsElement = window.getComputedStyle(document.querySelector('.projects.active')).position;
+        }
+
+        main.children[0].classList.contains('active') && activeProjectsElement !== 'absolute'
             ? main.style.gridTemplateColumns = 'auto 1fr'
             : main.style.gridTemplateColumns = '1fr';
     }
