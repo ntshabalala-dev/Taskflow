@@ -349,15 +349,11 @@ dialog {
     border-radius: 8px;
     padding: 20px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-width: 480px;
 }
 
 dialog::backdrop {
     background: rgba(0, 0, 0, 0.5);
-}
-
-/* create-project dialog */
-#create-edit-project-dialog {
-    min-width: 480px;
 }
 
 .create-edit-project-grid {
@@ -414,11 +410,6 @@ dialog::backdrop {
     background-color: #0EA5E9;
     color: #fff;
     border-color: #0EA5E9;
-}
-
-/* create-todo dialog */
-#create-todo-dialog {
-    min-width: 480px;
 }
 
 .create-todo-grid {
@@ -655,10 +646,6 @@ dialog::backdrop {
     display: flex;
 }
 
-#edit-todo-dialog {
-    min-width: 480px;
-}
-
 .edit-todo-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -787,6 +774,23 @@ dialog::backdrop {
         position: absolute;
         height: 100svh;
         z-index: 999;
+    }
+
+    .container.active {
+        padding-inline: 5%;
+    }
+
+    dialog button {
+        padding: 0.2rem 0.5rem !important;
+    }
+
+    .create-todo-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .create-todo-description {
+        grid-column: auto;
+        /* This prevents the implicit 2nd column */
     }
 
     * {
