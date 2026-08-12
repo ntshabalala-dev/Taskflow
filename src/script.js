@@ -13,6 +13,7 @@ import escape from 'validator/lib/escape.js';
 import trim from 'validator/lib/trim.js';
 import Toastify from 'toastify-js';
 import "toastify-js/src/toastify.css";
+import folderSvg from './Assets/icons/folder.svg';
 
 function taskFlowController() {
 
@@ -509,18 +510,31 @@ function toggleMenu() {
         }
         console.log(projects);
         projectsList.innerHTML = '';
+
+
         projects.forEach((project, index) => {
+            const folderIcon = document.createElement('img');
+            folderIcon.src = folderSvg;
+            folderIcon.alt = 'Folder Icon';
+            console.log(folderIcon);
+
             const projectElement = document.createElement('button');
             const projectTodoCount = Todos.findAllByProject(project.id).length;
             if (index == 0) {
                 projectElement.classList.add('active');
             }
-            const projectTitle = document.createElement('span');
+            const projectTitleSpan = document.createElement('span');
+            const projectTitleText = document.createElement('span');
+            projectTitleText.classList.add('project-title');
 
             projectElement.classList.add('project');
             projectElement.dataset.projectId = project.id;
-            projectTitle.textContent = project.name + ` (${projectTodoCount})`;
-            projectElement.appendChild(projectTitle);
+            projectTitleText.textContent = project.name + ` (${projectTodoCount})`;
+
+            projectTitleSpan.prepend(folderIcon);
+            projectTitleSpan.appendChild(projectTitleText);
+
+            projectElement.appendChild(projectTitleSpan);
             applicationControlButtons(projectElement);
             projectsList.appendChild(projectElement);
         });

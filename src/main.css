@@ -771,7 +771,16 @@ dialog::backdrop {
 
 #projects__list .project span:first-child {
     pointer-events: none;
-    /* Clicking the span targets the button directly */
+    gap: .4rem;
+}
+
+#projects__list .project span:first-child img {
+    width: 18px;
+    height: 18px;
+}
+
+#projects__list>button.active.project>span:nth-child(1)>span {
+    line-height: 1.45;
 }
 
 .project-items__add-todo {
@@ -783,6 +792,8 @@ dialog::backdrop {
     font-size: 1.5rem;
     font-weight: 600;
 }
+
+
 
 @media (max-width: 450px) {
     .expanded-card.open {
