@@ -245,6 +245,16 @@ function toggleMenu() {
 
     }
 
+    const closeDialogOnOutsideClick = () => {
+        document.querySelectorAll('dialog').forEach(dialog => {
+            dialog.addEventListener('click', (e) => {
+                if (e.target === dialog) {
+                    dialog.close();
+                }
+            });
+        });
+    }
+
     const confirmDeleteDialogControls = () => {
         // console.log(entity instanceof entity);
         const confirmDeleteBtn = document.querySelector('#confirm-delete-btn');
@@ -354,11 +364,11 @@ function toggleMenu() {
             editTodoDialog.close();
         });
 
-        editTodoDialog.addEventListener('click', (e) => {
-            if (e.target === editTodoDialog) {
-                editTodoDialog.close();
-            }
-        });
+        // editTodoDialog.addEventListener('click', (e) => {
+        //     if (e.target === editTodoDialog) {
+        //         editTodoDialog.close();
+        //     }
+        // });
     }
 
     const createEditProjectDialogControls = () => {
@@ -1079,6 +1089,7 @@ function toggleMenu() {
     toggleMenu();
     selectAllItems();
     deleteSelectedItems();
+    closeDialogOnOutsideClick();
 })();
 
 

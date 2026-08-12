@@ -195,11 +195,14 @@ header {
 
 #project-item-search-input {
     flex: 1;
-    /* padding: .4rem; */
+    max-width: 150px;
     border: none;
-    /* width: 100%; */
     font-size: 1rem;
     outline: none;
+}
+
+#todo-search__button {
+    margin-left: auto;
 }
 
 #project-item-search-input::placeholder {
@@ -857,7 +860,19 @@ dialog::backdrop {
     }
 
     .project-items__search #project-items__create-todo-btn {
-        display: none;
+        /* display: none; */
+        font-size: 0;
+    }
+
+    .project-items__search #project-items__create-todo-btn::before {
+        content: "+";
+        font-size: 1.5rem;
+        padding-inline: .5rem;
+        /* Reset to legible size */
+    }
+
+    .project-items__search {
+        gap: .5rem;
     }
 
     #project-item__due-date.expanded,
