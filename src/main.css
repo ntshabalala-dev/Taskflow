@@ -164,7 +164,7 @@ header {
     height: 18px;
 }
 
-.todo span:nth-child(2) {
+.todo>span:nth-child(2) {
     font-weight: bold;
     padding-bottom: .1rem;
 }
@@ -570,13 +570,29 @@ dialog::backdrop {
     color: #888;
 }
 
-.form-control__buttons {
+.form-control__buttons.container {
     grid-column: 3/5;
     display: flex;
-    justify-content: flex-end;
+    /* justify-content: flex-end; */
     gap: 0.5rem;
-    margin-top: 1rem;
     align-items: start;
+    padding-inline: 0%;
+    margin-top: .6rem;
+}
+
+.expanded-card>.form-control__buttons {
+    display: flex;
+    flex-direction: column;
+    margin-top: 1rem;
+    align-items: flex-end;
+    grid-column: 4/5;
+    grid-row: 2/3;
+}
+
+.expanded-card>.form-control__buttons>span {
+    font-size: 0.81rem;
+    color: grey;
+    margin-bottom: -2px;
 }
 
 .form-control__buttons button {
@@ -847,19 +863,13 @@ dialog::backdrop {
         justify-content: center;
     }
 
-
-    /* .form-control__buttons {
-        display: grid;
-        grid-template-columns: repeat(3, auto);
-    } */
+    .form-control__buttons.container {
+        margin-top: .1rem;
+    }
 }
 
 /* 0 to 768px */
 @media (max-width: 768px) {
-    .expanded-card.open {
-        /* grid-template-columns: auto 1fr 1fr 1fr; */
-    }
-
     .project-items__control {
         display: none;
     }

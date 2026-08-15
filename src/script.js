@@ -673,8 +673,10 @@ function toggleMenu() {
             hiddenCheckbox.type = "checkbox";
             hiddenCheckbox.style.visibility = "hidden";
 
-            const formControl__buttons = document.createElement('div');
-            formControl__buttons.classList.add('form-control__buttons');
+            const formControlButtons = document.createElement('div');
+            const formControlButtonsContainer = document.createElement('div');
+            formControlButtons.classList.add('form-control__buttons');
+            formControlButtonsContainer.classList.add('form-control__buttons', 'container')
 
             const saveBtn = document.createElement('button');
             saveBtn.textContent = 'Save Changes';
@@ -691,9 +693,16 @@ function toggleMenu() {
             deleteToDoBtn.id = 'expanded-delete-btn';
             deleteToDoBtn.type = 'button';
 
-            formControl__buttons.append(saveBtn, markCompleteBtn, deleteToDoBtn);
+            formControlButtonsContainer.append(saveBtn, markCompleteBtn, deleteToDoBtn);
 
-            card.append(hiddenCheckbox, formControl1, formControl2, formControl3, formControl__buttons);
+            console.log(todo.createdAt)
+            const CreatedAtDate = document.createElement('span');
+
+            CreatedAtDate.textContent = 'Created: ' + new Date(todo.createdAt).toISOString().split('T')[0];
+
+            formControlButtons.append(formControlButtonsContainer, CreatedAtDate)
+
+            card.append(hiddenCheckbox, formControl1, formControl2, formControl3, formControlButtons);
 
             return card;
         }
