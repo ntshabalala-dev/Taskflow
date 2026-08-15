@@ -70,6 +70,7 @@ header {
     flex-direction: column;
     gap: 0.3rem;
     width: 250px;
+    margin-top: -5px;
 }
 
 #project-create-search {
@@ -673,6 +674,7 @@ dialog::backdrop {
 #Projects__show-all.active {
     border-radius: 4px;
     padding-block: 4px;
+    margin-top: -4px;
 }
 
 #projects__list.active {
@@ -841,6 +843,11 @@ dialog::backdrop {
         /* font-size: 0.9rem; */
     }
 
+    .form-control__buttons {
+        justify-content: center;
+    }
+
+
     /* .form-control__buttons {
         display: grid;
         grid-template-columns: repeat(3, auto);
@@ -849,6 +856,10 @@ dialog::backdrop {
 
 /* 0 to 768px */
 @media (max-width: 768px) {
+    .expanded-card.open {
+        /* grid-template-columns: auto 1fr 1fr 1fr; */
+    }
+
     .project-items__control {
         display: none;
     }
@@ -923,7 +934,7 @@ dialog::backdrop {
 
     .form-control__buttons {
         flex-wrap: wrap;
-        justify-content: center;
+        /* justify-content: center; */
     }
 
     .form-control__buttons button {
@@ -992,6 +1003,77 @@ dialog::backdrop {
     }
  */
 }
+
+@media screen and (min-width: 425px) and (max-width: 768px) {
+    .container.active .expanded-card.open {
+        /* original = auto 1fr 200px 150px 100px; */
+        display: flex;
+        flex-direction: column;
+    }
+
+    .form-control__buttons,
+    .form-control.priority {
+        /* margin-left: 1.6rem; */
+    }
+
+    .container.active #expanded-card-checkbox {
+        display: none;
+    }
+}
+
+@media screen and (min-width: 1000px) and (max-width: 1200px) {
+    .todo-grid {
+        /* grid-template-columns: auto 1fr 1fr 1fr 1fr; */
+
+        /* CURRENT: */
+        /* grid-template-columns: auto 1fr 1fr 1fr 100px; */
+    }
+
+
+    .expanded-card.open {
+        /* grid-template-columns: auto 1fr 1fr 1fr; */
+
+        /* CURRENT */
+        /* grid-template-columns: auto 1fr 150px 1fr; */
+        /* grid-template-columns: auto 1fr 200px 250px; */
+    }
+
+    /* .project-items__control.todo-grid div:nth-child(2),
+    .todo>.todo-title,
+    .form-control__description {
+        min-width: 180px;
+    }
+
+    #project-item__due-date,
+    .project-items__control.todo-grid div:nth-child(3) {
+        min-width: 150px;
+    }
+
+    .form-control.duedate {
+        max-width: 150px;
+    }
+
+    .form-control__description #todo-description {
+        max-width: 200px;
+    } */
+
+    .container.active .todo-grid div:nth-child(2),
+    .container.active .form-control.title,
+    .container.active .todo>.todo-title {
+        min-width: 180px;
+    }
+
+    .container.active .todo-grid {
+        grid-template-columns: auto 1fr 150px 100px 100px;
+    }
+
+    .container.active .expanded-card.open {
+        /* original = auto 1fr 200px 150px 100px; */
+        grid-template-columns: auto 1fr 150px 200px;
+    }
+
+}
+
 
 /* Standard Laptops */
 @media screen and (min-width: 1270px) and (max-width: 1536px) {
