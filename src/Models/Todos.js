@@ -31,6 +31,19 @@ class Todos {
     }
 
     /**
+     * @param {string} titleSearchTerm - user title search term
+     * @returns {Todos}
+     */
+    static findByTitle(titleSearchTerm) {
+        const todos = this.findAll();
+        const found = todos.filter(
+            todo => todo.title.toLowerCase().includes(titleSearchTerm.toLowerCase())
+        );
+
+        return found.map(todo => Todo.fromSerialized(todo));
+    }
+
+    /**
      * @param {string} projectId - The projects's id to find todos for
      */
     static findAllByProject(projectId) {

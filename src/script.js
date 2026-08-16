@@ -167,9 +167,15 @@ function toggleMenu() {
     const showAllTasks = () => {
         showAllTasksDiv.querySelector('button').addEventListener('click', () => {
             const currentProject = document.querySelector('#projects__list .project.active')
+            const showAllTitlePlaceholder = document.querySelector('.project-items__title-text.placeholder');
+            showAllTitlePlaceholder.textContent = 'All Todos';
+
             if (currentProject) {
                 currentProject.classList.remove('active');
                 showAllTasksDiv.classList.add('selected');
+                renderAllProjectItems();
+                document.querySelector('.project-items__title #project-title')
+                    .style.display = 'none';
             }
         });
     }
@@ -916,9 +922,32 @@ function toggleMenu() {
 
         // Only render items if they exist
         if (todos.length <= 0) {
+            console.error('No items found');
             return
         }
 
+        createTodos(projectItemsContainer, todos)
+    }
+
+    /**
+    * @param {string} searchTerm - User title search term
+    */
+    const renderAllProjectItems = (searchTerm = '') => {
+        const todos = !searchTerm ? Todos.findAll() : Todos.findByTitle(searchTerm);
+        const projectItemsContainer = document.querySelector('.project-items__todos');
+        projectItemsContainer.innerHTML = '';
+
+        // Only render items if they exist
+        if (todos.length <= 0) {
+            console.error('No items found');
+            return
+        }
+
+        createTodos(projectItemsContainer, todos)
+    }
+
+    // Helper.
+    const createTodos = (container, todos) => {
         todos.forEach((todo) => {
             //console.log(todo);
             const projectItem = document.createElement('div');
@@ -1022,7 +1051,7 @@ function toggleMenu() {
 
             applicationControlButtons(projectItem);
 
-            projectItemsContainer.appendChild(projectItem);
+            container.appendChild(projectItem);
         })
     }
 
@@ -1039,7 +1068,13 @@ function toggleMenu() {
                 projectTitle.textContent = projectName;
                 renderProjectItems(target.dataset.projectId);
                 syncCheckboxes();
-                showAllTasksDiv.classList.remove('selected');
+                if (showAllTasksDiv.classList.contains('selected')) {
+                    const projectsPlaceholder = document.querySelector('.project-items__title-text.placeholder');
+                    showAllTasksDiv.classList.remove('selected');
+                    projectTitle.style.display = 'inline-block';
+                    projectsPlaceholder.textContent = 'Project: ';
+                }
+
             }
         });
 
