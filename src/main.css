@@ -127,7 +127,8 @@ header {
 
 
 
-.project.active {
+.project.active,
+#Projects__show-all.active.selected {
     background-color: #353d48;
     /* box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); */
     /* border: #ccc solid 1px; */
@@ -674,8 +675,9 @@ dialog::backdrop {
 #Projects__show-all.active button {
     /* padding: .5rem 1rem; */
     display: flex;
-    justify-content: center;
+    /* justify-content: center; */
     gap: 5px;
+    width: 100%;
 }
 
 #Projects__show-all.active button img {

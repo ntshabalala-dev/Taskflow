@@ -162,8 +162,17 @@ function toggleMenu() {
     const deleteSelectedBtn = document.querySelector('.project-items__delete');
     const deleteMessage = document.querySelector('#confirm-delete-form p');
     const originalDeleteMessage = deleteMessage.innerHTML;
+    const showAllTasksDiv = document.querySelector('#Projects__show-all.active');
 
-    console.log(originalDeleteMessage);
+    const showAllTasks = () => {
+        showAllTasksDiv.querySelector('button').addEventListener('click', () => {
+            const currentProject = document.querySelector('#projects__list .project.active')
+            if (currentProject) {
+                currentProject.classList.remove('active');
+                showAllTasksDiv.classList.add('selected');
+            }
+        });
+    }
 
     const appSearch = () => {
         const currentProject = document.querySelector('#projects__list .project.active')
@@ -1030,6 +1039,7 @@ function toggleMenu() {
                 projectTitle.textContent = projectName;
                 renderProjectItems(target.dataset.projectId);
                 syncCheckboxes();
+                showAllTasksDiv.classList.remove('selected');
             }
         });
 
@@ -1123,6 +1133,7 @@ function toggleMenu() {
     selectAllItems();
     deleteSelectedItems();
     closeDialogOnOutsideClick();
+    showAllTasks();
 })();
 
 
