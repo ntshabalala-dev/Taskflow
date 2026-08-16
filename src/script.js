@@ -328,9 +328,9 @@ function toggleMenu() {
 
         saveEditBtn.addEventListener('click', function () {
             const todo = Todos.findById(this.dataset.todoId) ?? null;
+            const currentProjectId = document.querySelector('#projects__list button.active').dataset.projectId;
 
             if (!todo) {
-                // toastify.error('Todo not found!');
                 alert('Todo not found!');
                 return;
             }
@@ -358,6 +358,12 @@ function toggleMenu() {
             const activeProjectButton = document.querySelector('#projects__list button.active');
             if (activeProjectButton) {
                 renderProjectItems(activeProjectButton.dataset.projectId);
+            }
+
+            if (editProjectSelect.value !== currentProjectId) {
+                // Re-render projects list
+                renderProjects();
+                projectsButtonHelper();
             }
 
             appController.toast('✓ Todo Updated Successfully!', 'success');
@@ -412,6 +418,8 @@ function toggleMenu() {
                     console.log('Edit data: ', data);
                     const project = Projects.findById(projectId);
                     project.edit(data);
+                    const projectTodoCount = Todos.findAllByProject(project.id).length;
+
                     const projectTitle = document.querySelector('.project-items__title #project-title');
                     const activeProjectButton = document.querySelector('#projects__list button.active');
                     if (activeProjectButton && activeProjectButton.dataset.projectId === projectId) {
@@ -423,8 +431,7 @@ function toggleMenu() {
                         projectTitle.textContent = project.name;
                         renderProjectItems(projectId);
                     }
-                    editedProject.textContent = project.name;
-                    applicationControlButtons(editedProject);
+                    editedProject.querySelector('.project-title').textContent = project.name + ` (${projectTodoCount})`;
                     appController.toast('✓ Project Updated Successfully!', 'success');
                 }
 
@@ -572,6 +579,7 @@ function toggleMenu() {
             controlSpan.appendChild(chevronBtn);
         }
 
+        console.log('we got here')
         controlSpan.append(editBtn, deleteBtn);
 
         // @card = cardelement
@@ -707,8 +715,10 @@ function toggleMenu() {
             return card;
         }
 
+        // two seperate control pockets are required
         controlSpan.addEventListener('click', (e) => {
             // Prevent the click from propagating to the project button
+            console.log('we got here 2')
             e.stopPropagation();
             const target = e.target;
             console.log(controlElement.classList.contains('project'));
