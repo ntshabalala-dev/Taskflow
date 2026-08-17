@@ -205,7 +205,7 @@ header {
 
 #project-item-search-input {
     flex: 1;
-    max-width: 150px;
+    max-width: 100%;
     border: none;
     font-size: 1rem;
     outline: none;
@@ -792,6 +792,9 @@ dialog::backdrop {
 #projects__list .project span:first-child {
     pointer-events: none;
     gap: .4rem;
+    /* width: 100%; */
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 #projects__list .project span:first-child img {
@@ -1084,6 +1087,12 @@ dialog::backdrop {
         grid-template-columns: auto 1fr 150px 200px;
     }
 
+}
+
+@media (max-width: 350px) {
+    #project-item-search-input {
+        max-width: 150px;
+    }
 }
 
 

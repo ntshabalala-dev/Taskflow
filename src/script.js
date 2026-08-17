@@ -163,8 +163,10 @@ function toggleMenu() {
     const deleteMessage = document.querySelector('#confirm-delete-form p');
     const originalDeleteMessage = deleteMessage.innerHTML;
     const showAllTasksDiv = document.querySelector('#Projects__show-all.active');
+    const AllTasksCount = document.querySelector('#Projects__item-count');
 
     const showAllTasks = () => {
+        refreshAllTasksItemCount();
         showAllTasksDiv.querySelector('button').addEventListener('click', () => {
             const currentProject = document.querySelector('#projects__list .project.active')
             const showAllTitlePlaceholder = document.querySelector('.project-items__title-text.placeholder');
@@ -180,6 +182,10 @@ function toggleMenu() {
         });
     }
 
+    const refreshAllTasksItemCount = () => {
+        AllTasksCount.textContent = Todos.findAll().length;
+    }
+
     const appSearch = () => {
         const currentProject = document.querySelector('#projects__list .project.active')
         const searchButton = document.querySelector('#todo-search__button');
@@ -193,6 +199,13 @@ function toggleMenu() {
                 c = 0;
                 clearSearchButton.classList.toggle('show');
             }
+        }
+
+        const renderItemsAfterClear = () => {
+            console.log(showAllTasksDiv)
+            showAllTasksDiv.classList.contains('selected')
+                ? renderAllProjectItems()
+                : renderProjectItems(currentProject.dataset.projectId);
         }
 
         // Show clear button when user clicks on search input
@@ -214,7 +227,7 @@ function toggleMenu() {
 
             if (this.value.length === 0) {
                 removeClearButton();
-                renderProjectItems(currentProject.dataset.projectId);
+                renderItemsAfterClear();
             }
         });
 
@@ -222,7 +235,7 @@ function toggleMenu() {
         clearSearchButton.addEventListener('mousedown', () => {
             searchInput.value = '';
             removeClearButton();
-            renderProjectItems(currentProject.dataset.projectId);
+            renderItemsAfterClear();
         })
 
         searchInput.addEventListener('blur', (e) => {
@@ -233,10 +246,12 @@ function toggleMenu() {
             const searchTerm = appController.cleanData(searchInput.value);
             console.log('Search term:', searchTerm);
             if (searchTerm.length === 0) {
-                renderProjectItems(currentProject.dataset.projectId, searchTerm);
+                //renderProjectItems(currentProject.dataset.projectId, searchTerm);
                 return
             }
-            renderProjectItems(currentProject.dataset.projectId, searchTerm);
+            showAllTasksDiv.classList.contains('selected')
+                ? renderAllProjectItems(searchTerm)
+                : renderProjectItems(currentProject.dataset.projectId, searchTerm);
         });
 
         // todo enter & esc key event
@@ -328,7 +343,7 @@ function toggleMenu() {
             }
 
             deleteMessage.innerHTML = originalDeleteMessage;
-
+            refreshAllTasksItemCount();
             confirmDeleteDialog.close();
         });
     }
@@ -514,6 +529,7 @@ function toggleMenu() {
                 return;
             }
             syncProjectTodoCounts();
+            refreshAllTasksItemCount();
             syncCheckboxes();
             createTodoDialog.close();
         });
