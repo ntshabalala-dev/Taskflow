@@ -902,6 +902,7 @@ dialog::backdrop {
         max-width: 220px;
         padding-left: 0;
         font-size: 1.46rem;
+        margin-bottom: .3rem;
     }
 }
 

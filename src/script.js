@@ -1085,6 +1085,7 @@ function toggleMenu() {
             if (e.target.classList.contains('project')) {
                 const target = e.target;
                 const projectName = Projects.findById(target.dataset.projectId)?.name;
+                console.error(projectTitle);
                 projectTitle.textContent = projectName;
                 renderProjectItems(target.dataset.projectId);
                 syncCheckboxes();
@@ -1093,6 +1094,7 @@ function toggleMenu() {
                     showAllTasksDiv.classList.remove('selected');
                     // projectTitle.style.display = 'inline-block';
                     projectsPlaceholder.textContent = 'Project: ';
+                    projectTitle.style.display = 'inline-block';
                 }
 
             }
