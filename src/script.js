@@ -563,14 +563,18 @@ function toggleMenu() {
             }
             const projectTitleSpan = document.createElement('span');
             const projectTitleText = document.createElement('span');
+            const projectTodosCountText = document.createElement('span');
+            projectTodosCountText.id = 'projectTodosCountText';
+
             projectTitleText.classList.add('project-title');
 
             projectElement.classList.add('project');
             projectElement.dataset.projectId = project.id;
-            projectTitleText.textContent = project.name + ` (${projectTodoCount})`;
+            projectTitleText.textContent = project.name;
+            projectTodosCountText.textContent = `(${projectTodoCount})`;
 
             projectTitleSpan.prepend(folderIcon);
-            projectTitleSpan.appendChild(projectTitleText);
+            projectTitleSpan.append(projectTitleText, projectTodosCountText);
 
             projectElement.appendChild(projectTitleSpan);
             applicationControlButtons(projectElement);
@@ -1087,7 +1091,7 @@ function toggleMenu() {
                 if (showAllTasksDiv.classList.contains('selected')) {
                     const projectsPlaceholder = document.querySelector('.project-items__title-text.placeholder');
                     showAllTasksDiv.classList.remove('selected');
-                    projectTitle.style.display = 'inline-block';
+                    // projectTitle.style.display = 'inline-block';
                     projectsPlaceholder.textContent = 'Project: ';
                 }
 

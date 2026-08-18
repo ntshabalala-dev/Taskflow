@@ -113,6 +113,7 @@ header {
 
 .project span {
     display: flex;
+    /* margin-left: 6px; */
 }
 
 .project span button img {
@@ -771,7 +772,7 @@ dialog::backdrop {
 
 .project-items__delete {
     visibility: hidden;
-    margin-left: 1rem;
+    margin-left: .75rem;
 }
 
 .project-items__delete.show {
@@ -791,10 +792,13 @@ dialog::backdrop {
 
 #projects__list .project span:first-child {
     pointer-events: none;
-    gap: .4rem;
+    /* gap: .4rem; */
     /* width: 100%; */
-    overflow: hidden;
-    text-overflow: ellipsis;
+    /* white-space: nowrap; */
+    /* 2. Forces text onto a single line */
+    /* overflow: hidden; */
+    /* 3. Hides the excess text that spills out */
+    /* text-overflow: ellipsis; */
 }
 
 #projects__list .project span:first-child img {
@@ -802,8 +806,19 @@ dialog::backdrop {
     height: 18px;
 }
 
-#projects__list>button.active.project>span:nth-child(1)>span {
+#projects__list>button.project .project-title {
+    display: inline-block;
     line-height: 1.45;
+    max-width: 150px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    padding-left: .4rem;
+}
+
+#projects__list>button.project #projectTodosCountText {
+    line-height: 1.40;
+    padding-left: 3.5px;
 }
 
 .project-items__add-todo {
@@ -812,10 +827,21 @@ dialog::backdrop {
 }
 
 #project-items__title-text {
+    display: flex;
     font-size: 1.5rem;
     font-weight: 600;
+    flex-wrap: wrap;
+    align-items: baseline;
 }
 
+#project-items__title-text #project-title {
+    display: inline-block;
+    max-width: 260px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    padding-left: .4rem;
+}
 
 
 @media (max-width: 450px) {
@@ -871,6 +897,12 @@ dialog::backdrop {
     .form-control__buttons.container {
         margin-top: .1rem;
     }
+
+    #project-items__title-text #project-title {
+        max-width: 220px;
+        padding-left: 0;
+        font-size: 1.46rem;
+    }
 }
 
 /* 0 to 768px */
@@ -882,7 +914,7 @@ dialog::backdrop {
     .project-items__title {
         flex-direction: column;
         align-items: flex-start;
-        padding-bottom: 0.5rem;
+        padding-bottom: 1rem;
     }
 
     .todo-controls>button:first-child~button {
@@ -923,7 +955,7 @@ dialog::backdrop {
     }
 
     .project-items__title {
-        padding-top: 0;
+        padding-top: .8rem;
     }
 
     .project-items__search #project-items__create-todo-btn {
