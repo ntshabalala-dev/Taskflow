@@ -844,6 +844,20 @@ dialog::backdrop {
 }
 
 
+#project-item__priority {
+    padding-inline: .5rem;
+    border-radius: 1rem;
+    background-color: #ed7676;
+    justify-self: start;
+
+}
+
+div.form-control.duedate,
+div.form-control.priority {
+    align-self: end;
+}
+
+
 @media (max-width: 450px) {
     .expanded-card.open {
         display: flex;
@@ -908,14 +922,28 @@ dialog::backdrop {
 
 /* 0 to 768px */
 @media (max-width: 768px) {
+
+    div.form-control.duedate,
+    div.form-control.priority {
+        align-self: auto;
+    }
+
+    .project-items__control.todo-grid>div:nth-child(4) {
+        padding-right: 1.4rem;
+    }
+
+    .project-items__control.todo-grid>div:nth-child(3) {
+        visibility: hidden;
+    }
+
     .project-items__control {
-        display: none;
+        /* display: none; */
     }
 
     .project-items__title {
         flex-direction: column;
         align-items: flex-start;
-        padding-bottom: 1rem;
+        /* padding-bottom: 1rem; */
     }
 
     .todo-controls>button:first-child~button {
@@ -944,6 +972,8 @@ dialog::backdrop {
 
     #project-item__priority {
         grid-column: 3/4;
+        justify-self: end;
+        font-size: 0.85rem;
     }
 
     .project-items__add-todo {
