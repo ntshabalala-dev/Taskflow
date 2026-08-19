@@ -849,7 +849,6 @@ dialog::backdrop {
     border-radius: 1rem;
     background-color: #ed7676;
     justify-self: start;
-
 }
 
 div.form-control.duedate,
@@ -857,6 +856,23 @@ div.form-control.priority {
     align-self: end;
 }
 
+#project-item__decorator {
+    display: inline-block;
+    margin-right: 3px;
+    margin-bottom: 2px;
+}
+
+#project-item__text {
+    /* display: inline-block; */
+    /* padding-top: 2px; */
+}
+
+@media (max-width: 425px) {
+    .form-control__buttons {
+        flex-wrap: wrap;
+        /* justify-content: center; */
+    }
+}
 
 @media (max-width: 450px) {
     .expanded-card.open {
@@ -1011,7 +1027,7 @@ div.form-control.priority {
     }
 
     .form-control__buttons {
-        flex-wrap: wrap;
+        /* flex-wrap: wrap; */
         /* justify-content: center; */
     }
 
@@ -1089,13 +1105,44 @@ div.form-control.priority {
         flex-direction: column;
     }
 
+    .container.active #todo-priority-user-choice {
+        margin-right: .7rem;
+    }
+
     .form-control__buttons,
     .form-control.priority {
         /* margin-left: 1.6rem; */
+
+    }
+
+    .expanded-card>.form-control__buttons {
+        grid-column: 3 / 5;
     }
 
     .container.active #expanded-card-checkbox {
         display: none;
+    }
+
+    .expanded-card.open {
+        grid-template-columns: auto 250px 1fr 1fr;
+    }
+}
+
+@media screen and (min-width: 1024px) {
+    .container {
+        padding-inline: 10%;
+    }
+}
+
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+    .container.active {
+        padding-inline: 5%
+    }
+}
+
+@media screen and (min-width: 1440px) {
+    .container {
+        padding-inline: clamp(144px, -329.143px + 32.857vw, 512px);
     }
 }
 

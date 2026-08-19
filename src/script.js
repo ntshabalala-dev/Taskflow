@@ -765,10 +765,10 @@ function toggleMenu() {
                 });
             }
 
-            const toggleExpandedClass = () => {
-                const expandedDueDate = document.querySelector('#project-item__due-date');
-                const expandedPriority = document.querySelector('#project-item__priority');
-
+            const toggleExpandedClass = (target) => {
+                const todo = target.closest('.project-items__todo')
+                const expandedDueDate = todo.querySelector('#project-item__due-date');
+                const expandedPriority = todo.querySelector('#project-item__priority')
                 expandedDueDate.classList.toggle('expanded');
                 expandedPriority.classList.toggle('expanded');
             }
@@ -812,7 +812,7 @@ function toggleMenu() {
                         chevronIcon.src = chevronUpSvg;
                         chevronIcon.alt = 'collapse';
                         expandedCardContainerForm.classList.add('expanded-card', 'open');
-                        toggleExpandedClass();
+                        toggleExpandedClass(target);
                         controlElement.appendChild(createExpandedCard(expandedCardContainerForm, todo));
                         const formButtons = expandedCardContainerForm.querySelector('.form-control__buttons');
 
@@ -881,7 +881,7 @@ function toggleMenu() {
                             }
                         });
                     } else {
-                        toggleExpandedClass();
+                        toggleExpandedClass(target);
                         chevronIcon.src = chevronDownSvg;
                         chevronIcon.alt = 'expand';
                         const expandedCard = controlElement.querySelector('.expanded-card.open');
@@ -996,7 +996,17 @@ function toggleMenu() {
 
             const projectItemPriority = document.createElement('span');
             projectItemPriority.id = 'project-item__priority';
-            projectItemPriority.textContent = todo.priority;
+
+
+            const PriorityDecorator = document.createElement('span');
+            PriorityDecorator.id = "project-item__decorator";
+            PriorityDecorator.textContent = '●';
+
+            const projectItemPriorityText = document.createElement('span');
+            projectItemPriorityText.id = "project-item__text";
+            projectItemPriorityText.textContent = todo.priority;
+
+            projectItemPriority.prepend(PriorityDecorator, projectItemPriorityText);
 
             projectItem.append(
                 projectItemCheckBox,
