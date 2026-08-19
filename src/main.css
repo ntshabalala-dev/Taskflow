@@ -1141,8 +1141,13 @@ div.form-control.priority {
 }
 
 @media screen and (min-width: 1440px) {
+
     .container {
         padding-inline: clamp(144px, -329.143px + 32.857vw, 512px);
+    }
+
+    .container.active {
+        padding-inline: 15%;
     }
 }
 
