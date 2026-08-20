@@ -6,6 +6,10 @@ class Todos {
         return todos.map(todo => Todo.fromSerialized(todo));
     }
 
+    /**
+    * @param {string} id - todo id
+    * @returns {Todo}
+    */
     static findById(id) {
         const todos = this.findAll();
         const todo = todos.find(todo => todo.id === id);

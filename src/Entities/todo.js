@@ -107,8 +107,8 @@ export default class Todo {
 
     getProject() {
         const projectId = this.projectId;
-        const projects = projects.findAll();
-        const projectData = projects.find(project => project.id === projectId);
+        const allProjects = projects.findAll();
+        const projectData = allProjects.find(project => project.id === projectId);
 
         if (!projectData) {
             throw new Error(`Project with id ${projectId} not found`);

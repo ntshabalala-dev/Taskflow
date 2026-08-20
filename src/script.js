@@ -186,6 +186,15 @@ function toggleMenu() {
         AllTasksCount.textContent = Todos.findAll().length;
     }
 
+    const updateProjectListFromAllTodos = () => {
+        const projectTitleToUpdate = document.querySelector('.project-items__title #project-title');
+        const projectsPlaceholder = document.querySelector('.project-items__title-text.placeholder');
+        showAllTasksDiv.classList.remove('selected');
+        // projectTitle.style.display = 'inline-block';
+        projectsPlaceholder.textContent = 'Project: ';
+        projectTitleToUpdate.style.display = 'inline-block';
+    }
+
     const appSearch = () => {
         const currentProject = document.querySelector('#projects__list .project.active')
         const searchButton = document.querySelector('#todo-search__button');
@@ -312,6 +321,8 @@ function toggleMenu() {
 
                 if (activeProjectButton) {
                     renderProjectItems(activeProjectButton.dataset.projectId);
+                } else if (showAllTasksDiv.classList.contains('selected')) {
+                    renderAllProjectItems()
                 }
                 projectItemsSelector.checked = false;
                 deleteSelectedBtn.classList.remove('show');
@@ -323,10 +334,15 @@ function toggleMenu() {
                     entity.delete();
                     if (activeProjectButton) {
                         renderProjectItems(activeProjectButton.dataset.projectId);
+                    } else if (showAllTasksDiv.classList.contains('selected')) {
+                        renderAllProjectItems()
                     }
                     appController.toast('✓ Todo Deleted Successfully!', 'success');
                 } else if (entity instanceof Project) {
                     entity.delete();
+                    if (showAllTasksDiv.classList.contains('selected')) {
+                        updateProjectListFromAllTodos()
+                    }
                     renderProjects();
                     renderProjectTitleAndItems()
                     projectsButtonHelper();
@@ -358,12 +374,15 @@ function toggleMenu() {
 
         saveEditBtn.addEventListener('click', function () {
             const todo = Todos.findById(this.dataset.todoId) ?? null;
-            const currentProjectId = document.querySelector('#projects__list button.active').dataset.projectId;
 
             if (!todo) {
                 alert('Todo not found!');
                 return;
             }
+
+            const currentProjectId = showAllTasksDiv.classList.contains('selected')
+                ? todo.getProject().id
+                : document.querySelector('#projects__list button.active').dataset.projectId;
 
             const title = editTitleInput.value;
             const description = editDescriptionInput.value;
@@ -388,12 +407,16 @@ function toggleMenu() {
             const activeProjectButton = document.querySelector('#projects__list button.active');
             if (activeProjectButton) {
                 renderProjectItems(activeProjectButton.dataset.projectId);
+            } else if (showAllTasksDiv.classList.contains('selected')) {
+                renderAllProjectItems();
             }
 
+            // Render project list again after moving a todo
             if (editProjectSelect.value !== currentProjectId) {
                 // Re-render projects list
                 renderProjects();
                 projectsButtonHelper();
+                updateProjectListFromAllTodos();
             }
 
             appController.toast('✓ Todo Updated Successfully!', 'success');
@@ -434,11 +457,22 @@ function toggleMenu() {
                 const name = appController.cleanData(formData.get('project-name'));
                 const description = appController.cleanData(formData.get('project-description'));
                 const projectId = prjSaveEditBtn.dataset.ProjectId;
+                const projectTitle = document.querySelector('.project-items__title #project-title');
 
                 if (!projectId) {
-                    (new Project(name, description));
+                    //Create new
+                    const createdProject = new Project(name, description);
                     // Re-render projects list
                     renderProjects();
+                    if (showAllTasksDiv.classList.contains('selected')) {
+                        updateProjectListFromAllTodos()
+                    }
+                    const firstProject = document.querySelector('#projects__list button.active');
+                    firstProject.classList.remove('active')
+                    const newProject = document.querySelector(`[data-project-id="${createdProject.id}"]`);
+                    newProject.classList.add('active')
+                    projectTitle.textContent = name;
+                    renderProjectItems(newProject.id);
                 } else {
                     const data = {
                         newName: name,
@@ -450,18 +484,23 @@ function toggleMenu() {
                     project.edit(data);
                     const projectTodoCount = Todos.findAllByProject(project.id).length;
 
-                    const projectTitle = document.querySelector('.project-items__title #project-title');
                     const activeProjectButton = document.querySelector('#projects__list button.active');
                     if (activeProjectButton && activeProjectButton.dataset.projectId === projectId) {
                         projectTitle.textContent = project.name;
                     } else {
-                        const activeButton = document.querySelector('#projects__list button.active');
-                        activeButton.classList.remove('active');
-                        editedProject.classList.add('active');
+                        if (showAllTasksDiv.classList.contains('selected')) {
+                            updateProjectListFromAllTodos()
+                            editedProject.classList.add('active');
+                        } else {
+                            const activeButton = document.querySelector('#projects__list button.active');
+                            activeButton.classList.remove('active');
+                            editedProject.classList.add('active');
+                        }
+
                         projectTitle.textContent = project.name;
                         renderProjectItems(projectId);
                     }
-                    editedProject.querySelector('.project-title').textContent = project.name + ` (${projectTodoCount})`;
+                    editedProject.querySelector('.project-title').textContent = project.name;
                     appController.toast('✓ Project Updated Successfully!', 'success');
                 }
 
@@ -469,6 +508,7 @@ function toggleMenu() {
                 projectsButtonHelper();
                 createProjectDialog.close();
             } catch (error) {
+                console.error(error.message)
                 alert(error.message);
                 return;
             }
@@ -521,7 +561,8 @@ function toggleMenu() {
                 console.log(check);
                 if (activeProjectButton && activeProjectButton.dataset.projectId === projectId) {
                     renderProjectItems(projectId);
-                    console.log('show items');
+                } else if (showAllTasksDiv.classList.contains('selected')) {
+                    renderAllProjectItems()
                 }
 
             } catch (error) {
@@ -643,7 +684,7 @@ function toggleMenu() {
 
             const descriptionInput = document.createElement("textarea");
             descriptionInput.id = "todo-description";
-            descriptionInput.rows = 3;
+            descriptionInput.rows = 5;
             descriptionInput.name = "todo-description";
             descriptionInput.value = todo.description;
             descriptionInput.placeholder = "Todo Description";
@@ -840,15 +881,28 @@ function toggleMenu() {
 
                                 todo.edit(data);
 
-                                if (activeProjectButton) {
-                                    if (newDueDate !== oldDueDate) {
-                                        dueDateElement.textContent = newDueDate ? new Date(newDueDate).toLocaleDateString() : 'No due date';
-                                    }
 
-                                    if (newPriority !== oldPriority) {
-                                        const priorityElement = controlElement.querySelector('#project-item__priority');
-                                        priorityElement.textContent = newPriority;
-                                    }
+                                if (newDueDate !== oldDueDate) {
+                                    dueDateElement.textContent = newDueDate ? new Date(newDueDate).toLocaleDateString() : 'No due date';
+                                }
+
+                                console.error(controlElement)
+
+                                if (newPriority !== oldPriority) {
+                                    const priorityElementExpanded = controlElement.querySelector('#project-item__priority');
+                                    const priorityDecoratorExpanded = controlElement.querySelector('#project-item__decorator');
+                                    const projectItemPriorityTextExpanded = controlElement.querySelector('#project-item__text');
+
+                                    priorityElementExpanded.textContent = '';
+                                    priorityElementExpanded.classList = `${newPriority}`.toLowerCase();
+
+                                    priorityDecoratorExpanded.classList = (`${newPriority}`.toLowerCase());
+
+                                    projectItemPriorityTextExpanded.textContent = newPriority;
+                                    projectItemPriorityTextExpanded.classList = (`${newPriority}`.toLowerCase())
+
+                                    priorityElementExpanded.append(priorityDecoratorExpanded, projectItemPriorityTextExpanded)
+
                                 }
                                 appController.toast('✓ Todo Updated Successfully!', 'success');
                             } else if (target.id === 'expanded-complete-btn') {
@@ -996,17 +1050,19 @@ function toggleMenu() {
 
             const projectItemPriority = document.createElement('span');
             projectItemPriority.id = 'project-item__priority';
+            projectItemPriority.classList.add(`${todo.priority}`.toLowerCase());
 
-
-            const PriorityDecorator = document.createElement('span');
-            PriorityDecorator.id = "project-item__decorator";
-            PriorityDecorator.textContent = '●';
+            const priorityDecorator = document.createElement('span');
+            priorityDecorator.id = "project-item__decorator";
+            priorityDecorator.textContent = '●';
+            priorityDecorator.classList.add(`${todo.priority}`.toLowerCase());
 
             const projectItemPriorityText = document.createElement('span');
             projectItemPriorityText.id = "project-item__text";
             projectItemPriorityText.textContent = todo.priority;
+            projectItemPriorityText.classList.add(`${todo.priority}`.toLowerCase())
 
-            projectItemPriority.prepend(PriorityDecorator, projectItemPriorityText);
+            projectItemPriority.prepend(priorityDecorator, projectItemPriorityText);
 
             projectItem.append(
                 projectItemCheckBox,
@@ -1102,8 +1158,9 @@ function toggleMenu() {
                 if (showAllTasksDiv.classList.contains('selected')) {
                     const projectsPlaceholder = document.querySelector('.project-items__title-text.placeholder');
                     showAllTasksDiv.classList.remove('selected');
-                    // projectTitle.style.display = 'inline-block';
                     projectsPlaceholder.textContent = 'Project: ';
+                    // To show the project name again after moving from
+                    // show all todos to a different project
                     projectTitle.style.display = 'inline-block';
                 }
 
@@ -1184,7 +1241,8 @@ function toggleMenu() {
 
             const projectTodoCount = Todos.findAllByProject(project.id).length;
 
-            projectElement.firstChild.textContent = project.name + ` (${projectTodoCount})`;
+            projectElement.querySelector("#projectTodosCountText").textContent = ` (${projectTodoCount})`;
+
         });
     }
 
