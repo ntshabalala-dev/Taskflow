@@ -37,9 +37,7 @@ export default class Todo {
         if (newTitle !== undefined && newTitle.trim().length === 0) {
             throw new Error("Todo title cannot be empty");
         }
-        if (newDescription !== undefined && newDescription.trim().length === 0) {
-            throw new Error("Todo description cannot be empty");
-        }
+
         if (newProjectId !== undefined && newProjectId.trim().length === 0) {
             throw new Error("Todo project cannot be empty");
         }

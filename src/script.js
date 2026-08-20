@@ -25,7 +25,7 @@ function taskFlowController() {
     }
 
     const cleanData = (data) => {
-        return escape(trim(data)) || '';
+        return escape((data || "").trim());
     }
 
     const toast = (message, type) => {
@@ -874,7 +874,7 @@ function toggleMenu() {
                                 const oldPriority = todo.priority;
 
                                 const data = {
-                                    newDescription: newDescription || null,
+                                    newDescription: newDescription,
                                     newDueDate: newDueDate || null,
                                     newPriority: newPriority
                                 };
