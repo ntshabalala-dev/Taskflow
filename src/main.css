@@ -649,12 +649,6 @@ dialog::backdrop {
     border-color: #e53e3e;
 }
 
-#todo-due-date {
-    /* width: 100%; */
-    /* margin-right: .5rem; */
-}
-
-
 .hamburger {
     display: flex;
     background: none;
@@ -662,7 +656,6 @@ dialog::backdrop {
     cursor: pointer;
     flex-direction: column;
     gap: 5px;
-    margin-top: .3rem;
 }
 
 .bar {
@@ -935,6 +928,15 @@ div.form-control.priority {
         flex-wrap: wrap;
         /* justify-content: center; */
     }
+}
+
+.header__logo img {
+    width: 1.9rem;
+    height: 1.9rem;
+}
+
+.header__logo {
+    display: flex;
 }
 
 @media (max-width: 450px) {

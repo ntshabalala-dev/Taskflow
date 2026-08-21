@@ -82,8 +82,6 @@ function projectsButtonHelper() {
 }
 
 function toggleMenu() {
-    // const navLogo = document.querySelector('#projects__nav-logo span');
-    // const search = document.querySelector('#projects__search');
     const main = document.querySelector('main');
     const hamburger = document.querySelector('.hamburger');
     const containers = document.querySelectorAll('.container');
@@ -172,10 +170,14 @@ function toggleMenu() {
             const showAllTitlePlaceholder = document.querySelector('.project-items__title-text.placeholder');
             showAllTitlePlaceholder.textContent = 'All Todos';
 
+            // Set the show all todos button to active, if current project is selected
+            // Re-renders all todos instead of per-project
             if (currentProject) {
                 currentProject.classList.remove('active');
                 showAllTasksDiv.classList.add('selected');
                 renderAllProjectItems();
+                syncCheckboxes();
+                removeDeleteAllBtn()
                 document.querySelector('.project-items__title #project-title')
                     .style.display = 'none';
             }
@@ -1147,6 +1149,7 @@ function toggleMenu() {
     const renderProjectTitleAndItems = () => {
         const projectTitle = document.querySelector('.project-items__title #project-title');
         projectsList = document.querySelector('#projects__list');
+        // Logic for selecting projects in the projects list
         projectsList.addEventListener('click', (e) => {
             if (e.target.classList.contains('project')) {
                 const target = e.target;
@@ -1155,6 +1158,7 @@ function toggleMenu() {
                 projectTitle.textContent = projectName;
                 renderProjectItems(target.dataset.projectId);
                 syncCheckboxes();
+                removeDeleteAllBtn();
                 if (showAllTasksDiv.classList.contains('selected')) {
                     const projectsPlaceholder = document.querySelector('.project-items__title-text.placeholder');
                     showAllTasksDiv.classList.remove('selected');
@@ -1163,7 +1167,6 @@ function toggleMenu() {
                     // show all todos to a different project
                     projectTitle.style.display = 'inline-block';
                 }
-
             }
         });
 
@@ -1181,6 +1184,9 @@ function toggleMenu() {
         }
     }
 
+    /**
+    * Event listener for selecting all todos
+    */
     const selectAllItems = () => {
         projectItemsSelector.addEventListener('change', (e) => {
             const checkBoxes = document.querySelectorAll('.project-items__todos input[type="checkbox"]');
@@ -1195,6 +1201,10 @@ function toggleMenu() {
         syncCheckboxes();
     }
 
+    /**
+     * Allows you to select individual checkboxes.
+     * When the list of todos get re-rendered this needs to run as well
+     */
     const syncCheckboxes = () => {
         const checkBoxes = document.querySelectorAll('.project-items__todos input[type="checkbox"]');
 
@@ -1206,14 +1216,25 @@ function toggleMenu() {
 
         checkBoxes.forEach(checkbox => {
             checkbox.addEventListener('change', () => {
+                //convert node list to array
                 const isChecked = Array.from(checkBoxes).some(cb => cb.checked);
                 console.log('Checkbox changed:', isChecked);
+                // show the delete all button if all items are checked
                 deleteSelectedBtn.classList.toggle('show', isChecked);
+
+                const selectedCheckboxes = document.querySelectorAll('.project-items__todos input[type="checkbox"]:checked');
+
+                if (checkBoxes.length === selectedCheckboxes.length) {
+                    projectItemsSelector.checked = true;
+                }
+                // console.log(selectedCheckboxes.length);
             });
         });
     }
 
-
+    /**
+     * Logic for the delete button that shows up when a todo is selected/checked
+     */
     const deleteSelectedItems = () => {
         const deleteSelectedBtn = document.querySelector('.project-items__delete');
         deleteSelectedBtn.addEventListener('click', () => {
@@ -1242,8 +1263,19 @@ function toggleMenu() {
             const projectTodoCount = Todos.findAllByProject(project.id).length;
 
             projectElement.querySelector("#projectTodosCountText").textContent = ` (${projectTodoCount})`;
-
         });
+    }
+
+    /**
+     * Unchecks the select all checkbox and hides deleteAll button
+     */
+    const removeDeleteAllBtn = () => {
+        if (projectItemsSelector.checked) {
+            projectItemsSelector.checked = false;
+            deleteSelectedBtn.classList.toggle('show');
+        } else if (deleteSelectedBtn.classList.contains('show')) {
+            deleteSelectedBtn.classList.remove('show');
+        }
     }
 
     createEditProjectDialogControls();
