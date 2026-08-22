@@ -162,6 +162,7 @@ function toggleMenu() {
     const originalDeleteMessage = deleteMessage.innerHTML;
     const showAllTasksDiv = document.querySelector('#Projects__show-all.active');
     const AllTasksCount = document.querySelector('#Projects__item-count');
+    const Sortby = document.querySelector('#sort-select')
 
     const showAllTasks = () => {
         refreshAllTasksItemCount();
@@ -1277,6 +1278,10 @@ function toggleMenu() {
             deleteSelectedBtn.classList.remove('show');
         }
     }
+
+    Sortby.addEventListener('change', (e) => {
+        console.log(e.target.value)
+    })
 
     createEditProjectDialogControls();
     editTodoDialogControls();

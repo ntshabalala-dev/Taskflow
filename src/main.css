@@ -665,7 +665,6 @@ dialog::backdrop {
     transition: 0.3s;
 }
 
-
 /* Hamburger Menu - for mobile*/
 .hamburger.active .bar:nth-child(1) {
     transform: translateY(8px) rotate(45deg);
@@ -937,6 +936,37 @@ div.form-control.priority {
 
 .header__logo {
     display: flex;
+}
+
+#projects__nav-logo {
+    display: flex;
+}
+
+#projects__nav-logo img {
+    height: 1.9rem;
+    /* Control size by setting height */
+    width: auto;
+    /* Maintains original aspect ratio */
+    display: block;
+}
+
+#header__hero-text img {
+    height: 1.8rem;
+    /* Control size by setting height */
+    width: auto;
+}
+
+#header__hero-text {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    /* justify-content: center; */
+}
+
+@media (max-width: 320px) {
+    #header__hero-text img {
+        display: none;
+    }
 }
 
 @media (max-width: 450px) {
